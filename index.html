@@ -5,8 +5,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IPON AI</title>
+
 <style>
 * { box-sizing: border-box; }
+
 body {
   margin: 0;
   background: #10131c;
@@ -16,6 +18,7 @@ body {
   justify-content: center;
   min-height: 100vh;
 }
+
 .container {
   width: 100%;
   max-width: 750px;
@@ -23,16 +26,58 @@ body {
   flex-direction: column;
   padding: 25px;
 }
+
 header {
   text-align: center;
   padding: 25px;
 }
+
 h1 { font-size: 38px; margin: 5px; }
 .subtitle { color: #a5b4fc; }
+
+.modes {
+  display: flex;
+  gap: 12px;
+  margin: 10px 0 20px;
+}
+
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 15px;
+  background: #6475ed;
+  color: white;
+  cursor: pointer;
+}
+
+.mode {
+  flex: 1;
+  background: #252b3b;
+  border: 2px solid transparent;
+  font-size: 15px;
+}
+
+.mode.active.good {
+  background: #174b36;
+  border-color: #38d996;
+}
+
+.mode.active.bad {
+  background: #59252d;
+  border-color: #ff596b;
+}
+
+#modeInfo {
+  text-align: center;
+  color: #a5b4fc;
+  font-size: 13px;
+}
+
 #chat {
   flex: 1;
   padding: 15px 0;
 }
+
 .message {
   padding: 14px;
   margin: 12px 0;
@@ -40,9 +85,16 @@ h1 { font-size: 38px; margin: 5px; }
   background: #252b3b;
   line-height: 1.5;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
+
 .user { background: #39446b; }
-form { display: flex; gap: 10px; }
+
+form {
+  display: flex;
+  gap: 10px;
+}
+
 input {
   flex: 1;
   padding: 16px;
@@ -52,22 +104,38 @@ input {
   color: white;
   min-width: 0;
 }
-button {
-  border: 0;
-  border-radius: 12px;
-  padding: 15px;
-  background: #6475ed;
-  color: white;
-  cursor: pointer;
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .container { padding: 12px; }
+  header { padding: 18px; }
 }
 </style>
 </head>
+
 <body>
 <div class="container">
+
 <header>
 <h1>IPON AI</h1>
 <p class="subtitle">İSİM ABLAMDAN İLHAMLA</p>
 </header>
+
+<div class="modes">
+<button type="button" class="mode good" id="goodMode">
+😇 İYİ MOD
+</button>
+
+<button type="button" class="mode bad" id="badMode">
+😈 KÖTÜ MOD
+</button>
+</div>
+
+<p id="modeInfo"></p>
 
 <div id="chat"></div>
 
@@ -75,52 +143,159 @@ button {
 <input id="message" placeholder="IPON AI'ye mesaj yaz..." required>
 <button type="submit">Gönder</button>
 </form>
+
 </div>
 
 <script>
 const chat = document.getElementById("chat");
 const form = document.getElementById("form");
 const input = document.getElementById("message");
-const messages = [];
+const goodButton = document.getElementById("goodMode");
+const badButton = document.getElementById("badMode");
+const modeInfo = document.getElementById("modeInfo");
+
+let messages = [];
+let mode = "good";
+
+// Kayıtlı konuşmaları ve modu yükle
+try {
+  messages = JSON.parse(
+    localStorage.getItem("ipon_messages") || "[]"
+  );
+
+  if (!Array.isArray(messages)) messages = [];
+
+  messages = messages.filter(m =>
+    m &&
+    ["user", "assistant"].includes(m.role) &&
+    typeof m.content === "string"
+  ).slice(-100);
+
+  const savedMode = localStorage.getItem("ipon_mode");
+  if (savedMode === "bad" || savedMode === "good") {
+    mode = savedMode;
+  }
+} catch (error) {
+  messages = [];
+}
+
+function saveData() {
+  try {
+    localStorage.setItem(
+      "ipon_messages",
+      JSON.stringify(messages.slice(-100))
+    );
+
+    localStorage.setItem("ipon_mode", mode);
+  } catch (error) {
+    console.error("Kayıt hatası:", error);
+  }
+}
 
 function addMessage(role, content) {
   const div = document.createElement("div");
-  div.className = "message " + (role === "user" ? "user" : "");
+  div.className =
+    "message " + (role === "user" ? "user" : "");
+
   div.textContent = content;
   chat.appendChild(div);
+
+  chat.scrollTop = chat.scrollHeight;
 }
+
+function updateModeUI() {
+  goodButton.classList.toggle("active", mode === "good");
+  badButton.classList.toggle("active", mode === "bad");
+
+  modeInfo.textContent = mode === "good"
+    ? "Şu anda İyi Moddasın 😇"
+    : "Şu anda Kötü Moddasın 😈";
+
+  input.placeholder = mode === "good"
+    ? "IPON AI'ye mesaj yaz..."
+    : "IPON AI'yi kızdır bakalım 😈";
+}
+
+function changeMode(newMode) {
+  mode = newMode;
+  saveData();
+  updateModeUI();
+}
+
+goodButton.addEventListener("click", () => {
+  changeMode("good");
+});
+
+badButton.addEventListener("click", () => {
+  changeMode("bad");
+});
+
+// Önceki konuşmaları ekranda göster
+messages.forEach(m => {
+  addMessage(m.role, m.content);
+});
+
+updateModeUI();
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
   const content = input.value.trim();
   if (!content) return;
 
-  messages.push({ role: "user", content });
+  messages.push({
+    role: "user",
+    content
+  });
+
+  messages = messages.slice(-100);
+  saveData();
   addMessage("user", content);
+
   input.value = "";
 
-  const button = form.querySelector("button");
-  button.disabled = true;
+  const sendButton = form.querySelector("button");
+  sendButton.disabled = true;
 
   try {
     const response = await fetch("/api/chat", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages })
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        messages: messages.slice(-20),
+        mode
+      })
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Bağlantı hatası.");
 
-    messages.push({ role: "assistant", content: data.answer });
+    if (!response.ok) {
+      throw new Error(data.error || "Bağlantı hatası.");
+    }
+
+    if (typeof data.answer !== "string") {
+      throw new Error("Geçerli cevap alınamadı.");
+    }
+
+    messages.push({
+      role: "assistant",
+      content: data.answer
+    });
+
+    messages = messages.slice(-100);
+    saveData();
     addMessage("assistant", data.answer);
+
   } catch (error) {
-    addMessage("assistant", "Bir hata oluştu: " + error.message);
+    addMessage("assistant", "Bağlantı hatası: " + error.message);
   } finally {
-    button.disabled = false;
+    sendButton.disabled = false;
     input.focus();
   }
 });
 </script>
+
 </body>
 </html>
