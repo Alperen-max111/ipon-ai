@@ -1,4 +1,6 @@
 
+import path from "path";
+import { fileURLToPath } from "url";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -7,6 +9,9 @@ import rateLimit from "express-rate-limit";
 dotenv.config();
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const PORT = process.env.PORT || 3000;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
@@ -32,27 +37,33 @@ Kod yazabilir ve sorun çözebilirsin.
 Bilmediğin bilgileri uydurma.
 `;
 
+// IPON AI ana sayfası
 app.get("/", (req, res) => {
-  res.send("IPON AI çalışıyor!");
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
+// Yapay zekâ sohbet sistemi
 app.post("/api/chat", async (req, res) => {
   try {
     const messages = req.body.messages;
 
-    if (!Array.isArray(messages) ||
-        messages.length === 0 ||
-        messages.length > 20) {
+    if (
+      !Array.isArray(messages) ||
+      messages.length === 0 ||
+      messages.length > 20
+    ) {
       return res.status(400).json({
         error: "Geçersiz mesaj."
       });
     }
 
     const clean = messages.map(m => {
-      if (!m ||
-          !["user", "assistant"].includes(m.role) ||
-          typeof m.content !== "string" ||
-          m.content.length > 8000) {
+      if (
+        !m ||
+        !["user", "assistant"].includes(m.role) ||
+        typeof m.content !== "string" ||
+        m.content.length > 8000
+      ) {
         throw new Error("Geçersiz mesaj.");
       }
 
