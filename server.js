@@ -9,11 +9,15 @@ import rateLimit from "express-rate-limit";
 dotenv.config();
 
 const app = express();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
+
+// Render proxy ayarı
+app.set("trust proxy", 1);
 
 if (!GROQ_API_KEY) {
   throw new Error("GROQ_API_KEY eksik!");
@@ -37,12 +41,10 @@ Kod yazabilir ve sorun çözebilirsin.
 Bilmediğin bilgileri uydurma.
 `;
 
-// IPON AI ana sayfası
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Yapay zekâ sohbet sistemi
 app.post("/api/chat", async (req, res) => {
   try {
     const messages = req.body.messages;
@@ -82,12 +84,11 @@ app.post("/api/chat", async (req, res) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
+          model: "openai/gpt-oss-20b",
           messages: [
             { role: "system", content: SYSTEM },
             ...clean
-          ],
-          temperature: 0.8
+          ]
         })
       }
     );
@@ -95,9 +96,8 @@ app.post("/api/chat", async (req, res) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(
-        data.error?.message || "Groq bağlantı hatası."
-      );
+      console.error("Groq hatası:", data.error?.message);
+      throw new Error("Groq bağlantı hatası.");
     }
 
     res.json({
@@ -105,7 +105,7 @@ app.post("/api/chat", async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error.message);
+    console.error("IPON AI hatası:", error.message);
 
     res.status(500).json({
       error: "IPON AI cevap veremedi."
