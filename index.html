@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IPON AI</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #10131c;
+  color: white;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+.container {
+  width: 100%;
+  max-width: 750px;
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+}
+header {
+  text-align: center;
+  padding: 25px;
+}
+h1 { font-size: 38px; margin: 5px; }
+.subtitle { color: #a5b4fc; }
+#chat {
+  flex: 1;
+  padding: 15px 0;
+}
+.message {
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 12px;
+  background: #252b3b;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.user { background: #39446b; }
+form { display: flex; gap: 10px; }
+input {
+  flex: 1;
+  padding: 16px;
+  border: 0;
+  border-radius: 12px;
+  background: #252b3b;
+  color: white;
+  min-width: 0;
+}
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 15px;
+  background: #6475ed;
+  color: white;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>IPON AI</h1>
+<p class="subtitle">İSİM ABLAMDAN İLHAMLA</p>
+</header>
+
+<div id="chat"></div>
+
+<form id="form">
+<input id="message" placeholder="IPON AI'ye mesaj yaz..." required>
+<button type="submit">Gönder</button>
+</form>
+</div>
+
+<script>
+const chat = document.getElementById("chat");
+const form = document.getElementById("form");
+const input = document.getElementById("message");
+const messages = [];
+
+function addMessage(role, content) {
+  const div = document.createElement("div");
+  div.className = "message " + (role === "user" ? "user" : "");
+  div.textContent = content;
+  chat.appendChild(div);
+}
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const content = input.value.trim();
+  if (!content) return;
+
+  messages.push({ role: "user", content });
+  addMessage("user", content);
+  input.value = "";
+
+  const button = form.querySelector("button");
+  button.disabled = true;
+
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Bağlantı hatası.");
+
+    messages.push({ role: "assistant", content: data.answer });
+    addMessage("assistant", data.answer);
+  } catch (error) {
+    addMessage("assistant", "Bir hata oluştu: " + error.message);
+  } finally {
+    button.disabled = false;
+    input.focus();
+  }
+});
+</script>
+</body>
+</html>
