@@ -2,21 +2,17 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import OpenAI from "openai";
 import rateLimit from "express-rate-limit";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
-if (!process.env.OPENAI_API_KEY) {
-  throw new Error("API anahtarı eksik!");
+if (!GROQ_API_KEY) {
+  throw new Error("GROQ_API_KEY eksik!");
 }
-
-const ai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
 
 app.use(cors());
 app.use(express.json({ limit: "30kb" }));
@@ -28,26 +24,24 @@ app.use("/api/", rateLimit({
 
 const SYSTEM = `
 Sen IPON AI isimli akıllı bir asistansın.
-
-- Türkçe konuş.
-- Doğal ve samimi ol.
-- Aynı cevapları gereksiz yere tekrarlama.
-- Önceki konuşmaları dikkate al.
-- Kod yaz ve sorunları çöz.
-- Bilmediğin bilgileri uydurma.
-- Gerektiğinde internetten araştırma yap.
-- Kendini IPON AI olarak tanıt.
+Türkçe konuş.
+Doğal ve samimi ol.
+Aynı cevapları gereksiz yere tekrarlama.
+Önceki konuşmaları dikkate al.
+Kod yazabilir ve sorun çözebilirsin.
+Bilmediğin bilgileri uydurma.
 `;
 
 app.get("/", (req, res) => {
-  res.send("IPON AI çalışıyor! 🚀");
+  res.send("IPON AI çalışıyor!");
 });
 
 app.post("/api/chat", async (req, res) => {
   try {
     const messages = req.body.messages;
 
-    if (!Array.isArray(messages) || messages.length === 0 ||
+    if (!Array.isArray(messages) ||
+        messages.length === 0 ||
         messages.length > 20) {
       return res.status(400).json({
         error: "Geçersiz mesaj."
@@ -68,14 +62,35 @@ app.post("/api/chat", async (req, res) => {
       };
     });
 
-    const result = await ai.responses.create({
-      model: "gpt-5.5",
-      instructions: SYSTEM,
-      input: clean
-    });
+    const response = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${GROQ_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: [
+            { role: "system", content: SYSTEM },
+            ...clean
+          ],
+          temperature: 0.8
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.error?.message || "Groq bağlantı hatası."
+      );
+    }
 
     res.json({
-      answer: result.output_text
+      answer: data.choices[0].message.content
     });
 
   } catch (error) {
@@ -89,4 +104,6 @@ app.post("/api/chat", async (req, res) => {
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log("IPON AI hazır!");
+});
+
 });
