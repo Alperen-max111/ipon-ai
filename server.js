@@ -883,7 +883,12 @@ app.post("/api/admin/human-chats/:sessionId/close", requireAdmin, async (req, re
     res.status(500).json({ error: "Sohbet kapatılamadı." });
   }
 });
-
+// ANA SAYFA
+app.get("/", (req, res) => {
+  res.sendFile("index.html", {
+    root: process.cwd()
+  });
+});
 // -------------------------
 // HATA YAKALAMA
 // -------------------------
