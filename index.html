@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -12,8 +13,6 @@ button:hover{filter:brightness(1.15)}
 button:disabled{opacity:.5;cursor:not-allowed}
 input,textarea{font-family:Arial,sans-serif}
 .hidden{display:none!important}
-
-/* GİRİŞ VE KAYIT */
 #authScreen{height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
 .auth-box{width:100%;max-width:390px;background:#171f30;border:1px solid #30394d;border-radius:18px;padding:28px;box-shadow:0 15px 50px #0005}
 .auth-logo{text-align:center;font-size:32px;font-weight:bold;color:#a5b4fc;margin-bottom:5px}
@@ -26,8 +25,6 @@ input,textarea{font-family:Arial,sans-serif}
 .auth-info{font-size:12px;color:#9aa6c4;line-height:1.5}
 .auth-error{color:#ff7785;font-size:13px;min-height:18px}
 .auth-success{color:#38d996;font-size:13px}
-
-/* UYGULAMA */
 .app{display:flex;height:100vh}
 .sidebar{width:250px;flex-shrink:0;background:#171c29;padding:16px;display:flex;flex-direction:column;border-right:1px solid #30394d}
 .logo{text-align:center;font-size:25px;font-weight:bold;margin:12px 0 25px;color:#a5b4fc}
@@ -64,15 +61,25 @@ h1{font-size:36px;margin:5px}
 .tool-btn{background:#30394d;font-size:12px;padding:9px 12px}
 #imageInput{display:none}
 #imageName{font-size:12px;color:#a5b4fc;align-self:center;overflow:hidden}
-.panel{display:none;background:#20283a;border:1px solid #b58a25;border-radius:15px;padding:20px;max-width:600px;width:100%;margin:15px auto;overflow-y:auto}
-.panel input,.panel textarea{width:100%;padding:13px;margin:8px 0;border:1px solid #424d68;border-radius:9px;background:#151c2b;color:white}
+.panel{display:none;background:#20283a;border:1px solid #b58a25;border-radius:15px;padding:20px;max-width:850px;width:100%;margin:15px auto;overflow-y:auto;max-height:85vh}
+.panel input,.panel textarea,.panel select{width:100%;padding:13px;margin:8px 0;border:1px solid #424d68;border-radius:9px;background:#151c2b;color:white}
 .panel textarea{min-height:100px;resize:vertical}
 .panel button{margin:5px}
 .host-title{color:#f4c542;font-size:24px}
 #adminError{color:#ff6978}
 #adminStatus{color:#38d996}
 .admin-actions{display:flex;flex-wrap:wrap;justify-content:center}
-
+.privacy-box{background:#20283a;border:1px solid #424d68;border-radius:10px;padding:10px;margin-top:10px}
+.privacy-box p{font-size:11px;color:#aeb8d0;line-height:1.4;margin:6px 0}
+.privacy-button{width:100%;padding:9px;background:#30394d;font-size:11px}
+#privacyStatus{font-size:11px;color:#f4c542;margin:7px 0}
+#hostUsers{background:#151c2b;border-radius:10px;padding:12px;margin-top:15px}
+#hostUsers select{width:100%}
+.host-chat{background:#151c2b;border:1px solid #39445b;border-radius:10px;padding:12px;margin:10px 0}
+.host-message{padding:9px;border-radius:8px;margin:7px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
+.host-message.user{background:#344783}
+.host-message.assistant{background:#30394d}
+.host-muted{font-size:12px;color:#aeb8d0}
 @media(max-width:600px){
  .sidebar{width:115px;padding:7px}
  .logo{font-size:17px}
@@ -88,43 +95,43 @@ h1{font-size:36px;margin:5px}
  .sidebar-user{padding-top:8px}
  .user-logout{font-size:10px;padding:8px 3px}
  #usernameLabel{font-size:10px}
+ .panel{padding:10px}
 }
 </style>
 </head>
 <body>
 
-<!-- KULLANICI GİRİŞ / KAYIT -->
 <section id="authScreen">
  <div class="auth-box">
   <div class="auth-logo">IPON AI</div>
   <p class="auth-subtitle">İSİM ABLAMDAN İLHAMLA</p>
-
   <div class="auth-tabs">
    <button id="showLoginTab" class="active">GİRİŞ YAP</button>
    <button id="showRegisterTab">KAYIT OL</button>
   </div>
-
   <form id="authForm">
    <input id="authUsername" type="text" placeholder="Kullanıcı adı" minlength="3" maxlength="20" autocomplete="username" required>
    <input id="authPassword" type="password" placeholder="Şifre" minlength="8" maxlength="128" autocomplete="current-password" required>
    <button id="authSubmit" class="auth-submit" type="submit">GİRİŞ YAP</button>
   </form>
-
   <p class="auth-info" id="authInfo">Hesabına giriş yap ve IPON AI ile sohbete başla.</p>
   <p class="auth-error" id="authError"></p>
  </div>
 </section>
 
-<!-- ANA UYGULAMA -->
 <div class="app hidden" id="app">
 <aside class="sidebar">
  <div class="logo">IPON AI</div>
  <button class="newchat" id="newChat">＋ Yeni Sohbet</button>
  <div class="history-title">SOHBET GEÇMİŞİ</div>
  <div id="chatList"></div>
-
  <div class="sidebar-user">
   <div id="usernameLabel"></div>
+  <div class="privacy-box">
+   <button class="privacy-button" id="privacyButton">🔒 Sohbet paylaşımı</button>
+   <div id="privacyStatus">Kontrol ediliyor...</div>
+   <p>Sadece izin verirsen sohbetlerin HOST panelinde görünür. İstediğin zaman kapatabilirsin. Fotoğrafların kendisi paylaşılmaz.</p>
+  </div>
   <button class="user-logout" id="userLogout">🚪 HESAPTAN ÇIK</button>
  </div>
 </aside>
@@ -152,9 +159,24 @@ h1{font-size:36px;margin:5px}
  <p>Yetki: HOST / ADMIN</p>
  <p>Proje: IPON AI</p>
  <p>Durum: Aktif</p>
+
  <label for="hostMemory">Sadece HOST oturumunda kullanılacak bilgiler:</label>
  <textarea id="hostMemory" placeholder="IPON AI'nin yalnızca HOST oturumunda kullanmasını istediğin bilgileri yaz..."></textarea>
  <button id="saveMemory">💾 Bilgileri Kaydet</button>
+
+ <hr>
+ <h3 class="host-title">👥 Kullanıcı Sohbetleri</h3>
+ <p class="host-muted">Yalnızca sohbet paylaşımına açıkça izin veren kullanıcıların sohbetleri görüntülenebilir. Kullanıcıların izni olmadan sohbetlerini görüntüleyemezsin.</p>
+ <button id="refreshUsers">🔄 Kullanıcıları Yenile</button>
+ <div id="hostUsers">
+  <label for="hostUserSelect">Kullanıcı seç:</label>
+  <select id="hostUserSelect">
+   <option value="">Önce kullanıcıları yükle</option>
+  </select>
+  <button id="viewUserChats">💬 Sohbetlerini Görüntüle</button>
+  <div id="hostChatResults"></div>
+ </div>
+
  <div class="admin-actions">
   <button id="backToChat" style="background:#4659a8">💬 SOHBETE DÖN</button>
   <button id="logoutButton" style="background:#9d3e50">🚪 HOST ÇIKIŞI</button>
@@ -167,16 +189,13 @@ h1{font-size:36px;margin:5px}
   <button class="mode bad" id="badMode">😈 KÖTÜ MOD</button>
  </div>
  <p id="modeInfo"></p>
-
  <div class="bottom-tools">
   <button class="tool-btn" id="trollMode">🎭 TROLLEME: KAPALI</button>
   <button class="tool-btn" id="photoButton">🖼️ FOTOĞRAF EKLE</button>
   <input id="imageInput" type="file" accept="image/*">
   <span id="imageName"></span>
  </div>
-
  <div id="chat"></div>
-
  <form id="chatForm">
   <input id="message" placeholder="IPON AI'ye mesaj yaz..." autocomplete="off" required>
   <button id="sendButton" type="submit">Gönder</button>
@@ -189,7 +208,6 @@ h1{font-size:36px;margin:5px}
 "use strict";
 
 const $ = id => document.getElementById(id);
-
 const chat = $("chat");
 const chatList = $("chatList");
 const form = $("chatForm");
@@ -210,26 +228,146 @@ let trollMode = false;
 let isHost = false;
 let selectedImage = null;
 let sending = false;
+let chatSharingConsent = false;
+let syncTimer = null;
 
 function userChatsKey(){
  return "ipon_chats_user_" + currentUser.id;
 }
 
+function getSafeChats(){
+ return chats.map(c => ({
+  id:String(c.id),
+  title:String(c.title || "Yeni Sohbet").slice(0,100),
+  messages:(c.messages || []).slice(-200).map(m => ({
+   role:m.role === "assistant" ? "assistant" : "user",
+   content:String(m.content || "").slice(0,12000),
+   imageName:String(m.imageName || "").slice(0,200)
+  }))
+ })).slice(0,100);
+}
+
 function saveChats(){
  if(!currentUser) return;
+ localStorage.setItem(userChatsKey(),JSON.stringify(getSafeChats()));
 
- const safeChats = chats.map(c => ({
-  id:c.id,
-  title:c.title,
-  messages:(c.messages || []).map(m => ({
-   role:m.role,
-   content:m.content,
-   imageName:m.imageName || ""
-  }))
- }));
-
- localStorage.setItem(userChatsKey(),JSON.stringify(safeChats));
+ if(chatSharingConsent){
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(syncChatsToServer,700);
+ }
 }
+
+async function syncChatsToServer(){
+ if(!currentUser || !chatSharingConsent) return;
+
+ const token = localStorage.getItem(USER_TOKEN);
+ if(!token) return;
+
+ try{
+  const response = await fetch("/api/user/chats/sync",{
+   method:"POST",
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization":"Bearer " + token
+   },
+   body:JSON.stringify({chats:getSafeChats()})
+  });
+
+  if(!response.ok){
+   console.warn("Sohbet senkronizasyonu başarısız.");
+  }
+ }catch(error){
+  console.warn("Sohbet senkronizasyon hatası:",error);
+ }
+}
+
+async function loadPrivacy(){
+ chatSharingConsent = false;
+ $("privacyStatus").textContent = "Kontrol ediliyor...";
+ $("privacyButton").textContent = "🔒 Sohbet paylaşımını aç";
+
+ try{
+  const response = await fetch("/api/user/privacy",{
+   headers:{Authorization:"Bearer " + localStorage.getItem(USER_TOKEN)}
+  });
+  const data = await response.json();
+
+  if(!response.ok) throw new Error(data.error || "İzin bilgisi alınamadı.");
+
+  chatSharingConsent = data.consent === true;
+  updatePrivacyUI();
+
+  if(chatSharingConsent){
+   await syncChatsToServer();
+  }
+ }catch(error){
+  $("privacyStatus").textContent = "İzin durumu alınamadı.";
+  console.error(error);
+ }
+}
+
+function updatePrivacyUI(){
+ $("privacyStatus").textContent = chatSharingConsent
+  ? "🟢 Paylaşım açık"
+  : "🔒 Paylaşım kapalı";
+
+ $("privacyButton").textContent = chatSharingConsent
+  ? "🔓 Sohbet paylaşımını kapat"
+  : "🔒 Sohbet paylaşımını aç";
+}
+
+async function changePrivacy(){
+ if(!currentUser) return;
+
+ const nextValue = !chatSharingConsent;
+
+ if(nextValue){
+  const accepted = confirm(
+   "Sohbet paylaşımını açmak istiyor musun?\n\n" +
+   "Açarsan sohbet geçmişin IPON AI sunucusuna kaydedilir ve HOST panelinde görüntülenebilir.\n\n" +
+   "Fotoğrafların kendisi paylaşılmaz. İstediğin zaman bu izni kapatabilirsin."
+  );
+  if(!accepted) return;
+ }else{
+  const accepted = confirm(
+   "Sohbet paylaşımını kapatmak istiyor musun?\n\n" +
+   "Sunucuda kayıtlı sohbetlerin silinmesi istenecek. Tarayıcındaki sohbet geçmişin kalmaya devam eder."
+  );
+  if(!accepted) return;
+ }
+
+ $("privacyButton").disabled = true;
+
+ try{
+  const response = await fetch("/api/user/privacy",{
+   method:"PUT",
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization":"Bearer " + localStorage.getItem(USER_TOKEN)
+   },
+   body:JSON.stringify({consent:nextValue})
+  });
+
+  const data = await response.json();
+  if(!response.ok) throw new Error(data.error || "İzin değiştirilemedi.");
+
+  chatSharingConsent = nextValue;
+  updatePrivacyUI();
+
+  if(chatSharingConsent){
+   await syncChatsToServer();
+   alert("Sohbet paylaşımı açıldı.");
+  }else{
+   alert("Paylaşım kapatıldı. Sunucudaki sohbet kayıtlarının silinmesi istendi.");
+  }
+ }catch(error){
+  alert("İşlem başarısız: " + error.message);
+ }finally{
+  $("privacyButton").disabled = false;
+ }
+}
+
+$("privacyButton").onclick = changePrivacy;
 
 function loadChats(){
  chats = [];
@@ -245,7 +383,6 @@ function loadChats(){
   chats = [];
  }
 
- // Eski sohbetleri ilk girişte hesaba aktar.
  if(!chats.length){
   try{
    const oldChats = JSON.parse(localStorage.getItem("ipon_chats") || "[]");
@@ -355,7 +492,14 @@ function render(){
  const selected = chats.find(c => c.id === currentChat);
 
  if(!selected || !selected.messages.length){
-  chat.innerHTML = '<div class="welcome"><h2>IPON AI’ye Hoş Geldin!</h2><p>Nasıl yardımcı olabilirim?</p></div>';
+  const welcome = document.createElement("div");
+  welcome.className = "welcome";
+  const heading = document.createElement("h2");
+  heading.textContent = "IPON AI’ye Hoş Geldin!";
+  const paragraph = document.createElement("p");
+  paragraph.textContent = "Nasıl yardımcı olabilirim?";
+  welcome.append(heading,paragraph);
+  chat.appendChild(welcome);
  }else{
   selected.messages.forEach(m => addMessage(m.role,m.content,null,m.imageName || ""));
  }
@@ -413,12 +557,10 @@ imageInput.onchange = () => {
  }
 
  const reader = new FileReader();
-
  reader.onload = () => {
   selectedImage = {data:reader.result,name:file.name};
   $("imageName").textContent = "📎 " + file.name;
  };
-
  reader.readAsDataURL(file);
 };
 
@@ -426,17 +568,13 @@ imageInput.onchange = () => {
 
 function setAuthMode(value){
  authMode = value;
-
  $("showLoginTab").classList.toggle("active",value === "login");
  $("showRegisterTab").classList.toggle("active",value === "register");
-
  $("authSubmit").textContent = value === "login" ? "GİRİŞ YAP" : "HESAP OLUŞTUR";
  $("authPassword").autocomplete = value === "login" ? "current-password" : "new-password";
-
  $("authInfo").textContent = value === "login"
   ? "Hesabına giriş yap ve IPON AI ile sohbete başla."
   : "Kullanıcı adın 3–20 karakter, şifren en az 8 karakter olmalı.";
-
  $("authError").textContent = "";
 }
 
@@ -450,7 +588,7 @@ function showAuth(){
  $("authError").textContent = "";
 }
 
-function startApp(user){
+async function startApp(user){
  currentUser = user;
  isHost = false;
 
@@ -460,6 +598,7 @@ function startApp(user){
 
  loadChats();
  render();
+ await loadPrivacy();
 }
 
 $("authForm").addEventListener("submit",async e => {
@@ -502,20 +641,13 @@ $("authForm").addEventListener("submit",async e => {
   });
 
   const data = await response.json();
-
-  if(!response.ok){
-   throw new Error(data.error || "İşlem başarısız.");
-  }
-
-  if(!data.token || !data.user){
-   throw new Error("Sunucudan geçersiz cevap geldi.");
-  }
+  if(!response.ok) throw new Error(data.error || "İşlem başarısız.");
+  if(!data.token || !data.user) throw new Error("Sunucudan geçersiz cevap geldi.");
 
   localStorage.setItem(USER_TOKEN,data.token);
   localStorage.setItem(USER_INFO,JSON.stringify(data.user));
-
   $("authPassword").value = "";
-  startApp(data.user);
+  await startApp(data.user);
 
  }catch(err){
   error.textContent = err.message || "Bağlantı hatası.";
@@ -527,7 +659,6 @@ $("authForm").addEventListener("submit",async e => {
 
 async function checkUserSession(){
  const token = localStorage.getItem(USER_TOKEN);
-
  if(!token){
   showAuth();
   return;
@@ -537,16 +668,11 @@ async function checkUserSession(){
   const response = await fetch("/api/auth/me",{
    headers:{Authorization:"Bearer " + token}
   });
-
   const data = await response.json();
-
-  if(!response.ok || !data.user){
-   throw new Error("Oturum geçersiz.");
-  }
+  if(!response.ok || !data.user) throw new Error("Oturum geçersiz.");
 
   localStorage.setItem(USER_INFO,JSON.stringify(data.user));
-  startApp(data.user);
-
+  await startApp(data.user);
  }catch{
   localStorage.removeItem(USER_TOKEN);
   localStorage.removeItem(USER_INFO);
@@ -568,12 +694,11 @@ $("userLogout").onclick = async () => {
 
  localStorage.removeItem(USER_TOKEN);
  localStorage.removeItem(USER_INFO);
-
  currentUser = null;
  chats = [];
  currentChat = null;
+ chatSharingConsent = false;
  isHost = false;
-
  showAuth();
 };
 
@@ -581,22 +706,21 @@ $("userLogout").onclick = async () => {
 
 form.addEventListener("submit",async e => {
  e.preventDefault();
-
  if(sending || !currentUser) return;
 
  const content = input.value.trim();
  if(!content && !selectedImage) return;
-
  if(!currentChat) newChat();
 
  const selected = chats.find(c => c.id === currentChat);
  if(!selected) return;
 
  const imageForRequest = selectedImage;
+ const userContent = content || "Bu fotoğrafı incele.";
 
  selected.messages.push({
   role:"user",
-  content:content || "Bu fotoğrafı incele.",
+  content:userContent,
   imageName:imageForRequest ? imageForRequest.name : ""
  });
 
@@ -604,12 +728,7 @@ form.addEventListener("submit",async e => {
   selected.title = (content || "Fotoğraf").slice(0,28);
  }
 
- addMessage(
-  "user",
-  content || "Bu fotoğrafı incele.",
-  imageForRequest?.data || null
- );
-
+ addMessage("user",userContent,imageForRequest?.data || null);
  input.value = "";
  selectedImage = null;
  imageInput.value = "";
@@ -617,7 +736,6 @@ form.addEventListener("submit",async e => {
  saveChats();
 
  sending = true;
-
  const sendButton = $("sendButton");
  sendButton.disabled = true;
  sendButton.textContent = "Yazıyor...";
@@ -629,14 +747,12 @@ form.addEventListener("submit",async e => {
 
   if(!token) throw new Error("Oturum bulunamadı. Tekrar giriş yap.");
 
-  const headers = {
-   "Content-Type":"application/json",
-   "Authorization":"Bearer " + token
-  };
-
   const response = await fetch("/api/chat",{
    method:"POST",
-   headers,
+   headers:{
+    "Content-Type":"application/json",
+    "Authorization":"Bearer " + token
+   },
    body:JSON.stringify({
     messages:selected.messages.slice(-20),
     mode,
@@ -648,16 +764,13 @@ form.addEventListener("submit",async e => {
   });
 
   const data = await response.json();
-
   if(!response.ok) throw new Error(data.error || "Bağlantı hatası.");
   if(typeof data.answer !== "string") throw new Error("Geçersiz cevap.");
 
   selected.messages.push({role:"assistant",content:data.answer});
   saveChats();
 
-  if(currentChat === selected.id){
-   addMessage("assistant",data.answer);
-  }
+  if(currentChat === selected.id) addMessage("assistant",data.answer);
 
  }catch(error){
   if(currentChat === selected.id){
@@ -688,12 +801,13 @@ function showLogin(){
  $("adminError").textContent = "";
 }
 
-function showAdmin(){
+async function showAdmin(){
  $("adminLogin").style.display = "none";
  $("chatView").classList.add("hidden");
  $("mainHeader").classList.add("hidden");
  $("adminPanel").style.display = "block";
  $("hostMemory").value = localStorage.getItem(MEMORY_KEY) || "";
+ await loadHostUsers();
 }
 
 $("adminLoginBtn").onclick = async () => {
@@ -704,14 +818,12 @@ $("adminLoginBtn").onclick = async () => {
    const response = await fetch("/api/admin/check",{
     headers:{Authorization:"Bearer " + token}
    });
-
    if(response.ok){
     isHost = true;
-    showAdmin();
+    await showAdmin();
     return;
    }
   }catch{}
-
   localStorage.removeItem(ADMIN_TOKEN);
  }
 
@@ -725,7 +837,6 @@ $("backToChat").onclick = showChat;
 async function adminLogin(){
  const password = $("adminPassword").value;
  const error = $("adminError");
-
  error.textContent = "";
 
  if(!password){
@@ -741,15 +852,13 @@ async function adminLogin(){
   });
 
   const data = await response.json();
-
   if(!response.ok) throw new Error(data.error || "Giriş başarısız.");
   if(!data.token) throw new Error("HOST tokenı alınamadı.");
 
   localStorage.setItem(ADMIN_TOKEN,data.token);
   $("adminPassword").value = "";
-
   isHost = true;
-  showAdmin();
+  await showAdmin();
 
  }catch(e){
   error.textContent = e.message;
@@ -757,7 +866,6 @@ async function adminLogin(){
 }
 
 $("loginButton").onclick = adminLogin;
-
 $("adminPassword").addEventListener("keydown",e => {
  if(e.key === "Enter") adminLogin();
 });
@@ -765,6 +873,119 @@ $("adminPassword").addEventListener("keydown",e => {
 $("saveMemory").onclick = () => {
  localStorage.setItem(MEMORY_KEY,$("hostMemory").value.trim());
  $("adminStatus").textContent = "HOST bilgileri bu tarayıcıya kaydedildi!";
+};
+
+/* HOST KULLANICI LİSTESİ */
+
+async function loadHostUsers(){
+ const select = $("hostUserSelect");
+ const results = $("hostChatResults");
+ results.textContent = "Kullanıcılar yükleniyor...";
+ select.innerHTML = "";
+
+ try{
+  const response = await fetch("/api/admin/users",{
+   headers:{Authorization:"Bearer " + localStorage.getItem(ADMIN_TOKEN)}
+  });
+
+  const data = await response.json();
+  if(!response.ok) throw new Error(data.error || "Kullanıcılar alınamadı.");
+
+  const users = Array.isArray(data.users) ? data.users : [];
+
+  const first = document.createElement("option");
+  first.value = "";
+  first.textContent = "Kullanıcı seç";
+  select.appendChild(first);
+
+  users.forEach(user => {
+   const option = document.createElement("option");
+   option.value = user.id;
+   option.textContent = user.username + (
+    user.chatSharingConsent === true ? " — 🟢 İzin verdi" : " — 🔒 İzin yok"
+   );
+   option.disabled = user.chatSharingConsent !== true;
+   select.appendChild(option);
+  });
+
+  results.textContent = users.length
+   ? "Kullanıcı listesi güncellendi. Yalnızca izin verenler seçilebilir."
+   : "Henüz kullanıcı bulunamadı.";
+
+ }catch(error){
+  results.textContent = "Hata: " + error.message;
+ }
+}
+
+$("refreshUsers").onclick = loadHostUsers;
+
+$("viewUserChats").onclick = async () => {
+ const userId = $("hostUserSelect").value;
+ const results = $("hostChatResults");
+ results.textContent = "";
+
+ if(!userId){
+  results.textContent = "Önce izin vermiş bir kullanıcı seç.";
+  return;
+ }
+
+ try{
+  const response = await fetch(
+   "/api/admin/users/" + encodeURIComponent(userId) + "/chats",
+   {headers:{Authorization:"Bearer " + localStorage.getItem(ADMIN_TOKEN)}}
+  );
+
+  const data = await response.json();
+  if(!response.ok) throw new Error(data.error || "Sohbetler alınamadı.");
+
+  const userChats = Array.isArray(data.chats)
+   ? data.chats
+   : (Array.isArray(data.logs) ? data.logs : []);
+
+  if(!userChats.length){
+   results.textContent = "Bu kullanıcının paylaşılmış sohbeti bulunmuyor.";
+   return;
+  }
+
+  userChats.forEach(savedChat => {
+   const card = document.createElement("div");
+   card.className = "host-chat";
+
+   const title = document.createElement("h4");
+   title.textContent = savedChat.title || "İsimsiz sohbet";
+   card.appendChild(title);
+
+   const messages = Array.isArray(savedChat.messages) ? savedChat.messages : [];
+
+   messages.forEach(message => {
+    const bubble = document.createElement("div");
+    bubble.className = "host-message " +
+     (message.role === "user" ? "user" : "assistant");
+
+    const who = document.createElement("strong");
+    who.textContent = message.role === "user" ? "Kullanıcı: " : "IPON AI: ";
+
+    const content = document.createElement("span");
+    content.textContent = String(message.content || "");
+
+    bubble.append(who,content);
+
+    if(message.imageName){
+     const imageNote = document.createElement("div");
+     imageNote.className = "host-muted";
+     imageNote.textContent = "🖼️ Fotoğraf gönderilmiş: " + message.imageName;
+     bubble.appendChild(imageNote);
+    }
+
+    card.appendChild(bubble);
+   });
+
+   results.appendChild(card);
+  });
+
+ }catch(error){
+  results.textContent = "Hata: " + error.message;
+ }
 };
 
 $("logoutButton").onclick = async () => {
