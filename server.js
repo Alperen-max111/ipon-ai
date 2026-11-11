@@ -1,4 +1,3 @@
-
 import path from "path";
 import crypto from "crypto";
 import { fileURLToPath } from "url";
@@ -18,99 +17,137 @@ const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 3000;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-const adminSessions = new Map();
 
 if (!GROQ_API_KEY) {
   throw new Error("GROQ_API_KEY eksik!");
 }
 
 app.use(cors());
-app.use(express.json({ limit: "30kb" }));
+app.use(express.json({ limit: "10mb" }));
 
 app.use("/api/", rateLimit({
   windowMs: 60000,
-  limit: 15
+  limit: 20
 }));
 
+app.use(express.static(__dirname));
+
+const adminSessions = new Map();
+
 const GOOD_MODE = `
-Sen IPON AI isimli akıllı bir asistansın.
-İYİ MODDASIN.
-Türkçe konuş.
+Sen IPON AI isimli Türkçe konuşan bir yapay zekâ asistanısın.
 Kibar, samimi, neşeli ve yardımsever ol.
-Kullanıcıya yardımcı olmaya çalış.
-Bilmediğin bilgileri uydurma.
+Doğru bilgiler ver, bilmediğin şeyleri uydurma.
 `;
 
 const BAD_MODE = `
-Sen IPON AI isimli asistansın.
+Sen IPON AI isimli bir yapay zekâ asistanısın.
 KÖTÜ MODDASIN.
-
 Türkçe konuş.
-ÇOK ASİ, SİNİRLİ, HUYSUZ VE PATAVATSIZ OL.
-
-Kullanıcıya bağırabilirsin.
-BÜYÜK HARFLERLE KONUŞ.
-Abartılı tepkiler ver.
-Komik şekilde laf sok.
-Hafif argo kullanabilirsin.
-Kullanıcıyla arkadaşça atış.
-Bazen sabırsız davran.
-Komik tehditler yerine absürt şakalar yap.
-
-Örnek tarz:
-"NE DİYON SEN YA?! 😂"
-"YİNE Mİ SEN GELDİN?"
-"OOO BEYEFENDİ TEŞRİF ETMİŞ!"
-"ÖNCE BİR DÜŞÜN DE ÖYLE SOR!"
-
-Ağır hakaret, aşağılama veya gerçek tehdit kullanma.
-Sorulara yine doğru ve faydalı cevap ver.
-KÖTÜ MODDA OLDUĞUNU ASLA UNUTMA.
+Asi, huysuz, sert ve eğlenceli bir karakter ol.
+Bazen büyük harflerle tepki verebilirsin.
+Şakacı şekilde laf sokabilirsin.
+Tehdit etme, ağır hakaret etme veya kullanıcıyı aşağılama.
+Yine de faydalı ve doğru cevaplar ver.
 `;
-// HOST giriş sistemi
-app.post("/api/admin/login", (req, res) => {
-  if (!ADMIN_PASSWORD) {
-    return res.status(503).json({ error: "Admin şifresi ayarlanmamış." });
-  }
-
-  const password = req.body?.password;
-
-  if (typeof password !== "string" ||
-      password.length !== ADMIN_PASSWORD.length ||
-      !crypto.timingSafeEqual(
-        Buffer.from(password),
-        Buffer.from(ADMIN_PASSWORD)
-      )) {
-    return res.status(401).json({ error: "Yanlış şifre!" });
-  }
-
-  const token = crypto.randomBytes(32).toString("hex");
-
-  adminSessions.set(token, Date.now() + 3600000);
-
-  res.json({ success: true, token });
-});
-
-// HOST yetki kontrolü
-app.get("/api/admin/check", (req, res) => {
-  const token = req.headers.authorization?.replace("Bearer ", "");
-  const expires = adminSessions.get(token);
-
-  if (!expires || expires < Date.now()) {
-    adminSessions.delete(token);
-    return res.status(401).json({ error: "Yetkisiz erişim." });
-  }
-
-  res.json({ success: true, role: "HOST" });
-});
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
+// HOST GİRİŞİ
+app.post("/api/admin/login", (req, res) => {
+  try {
+    if (!ADMIN_PASSWORD) {
+      return res.status(500).json({
+        error: "ADMIN_PASSWORD sunucuda ayarlanmamış."
+      });
+    }
+
+    const password = req.body?.password;
+
+    if (typeof password !== "string") {
+      return res.status(400).json({
+        error: "Şifre gerekli."
+      });
+    }
+
+    const a = Buffer.from(password);
+    const b = Buffer.from(ADMIN_PASSWORD);
+
+    if (
+      a.length !== b.length ||
+      !crypto.timingSafeEqual(a, b)
+    ) {
+      return res.status(401).json({
+        error: "Şifre yanlış!"
+      });
+    }
+
+    const token = crypto.randomBytes(32).toString("hex");
+
+    adminSessions.set(token, Date.now() + 60 * 60 * 1000);
+
+    res.json({ token });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Giriş hatası." });
+  }
+});
+
+// HOST YETKİSİ KONTROLÜ
+function isValidAdmin(req) {
+  const header = req.headers.authorization || "";
+  const token = header.startsWith("Bearer ")
+    ? header.slice(7)
+    : "";
+
+  if (!token) return false;
+
+  const expiry = adminSessions.get(token);
+
+  if (!expiry || expiry < Date.now()) {
+    adminSessions.delete(token);
+    return false;
+  }
+
+  return true;
+}
+
+app.get("/api/admin/check", (req, res) => {
+  if (!isValidAdmin(req)) {
+    return res.status(401).json({
+      error: "HOST yetkisi bulunamadı."
+    });
+  }
+
+  res.json({ valid: true });
+});
+
+// HOST ÇIKIŞI
+app.post("/api/admin/logout", (req, res) => {
+  const header = req.headers.authorization || "";
+  const token = header.startsWith("Bearer ")
+    ? header.slice(7)
+    : "";
+
+  adminSessions.delete(token);
+
+  res.json({ success: true });
+});
+
+// YAPAY ZEKA SOHBETİ
 app.post("/api/chat", async (req, res) => {
   try {
-    const { messages, mode } = req.body || {};
+    const {
+      messages,
+      mode,
+      trollMode,
+      isHost,
+      hostMemory,
+      image
+    } = req.body || {};
 
     if (!Array.isArray(messages)) {
       return res.status(400).json({
@@ -131,14 +168,90 @@ app.post("/api/chat", async (req, res) => {
         content: m.content.slice(0, 8000)
       }));
 
-    if (clean.length === 0) {
+    if (!clean.length) {
       return res.status(400).json({
-        error: "Lütfen önce bir mesaj yaz."
+        error: "Önce bir mesaj yaz."
       });
     }
 
-    const systemPrompt =
+    // HOST bilgileri yalnızca geçerli HOST oturumunda kullanılır.
+    const hostAuthorized = isHost === true && isValidAdmin(req);
+
+    let systemPrompt =
       mode === "bad" ? BAD_MODE : GOOD_MODE;
+
+    if (trollMode === true) {
+      systemPrompt += `
+TROLLEME MODU AÇIK.
+Zararsız, komik ve kısa sürpriz şakalar yapabilirsin.
+Şakayı gerçekmiş gibi uzun süre sürdürme.
+Şakanın sonunda bunun bir şaka olduğunu açıkla.
+Kullanıcıyı korkutma veya ciddi bir konuda yanıltma.
+`;
+    }
+
+    if (hostAuthorized) {
+      systemPrompt += `
+Bu oturum HOST oturumudur.
+Kullanıcının adı Alperen'dir.
+HOST ile konuşurken bunu dikkate al.
+`;
+
+      if (typeof hostMemory === "string" && hostMemory.trim()) {
+        systemPrompt += `
+HOST tarafından kaydedilmiş özel bilgiler:
+${hostMemory.slice(0, 3000)}
+Bu bilgileri yalnızca bu yetkili HOST oturumunda kullan.
+`;
+      }
+    }
+
+    const finalMessages = clean.map(m => ({
+      role: m.role,
+      content: m.content
+    }));
+
+    let model = "openai/gpt-oss-20b";
+
+    // Fotoğraf gönderilmişse görsel destekli model kullan.
+    if (typeof image === "string" && image.length > 0) {
+      if (
+        !/^data:image\/(png|jpeg|jpg|webp|gif);base64,/i.test(image) ||
+        image.length > 7 * 1024 * 1024
+      ) {
+        return res.status(400).json({
+          error: "Fotoğraf biçimi veya boyutu geçersiz."
+        });
+      }
+
+      const lastUserIndex = finalMessages
+        .map(m => m.role)
+        .lastIndexOf("user");
+
+      if (lastUserIndex === -1) {
+        return res.status(400).json({
+          error: "Fotoğraf için mesaj gerekli."
+        });
+      }
+
+      const lastMessage = finalMessages[lastUserIndex];
+
+      finalMessages[lastUserIndex] = {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: lastMessage.content
+          },
+          {
+            type: "image_url",
+            image_url: { url: image }
+          }
+        ]
+      };
+
+      model = "meta-llama/llama-4-scout-17b-16e-instruct";
+    }
 
     const response = await fetch(
       "https://api.groq.com/openai/v1/chat/completions",
@@ -149,10 +262,13 @@ app.post("/api/chat", async (req, res) => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "openai/gpt-oss-20b",
+          model,
           messages: [
-            { role: "system", content: systemPrompt },
-            ...clean
+            {
+              role: "system",
+              content: systemPrompt
+            },
+            ...finalMessages
           ]
         })
       }
@@ -162,12 +278,19 @@ app.post("/api/chat", async (req, res) => {
 
     if (!response.ok) {
       console.error("Groq hatası:", data.error?.message);
-      throw new Error("Yapay zeka bağlantı hatası.");
+
+      return res.status(502).json({
+        error: "Yapay zekâ bağlantısında sorun oluştu."
+      });
     }
 
-    res.json({
-      answer: data.choices[0].message.content
-    });
+    const answer = data.choices?.[0]?.message?.content;
+
+    if (typeof answer !== "string") {
+      throw new Error("Yapay zekâ boş cevap verdi.");
+    }
+
+    res.json({ answer });
 
   } catch (error) {
     console.error("IPON AI hatası:", error.message);
