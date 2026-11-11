@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -7,315 +6,428 @@
 <title>IPON AI</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#10131c;color:white;font-family:Arial;display:flex;height:100vh;overflow:hidden}
-button{border:0;border-radius:10px;padding:12px;color:white;background:#6475ed;cursor:pointer}
-.sidebar{width:240px;background:#171c29;padding:15px;display:flex;flex-direction:column}
-.logo{text-align:center;font-size:25px;font-weight:bold;margin:15px}
-.newchat{margin-bottom:20px}
-.history-title{color:#9ba8c7;font-size:13px;margin-bottom:10px}
-#chatList{overflow-y:auto;flex:1}
-.chat-item{padding:11px;border-radius:9px;margin-bottom:7px;background:#252b3b;display:flex;justify-content:space-between;gap:5px}
-.chat-item.active{background:#39446b}
-.chat-item span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;cursor:pointer}
-.delete{background:transparent;color:#ff7785;padding:2px}
-.main{flex:1;display:flex;flex-direction:column;min-width:0;padding:15px}
-header{text-align:center;padding:10px}
+body{margin:0;background:#101522;color:white;font-family:Arial,sans-serif;height:100vh;overflow:hidden}
+button{border:0;border-radius:10px;padding:12px;color:white;background:#6475ed;cursor:pointer;font-weight:bold}
+button:hover{filter:brightness(1.15)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.app{display:flex;height:100vh}
+.sidebar{width:250px;flex-shrink:0;background:#171c29;padding:16px;display:flex;flex-direction:column;border-right:1px solid #30394d}
+.logo{text-align:center;font-size:25px;font-weight:bold;margin:12px 0 25px;color:#a5b4fc}
+.newchat{width:100%;margin-bottom:20px}
+.history-title{font-size:12px;color:#9aa6c4;margin:8px 0}
+#chatList{overflow-y:auto}
+.chat-item{padding:11px;border-radius:9px;margin-bottom:7px;background:#252b3b;display:flex;align-items:center;gap:5px;cursor:pointer}
+.chat-item.active{background:#39476b}
+.chat-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+.delete{background:transparent;color:#ff7785;padding:5px}
+.main{flex:1;min-width:0;padding:15px;display:flex;flex-direction:column;align-items:center}
+header{text-align:center;width:100%}
 h1{font-size:36px;margin:5px}
-.subtitle{color:#a5b4fc}
-.admin-btn{background:#b58a25;margin:8px auto;display:block}
-.modes{display:flex;gap:12px;max-width:500px;width:100%;margin:12px auto}
-.mode{flex:1;background:#252b3b;border:2px solid transparent}
-.mode.active.good{background:#174b36;border-color:#38d996}
-.mode.active.bad{background:#59252d;border-color:#ff596b}
-#modeInfo{text-align:center;color:#a5b4fc;font-size:13px}
-#chat{flex:1;overflow-y:auto;padding:15px;max-width:850px;width:100%;margin:auto}
-.message{padding:14px;margin:12px 0;border-radius:12px;background:#252b3b;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
-.user{background:#39446b;margin-left:40px}
-.assistant{margin-right:40px}
-.welcome{text-align:center;color:#a5b4fc;margin-top:80px}
-form{display:flex;gap:10px;max-width:850px;width:100%;margin:10px auto}
-input{flex:1;min-width:0;padding:15px;border:0;border-radius:12px;background:#252b3b;color:white}
-.panel{display:none;background:#20283a;border:1px solid #b58a25;border-radius:15px;padding:20px;max-width:500px;width:100%;margin:10px auto;text-align:center}
-.panel input{width:100%;margin:10px 0}
+.subtitle{color:#a5b4fc;margin:5px}
+.admin-btn{background:#b58a25;margin:10px auto;display:block}
+.modes{display:flex;gap:12px;width:100%;max-width:500px;margin:12px auto}
+.mode{flex:1;background:#343b50}
+.mode.active.good{background:#19875a}
+.mode.active.bad{background:#a33c50}
+#modeInfo{color:#aeb8d0;font-size:13px;margin:0 0 10px}
+#chat{width:100%;max-width:850px;flex:1;overflow-y:auto;padding:12px;margin-bottom:12px}
+.welcome{text-align:center;color:#9eabc8;margin-top:65px}
+.message{max-width:80%;padding:13px 16px;border-radius:14px;margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45}
+.message.user{background:#4659a8;margin-left:auto}
+.message.assistant{background:#252e42;margin-right:auto}
+.message img{display:block;max-width:230px;max-height:220px;border-radius:10px;margin-bottom:8px}
+form{display:flex;gap:8px;width:100%;max-width:850px}
+#message{flex:1;min-width:0;padding:15px;border:0;border-radius:12px;background:#252b3b;color:white;outline:none}
+#sendButton{min-width:85px}
+.bottom-tools{display:flex;gap:8px;width:100%;max-width:850px;margin-bottom:8px}
+.tool-btn{background:#30394d;font-size:12px;padding:9px 12px}
+#imageInput{display:none}
+#imageName{font-size:12px;color:#a5b4fc;align-self:center;overflow:hidden}
+.panel{display:none;background:#20283a;border:1px solid #b58a25;border-radius:15px;padding:20px;max-width:600px;width:100%;margin:15px auto;overflow-y:auto}
+.panel input,.panel textarea{width:100%;padding:13px;margin:8px 0;border:1px solid #424d68;border-radius:9px;background:#151c2b;color:white}
+.panel textarea{min-height:100px;resize:vertical}
+.panel button{margin:5px}
 .host-title{color:#f4c542;font-size:24px}
 #adminError{color:#ff6978}
 #adminStatus{color:#38d996}
-#adminView{display:none;flex:1;overflow-y:auto;padding:20px}
-#adminView .panel{display:block}
-#chatView{display:flex;flex-direction:column;flex:1;min-height:0}
-button:disabled{opacity:.6}
+.admin-actions{display:flex;flex-wrap:wrap;justify-content:center}
+.hidden{display:none!important}
 @media(max-width:600px){
-.sidebar{width:115px;padding:7px}
-.logo{font-size:17px}
-.chat-item{font-size:11px}
-.main{padding:6px}
-h1{font-size:27px}
-.message{margin-left:0;margin-right:0}
-.history-title{font-size:10px}
+ .sidebar{width:115px;padding:7px}
+ .logo{font-size:17px}
+ .chat-item{padding:8px}
+ .chat-title{font-size:11px}
+ .delete{padding:3px}
+ .main{padding:7px}
+ h1{font-size:28px}
+ .message{max-width:94%}
+ .modes{gap:5px}
+ .mode{font-size:11px;padding:10px 5px}
+ #sendButton{min-width:65px;padding:10px}
 }
 </style>
 </head>
 <body>
-
+<div class="app">
 <aside class="sidebar">
-<div class="logo">IPON AI</div>
-<button class="newchat" id="newChat">+ Yeni Sohbet</button>
-<div class="history-title">SOHBETLER</div>
-<div id="chatList"></div>
+ <div class="logo">IPON AI</div>
+ <button class="newchat" id="newChat">＋ Yeni Sohbet</button>
+ <div class="history-title">SOHBET GEÇMİŞİ</div>
+ <div id="chatList"></div>
 </aside>
 
 <main class="main">
-<header>
-<h1>IPON AI</h1>
-<p class="subtitle">İSİM ABLAMDAN İLHAMLA</p>
-<button class="admin-btn" id="adminLoginBtn">👑 HOST PANELİ</button>
+<header id="mainHeader">
+ <h1>IPON AI</h1>
+ <p class="subtitle">İSİM ABLAMDAN İLHAMLA</p>
+ <button class="admin-btn" id="adminLoginBtn">👑 HOST GİRİŞİ</button>
 </header>
 
-<div id="chatView">
-<div class="modes">
-<button class="mode good" id="goodMode">😇 İYİ MOD</button>
-<button class="mode bad" id="badMode">😈 KÖTÜ MOD</button>
-</div>
-<p id="modeInfo"></p>
-<div id="chat"></div>
-<form id="form">
-<input id="message" placeholder="IPON AI'ye mesaj yaz..." required>
-<button id="sendButton">Gönder</button>
-</form>
-</div>
+<section class="panel" id="adminLogin">
+ <h2>🔐 HOST GİRİŞİ</h2>
+ <input id="adminPassword" type="password" placeholder="HOST şifresi">
+ <button id="loginButton">GİRİŞ YAP</button>
+ <button id="cancelLogin" style="background:#46516a">GERİ DÖN</button>
+ <p id="adminError"></p>
+</section>
 
-<div id="adminView">
-<div class="panel" id="adminLogin">
-<h2>🔐 HOST GİRİŞİ</h2>
-<input id="adminPassword" type="password" placeholder="Admin şifresi">
-<button id="loginButton">GİRİŞ YAP</button>
-<p id="adminError"></p>
-</div>
+<section class="panel" id="adminPanel">
+ <h2 class="host-title">👑 IPON AI HOST PANELİ</h2>
+ <h3>Hoş geldin Alperen!</h3>
+ <p id="adminStatus">HOST yetkisi aktif!</p>
+ <hr>
+ <p>Yetki: HOST / ADMIN</p>
+ <p>Proje: IPON AI</p>
+ <p>Durum: Aktif</p>
+ <label for="hostMemory">Sadece bu tarayıcıdaki HOST hesabına özel bilgiler:</label>
+ <textarea id="hostMemory" placeholder="IPON AI'nin yalnızca HOST oturumunda kullanmasını istediğin bilgileri yaz..."></textarea>
+ <button id="saveMemory">💾 Bilgileri Kaydet</button>
+ <div class="admin-actions">
+  <button id="backToChat" style="background:#4659a8">💬 SOHBETE DÖN</button>
+  <button id="logoutButton" style="background:#9d3e50">🚪 ÇIKIŞ YAP</button>
+ </div>
+</section>
 
-<div class="panel" id="adminPanel">
-<h2 class="host-title">👑 IPON AI HOST PANELİ</h2>
-<h3>Hoş geldin Alperen!</h3>
-<p id="adminStatus">HOST yetkisi aktif!</p>
-<hr>
-<p>Yetki: HOST / ADMIN</p>
-<p>Proje: IPON AI</p>
-<p>Durum: Aktif</p>
-</div>
-
-<button id="backToChat">💬 SOHBETE DÖN</button>
-</div>
+<section id="chatView" style="width:100%;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center">
+ <div class="modes">
+  <button class="mode good" id="goodMode">😇 İYİ MOD</button>
+  <button class="mode bad" id="badMode">😈 KÖTÜ MOD</button>
+ </div>
+ <p id="modeInfo"></p>
+ <div class="bottom-tools">
+  <button class="tool-btn" id="trollMode">🎭 TROLLEME: KAPALI</button>
+  <button class="tool-btn" id="photoButton">🖼️ FOTOĞRAF EKLE</button>
+  <input id="imageInput" type="file" accept="image/*">
+  <span id="imageName"></span>
+ </div>
+ <div id="chat"></div>
+ <form id="form">
+  <input id="message" placeholder="IPON AI'ye mesaj yaz..." autocomplete="off" required>
+  <button id="sendButton" type="submit">Gönder</button>
+ </form>
+</section>
 </main>
+</div>
 
 <script>
-const chat=document.getElementById("chat");
-const chatList=document.getElementById("chatList");
-const form=document.getElementById("form");
-const input=document.getElementById("message");
-const ADMIN_TOKEN="ipon_admin_token";
+"use strict";
 
-let mode=localStorage.getItem("ipon_mode")||"good";
-let chats=[];
-let currentChat=null;
-let adminOpen=false;
+const $ = id => document.getElementById(id);
+const chat = $("chat");
+const chatList = $("chatList");
+const form = $("form");
+const input = $("message");
+const imageInput = $("imageInput");
 
-try{
-chats=JSON.parse(localStorage.getItem("ipon_chats")||"[]");
-if(!Array.isArray(chats))chats=[];
-}catch{chats=[]}
+const ADMIN_TOKEN = "ipon_admin_token";
+const MEMORY_KEY = "ipon_host_memory";
 
-if(chats.length===0){
-try{
-const old=JSON.parse(localStorage.getItem("ipon_messages")||"[]");
-if(Array.isArray(old)&&old.length){
-chats.push({id:Date.now(),title:"Eski sohbet",messages:old});
-}
-}catch{}
+let chats = [];
+let currentChat = null;
+let mode = localStorage.getItem("ipon_mode") || "good";
+let trollMode = false;
+let isHost = false;
+let selectedImage = null;
+
+try {
+ chats = JSON.parse(localStorage.getItem("ipon_chats") || "[]");
+ if (!Array.isArray(chats)) chats = [];
+} catch { chats = []; }
+
+if (!chats.length) {
+ try {
+  const oldMessages = JSON.parse(localStorage.getItem("ipon_messages") || "[]");
+  if (Array.isArray(oldMessages) && oldMessages.length) {
+   chats.push({id:Date.now(),title:"Eski sohbet",messages:oldMessages});
+  }
+ } catch {}
 }
 
 function saveChats(){
-localStorage.setItem("ipon_chats",JSON.stringify(chats));
+ const safeChats = chats.map(c => ({
+  id:c.id,
+  title:c.title,
+  messages:(c.messages || []).map(m => ({
+   role:m.role,
+   content:m.content,
+   imageName:m.imageName || ""
+  }))
+ }));
+ localStorage.setItem("ipon_chats",JSON.stringify(safeChats));
 }
 
-function addMessage(role,content){
-const div=document.createElement("div");
-div.className="message "+(role==="user"?"user":"assistant");
-div.textContent=content;
-chat.appendChild(div);
-chat.scrollTop=chat.scrollHeight;
+function addMessage(role,content,imageData=null,imageName=""){
+ const div = document.createElement("div");
+ div.className = "message " + (role === "user" ? "user" : "assistant");
+ if(imageData){
+  const img = document.createElement("img");
+  img.src = imageData;
+  img.alt = "Gönderilen fotoğraf";
+  div.appendChild(img);
+ } else if(imageName){
+  const note = document.createElement("small");
+  note.textContent = "🖼️ " + imageName;
+  div.appendChild(note);
+ }
+ const text = document.createElement("div");
+ text.textContent = content;
+ div.appendChild(text);
+ chat.appendChild(div);
+ chat.scrollTop = chat.scrollHeight;
 }
 
 function newChat(){
-const id=Date.now();
-chats.unshift({id,title:"Yeni Sohbet",messages:[]});
-currentChat=id;
-saveChats();
-render();
+ const id = Date.now();
+ chats.unshift({id,title:"Yeni Sohbet",messages:[]});
+ currentChat = id;
+ saveChats();
+ render();
+ input.focus();
 }
 
 function render(){
-chatList.innerHTML="";
-chats.forEach(c=>{
-const item=document.createElement("div");
-item.className="chat-item"+(c.id===currentChat?" active":"");
-const title=document.createElement("span");
-title.textContent=c.title;
-title.onclick=()=>{currentChat=c.id;render()};
-const del=document.createElement("button");
-del.className="delete";
-del.textContent="✕";
-del.onclick=e=>{
-e.stopPropagation();
-chats=chats.filter(x=>x.id!==c.id);
-if(currentChat===c.id)currentChat=chats.length?chats[0].id:null;
-saveChats();
-if(!currentChat)newChat();else render();
-};
-item.append(title,del);
-chatList.appendChild(item);
-});
+ chatList.innerHTML = "";
+ chats.forEach(c => {
+  const item = document.createElement("div");
+  item.className = "chat-item" + (c.id === currentChat ? " active" : "");
+  const title = document.createElement("span");
+  title.className = "chat-title";
+  title.textContent = c.title || "Yeni Sohbet";
+  title.onclick = () => { currentChat = c.id; render(); };
+  const del = document.createElement("button");
+  del.className = "delete";
+  del.textContent = "✕";
+  del.title = "Sohbeti sil";
+  del.onclick = e => {
+   e.stopPropagation();
+   chats = chats.filter(x => x.id !== c.id);
+   if(currentChat === c.id) currentChat = chats.length ? chats[0].id : null;
+   saveChats();
+   if(!currentChat) newChat(); else render();
+  };
+  item.append(title,del);
+  item.onclick = () => { currentChat = c.id; render(); };
+  chatList.appendChild(item);
+ });
 
-chat.innerHTML="";
-const selected=chats.find(c=>c.id===currentChat);
-if(!selected||!selected.messages.length){
-chat.innerHTML='<div class="welcome"><h2>IPON AI\\'ye Hoş Geldin!</h2><p>Nasıl yardımcı olabilirim?</p></div>';
-}else{
-selected.messages.forEach(m=>addMessage(m.role,m.content));
-}
-updateMode();
+ chat.innerHTML = "";
+ const selected = chats.find(c => c.id === currentChat);
+ if(!selected || !selected.messages.length){
+  chat.innerHTML = '<div class="welcome"><h2>IPON AI’ye Hoş Geldin!</h2><p>Nasıl yardımcı olabilirim?</p></div>';
+ } else {
+  selected.messages.forEach(m => addMessage(m.role,m.content,null,m.imageName || ""));
+ }
+ updateMode();
 }
 
 function updateMode(){
-document.getElementById("goodMode").classList.toggle("active",mode==="good");
-document.getElementById("badMode").classList.toggle("active",mode==="bad");
-document.getElementById("modeInfo").textContent=mode==="good"?"Şu anda İyi Moddasın 😇":"Şu anda Kötü Moddasın 😈";
-input.placeholder=mode==="good"?"IPON AI'ye mesaj yaz...":"IPON AI'yi kızdır bakalım 😈";
+ $("goodMode").classList.toggle("active",mode === "good");
+ $("badMode").classList.toggle("active",mode === "bad");
+ $("modeInfo").textContent = mode === "good" ? "Şu anda İyi Moddasın 😇" : "Şu anda Kötü Moddasın 😈";
+ input.placeholder = mode === "good" ? "IPON AI'ye mesaj yaz..." : "IPON AI'yi kızdır bakalım 😈";
 }
 
 function changeMode(value){
-mode=value;
-localStorage.setItem("ipon_mode",mode);
-updateMode();
+ mode = value;
+ localStorage.setItem("ipon_mode",mode);
+ updateMode();
 }
 
-document.getElementById("goodMode").onclick=()=>changeMode("good");
-document.getElementById("badMode").onclick=()=>changeMode("bad");
-document.getElementById("newChat").onclick=newChat;
+$("goodMode").onclick = () => changeMode("good");
+$("badMode").onclick = () => changeMode("bad");
+$("newChat").onclick = newChat;
 
-form.addEventListener("submit",async e=>{
-e.preventDefault();
-const content=input.value.trim();
-if(!content)return;
-if(!currentChat)newChat();
-
-const selected=chats.find(c=>c.id===currentChat);
-selected.messages.push({role:"user",content});
-if(selected.title==="Yeni Sohbet")selected.title=content.slice(0,25);
-
-input.value="";
-saveChats();
-render();
-
-const sendButton=document.getElementById("sendButton");
-sendButton.disabled=true;
-
-try{
-const response=await fetch("/api/chat",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({messages:selected.messages.slice(-20),mode})
-});
-const data=await response.json();
-if(!response.ok)throw new Error(data.error||"Bağlantı hatası");
-if(typeof data.answer!=="string")throw new Error("Geçersiz cevap");
-
-selected.messages.push({role:"assistant",content:data.answer});
-saveChats();
-if(currentChat===selected.id)render();
-}catch(error){
-if(currentChat===selected.id)addMessage("assistant","Hata: "+error.message);
-}finally{
-sendButton.disabled=false;
-input.focus();
-}
-});
-
-// ADMIN GÖRÜNÜMÜ
-function showAdmin(){
-adminOpen=true;
-document.getElementById("chatView").style.display="none";
-document.getElementById("adminView").style.display="block";
-document.getElementById("adminLoginBtn").textContent="👑 HOST PANELİ AÇIK";
-}
-
-function showChat(){
-adminOpen=false;
-document.getElementById("adminView").style.display="none";
-document.getElementById("chatView").style.display="flex";
-document.getElementById("adminLoginBtn").textContent="👑 HOST PANELİ";
-}
-
-document.getElementById("adminLoginBtn").onclick=async()=>{
-if(adminOpen){
-showChat();
-return;
-}
-
-const token=localStorage.getItem(ADMIN_TOKEN);
-
-if(token){
-try{
-const response=await fetch("/api/admin/check",{
-headers:{Authorization:"Bearer "+token}
-});
-if(response.ok){
-document.getElementById("adminLogin").style.display="none";
-document.getElementById("adminPanel").style.display="block";
-showAdmin();
-return;
-}
-}catch{}
-localStorage.removeItem(ADMIN_TOKEN);
-}
-
-document.getElementById("adminPanel").style.display="none";
-document.getElementById("adminLogin").style.display="block";
-showAdmin();
+$("trollMode").onclick = () => {
+ trollMode = !trollMode;
+ $("trollMode").textContent = trollMode ? "🎭 TROLLEME: AÇIK" : "🎭 TROLLEME: KAPALI";
+ $("trollMode").style.background = trollMode ? "#9a6330" : "#30394d";
 };
 
+$("photoButton").onclick = () => imageInput.click();
+
+imageInput.onchange = () => {
+ const file = imageInput.files && imageInput.files[0];
+ if(!file) return;
+ if(!file.type.startsWith("image/")){
+  alert("Lütfen bir fotoğraf seç.");
+  imageInput.value = "";
+  return;
+ }
+ if(file.size > 5 * 1024 * 1024){
+  alert("Fotoğraf en fazla 5 MB olabilir.");
+  imageInput.value = "";
+  return;
+ }
+ const reader = new FileReader();
+ reader.onload = () => {
+  selectedImage = {data:reader.result,name:file.name};
+  $("imageName").textContent = "📎 " + file.name;
+ };
+ reader.readAsDataURL(file);
+};
+
+form.addEventListener("submit",async e => {
+ e.preventDefault();
+ const content = input.value.trim();
+ if(!content && !selectedImage) return;
+ if(!currentChat) newChat();
+
+ const selected = chats.find(c => c.id === currentChat);
+ if(!selected) return;
+
+ const imageForRequest = selectedImage;
+ selected.messages.push({
+  role:"user",
+  content:content || "Bu fotoğrafı incele.",
+  imageName:imageForRequest ? imageForRequest.name : ""
+ });
+ if(selected.title === "Yeni Sohbet"){
+  selected.title = (content || "Fotoğraf").slice(0,28);
+ }
+ addMessage("user",content || "Bu fotoğrafı incele.",imageForRequest?.data || null);
+ input.value = "";
+ selectedImage = null;
+ imageInput.value = "";
+ $("imageName").textContent = "";
+ saveChats();
+
+ const sendButton = $("sendButton");
+ sendButton.disabled = true;
+ sendButton.textContent = "Yazıyor...";
+
+ try{
+  const token = localStorage.getItem(ADMIN_TOKEN);
+  const headers = {"Content-Type":"application/json"};
+  if(isHost && token) headers.Authorization = "Bearer " + token;
+
+  const response = await fetch("/api/chat",{
+   method:"POST",
+   headers,
+   body:JSON.stringify({
+    messages:selected.messages.slice(-20),
+    mode,
+    trollMode,
+    isHost,
+    hostMemory:isHost ? localStorage.getItem(MEMORY_KEY) || "" : "",
+    image:imageForRequest ? imageForRequest.data : null
+   })
+  });
+  const data = await response.json();
+  if(!response.ok) throw new Error(data.error || "Bağlantı hatası.");
+  if(typeof data.answer !== "string") throw new Error("Geçersiz cevap.");
+
+  selected.messages.push({role:"assistant",content:data.answer});
+  saveChats();
+  if(currentChat === selected.id) addMessage("assistant",data.answer);
+ }catch(error){
+  if(currentChat === selected.id) addMessage("assistant","Bağlantı hatası: " + error.message);
+ }finally{
+  sendButton.disabled = false;
+  sendButton.textContent = "Gönder";
+  input.focus();
+ }
+});
+
+function showChat(){
+ $("adminLogin").style.display = "none";
+ $("adminPanel").style.display = "none";
+ $("chatView").classList.remove("hidden");
+ $("mainHeader").classList.remove("hidden");
+}
+
+function showLogin(){
+ $("chatView").classList.add("hidden");
+ $("adminPanel").style.display = "none";
+ $("mainHeader").classList.add("hidden");
+ $("adminLogin").style.display = "block";
+ $("adminError").textContent = "";
+}
+
+function showAdmin(){
+ $("adminLogin").style.display = "none";
+ $("chatView").classList.add("hidden");
+ $("mainHeader").classList.add("hidden");
+ $("adminPanel").style.display = "block";
+ $("hostMemory").value = localStorage.getItem(MEMORY_KEY) || "";
+}
+
+$("adminLoginBtn").onclick = async () => {
+ const token = localStorage.getItem(ADMIN_TOKEN);
+ if(token){
+  try{
+   const response = await fetch("/api/admin/check",{headers:{Authorization:"Bearer " + token}});
+   if(response.ok){ isHost = true; showAdmin(); return; }
+  }catch{}
+  localStorage.removeItem(ADMIN_TOKEN);
+ }
+ isHost = false;
+ showLogin();
+};
+
+$("cancelLogin").onclick = showChat;
+$("backToChat").onclick = showChat;
+
 async function adminLogin(){
-const password=document.getElementById("adminPassword").value;
-const error=document.getElementById("adminError");
-error.textContent="";
+ const password = $("adminPassword").value;
+ const error = $("adminError");
+ error.textContent = "";
+ if(!password){ error.textContent = "Şifreni gir."; return; }
 
-try{
-const response=await fetch("/api/admin/login",{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({password})
-});
-const data=await response.json();
-if(!response.ok)throw new Error(data.error||"Giriş başarısız");
-
-localStorage.setItem(ADMIN_TOKEN,data.token);
-document.getElementById("adminLogin").style.display="none";
-document.getElementById("adminPanel").style.display="block";
-document.getElementById("adminPassword").value="";
-showAdmin();
-}catch(e){
-error.textContent=e.message;
+ try{
+  const response = await fetch("/api/admin/login",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({password})
+  });
+  const data = await response.json();
+  if(!response.ok) throw new Error(data.error || "Giriş başarısız.");
+  localStorage.setItem(ADMIN_TOKEN,data.token);
+  $("adminPassword").value = "";
+  isHost = true;
+  showAdmin();
+ }catch(e){
+  error.textContent = e.message;
+ }
 }
-}
 
-document.getElementById("loginButton").onclick=adminLogin;
-document.getElementById("adminPassword").addEventListener("keydown",e=>{
-if(e.key==="Enter")adminLogin();
+$("loginButton").onclick = adminLogin;
+$("adminPassword").addEventListener("keydown",e => {
+ if(e.key === "Enter") adminLogin();
 });
 
-document.getElementById("backToChat").onclick=showChat;
+$("saveMemory").onclick = () => {
+ localStorage.setItem(MEMORY_KEY,$("hostMemory").value.trim());
+ $("adminStatus").textContent = "HOST bilgileri bu tarayıcıya kaydedildi!";
+};
 
-if(chats.length)currentChat=chats[0].id;
+$("logoutButton").onclick = () => {
+ localStorage.removeItem(ADMIN_TOKEN);
+ isHost = false;
+ showChat();
+};
+
+if(chats.length) currentChat = chats[0].id;
 else newChat();
-
 render();
 </script>
 </body>
