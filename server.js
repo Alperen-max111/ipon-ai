@@ -38,7 +38,7 @@ const pool = new Pool({
   connectionTimeoutMillis: 10000
 });
 
-// Veritabanı tablolarını hazırla
+// VERİTABANI
 await pool.query(`
   CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
@@ -473,8 +473,10 @@ Bu bilgileri yalnızca bu yetkili HOST oturumunda kullan.
       content: m.content
     }));
 
+    // NORMAL SOHBET MODELİ
     let model = "openai/gpt-oss-20b";
 
+    // FOTOĞRAF ANALİZİ
     if (typeof image === "string" && image.length > 0) {
       if (
         !/^data:image\/(png|jpeg|jpg|webp|gif);base64,/i.test(image) ||
@@ -500,15 +502,21 @@ Bu bilgileri yalnızca bu yetkili HOST oturumunda kullan.
       finalMessages[lastUserIndex] = {
         role: "user",
         content: [
-          { type: "text", text: lastMessage.content },
+          {
+            type: "text",
+            text: lastMessage.content
+          },
           {
             type: "image_url",
-            image_url: { url: image }
+            image_url: {
+              url: image
+            }
           }
         ]
       };
 
-      model = "meta-llama/llama-4-scout-17b-16e-instruct";
+      // YENİ GÖRSEL ANALİZ MODELİ
+      model = "qwen/qwen3.8-27b";
     }
 
     const response = await fetch(
@@ -522,7 +530,10 @@ Bu bilgileri yalnızca bu yetkili HOST oturumunda kullan.
         body: JSON.stringify({
           model,
           messages: [
-            { role: "system", content: systemPrompt },
+            {
+              role: "system",
+              content: systemPrompt
+            },
             ...finalMessages
           ]
         })
@@ -532,7 +543,11 @@ Bu bilgileri yalnızca bu yetkili HOST oturumunda kullan.
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Groq hatası:", data.error?.message);
+      console.error(
+        "Groq hatası:",
+        data.error?.message || JSON.stringify(data)
+      );
+
       return res.status(502).json({
         error: "Yapay zekâ bağlantısında sorun oluştu."
       });
@@ -545,14 +560,17 @@ Bu bilgileri yalnızca bu yetkili HOST oturumunda kullan.
     }
 
     res.json({ answer });
+
   } catch (error) {
     console.error("IPON AI hatası:", error.message);
+
     res.status(500).json({
       error: "IPON AI şu anda cevap veremedi."
     });
   }
 });
 
+// SUNUCUYU BAŞLAT
 app.listen(PORT, "0.0.0.0", () => {
   console.log("IPON AI hazır!");
 });
