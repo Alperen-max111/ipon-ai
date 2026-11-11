@@ -459,7 +459,8 @@ async function requestHumanChat(){
  try{
   const data=await request("/api/human-chat/request",{
    method:"POST",
-   body:JSON.stringify({chatId:String(currentChat)})
+   body:JSON.stringify({chatId:String(currentChat)
+    })
   });
   humanSession={chatId:currentChat,sessionId:data.sessionId,status:data.status||"pending"};
   humanMessageIds.clear();
