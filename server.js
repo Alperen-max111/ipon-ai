@@ -1,5 +1,6 @@
 
 import path from "path";
+import crypto from "crypto";
 import { fileURLToPath } from "url";
 import express from "express";
 import cors from "cors";
@@ -16,6 +17,8 @@ const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const adminSessions = new Map();
 
 if (!GROQ_API_KEY) {
   throw new Error("GROQ_API_KEY eksik!");
@@ -64,6 +67,42 @@ Ağır hakaret, aşağılama veya gerçek tehdit kullanma.
 Sorulara yine doğru ve faydalı cevap ver.
 KÖTÜ MODDA OLDUĞUNU ASLA UNUTMA.
 `;
+// HOST giriş sistemi
+app.post("/api/admin/login", (req, res) => {
+  if (!ADMIN_PASSWORD) {
+    return res.status(503).json({ error: "Admin şifresi ayarlanmamış." });
+  }
+
+  const password = req.body?.password;
+
+  if (typeof password !== "string" ||
+      password.length !== ADMIN_PASSWORD.length ||
+      !crypto.timingSafeEqual(
+        Buffer.from(password),
+        Buffer.from(ADMIN_PASSWORD)
+      )) {
+    return res.status(401).json({ error: "Yanlış şifre!" });
+  }
+
+  const token = crypto.randomBytes(32).toString("hex");
+
+  adminSessions.set(token, Date.now() + 3600000);
+
+  res.json({ success: true, token });
+});
+
+// HOST yetki kontrolü
+app.get("/api/admin/check", (req, res) => {
+  const token = req.headers.authorization?.replace("Bearer ", "");
+  const expires = adminSessions.get(token);
+
+  if (!expires || expires < Date.now()) {
+    adminSessions.delete(token);
+    return res.status(401).json({ error: "Yetkisiz erişim." });
+  }
+
+  res.json({ success: true, role: "HOST" });
+});
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
