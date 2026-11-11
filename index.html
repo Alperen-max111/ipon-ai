@@ -720,7 +720,7 @@ function finishHumanLocally(){
  updateHumanControls();
 }
 
-$("endHuman").onclick=async()=>{
+if($("endHuman")) $("endHuman").onclick=async()=>{
  if(!humanSession)return;
  if(!confirm("HOST sohbetine bitirme isteği göndermek istiyor musun?"))return;
  try{
