@@ -204,6 +204,7 @@ $("authForm").onsubmit=async e=>{
  try{
   const data=await request("/api/auth/"+authMode,{
    method:"POST",body:JSON.stringify({username,password})
+  chatId: String(currentChat),
   });
   userToken=data.token;
   userInfo=data.user;
