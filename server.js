@@ -173,7 +173,7 @@ async function setupDatabase() {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS ipon_chat_logs (
       id BIGSERIAL PRIMARY KEY,
-      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       chat_id VARCHAR(100) NOT NULL,
       messages JSONB NOT NULL DEFAULT '[]'::jsonb,
       updated_at TIMESTAMPTZ DEFAULT NOW(),
