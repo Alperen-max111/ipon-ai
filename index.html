@@ -18,10 +18,19 @@ body {
   overflow:hidden;
 }
 
+button {
+  border:0;
+  border-radius:10px;
+  padding:12px;
+  color:white;
+  background:#6475ed;
+  cursor:pointer;
+}
+
 .sidebar {
-  width:260px;
+  width:250px;
   background:#171c29;
-  padding:18px;
+  padding:15px;
   display:flex;
   flex-direction:column;
   border-right:1px solid #30394d;
@@ -31,12 +40,11 @@ body {
   text-align:center;
   font-size:25px;
   font-weight:bold;
-  margin:12px 0 25px;
+  margin:15px 0 25px;
 }
 
 .newchat {
   width:100%;
-  background:#6475ed;
   margin-bottom:20px;
 }
 
@@ -52,7 +60,7 @@ body {
 }
 
 .chat-item {
-  padding:12px;
+  padding:11px;
   border-radius:9px;
   margin-bottom:7px;
   background:#252b3b;
@@ -74,8 +82,8 @@ body {
 
 .delete {
   background:transparent;
-  padding:2px 5px;
   color:#ff7785;
+  padding:2px 5px;
 }
 
 .main {
@@ -83,7 +91,7 @@ body {
   display:flex;
   flex-direction:column;
   min-width:0;
-  padding:20px;
+  padding:15px;
 }
 
 header {
@@ -92,7 +100,7 @@ header {
 }
 
 h1 {
-  font-size:35px;
+  font-size:36px;
   margin:5px;
 }
 
@@ -100,21 +108,18 @@ h1 {
   color:#a5b4fc;
 }
 
+.admin-btn {
+  background:#b58a25;
+  margin:8px auto;
+  display:block;
+}
+
 .modes {
   display:flex;
   gap:12px;
   max-width:500px;
   width:100%;
-  margin:15px auto;
-}
-
-button {
-  border:0;
-  border-radius:10px;
-  padding:13px;
-  color:white;
-  background:#6475ed;
-  cursor:pointer;
+  margin:12px auto;
 }
 
 .mode {
@@ -184,7 +189,7 @@ form {
 input {
   flex:1;
   min-width:0;
-  padding:16px;
+  padding:15px;
   border:0;
   border-radius:12px;
   background:#252b3b;
@@ -192,27 +197,65 @@ input {
   outline:none;
 }
 
-button:disabled {
-  opacity:.6;
+.panel {
+  display:none;
+  background:#20283a;
+  border:1px solid #b58a25;
+  border-radius:15px;
+  padding:20px;
+  max-width:500px;
+  width:100%;
+  margin:10px auto;
+  text-align:center;
 }
 
-@media(max-width:650px) {
+.panel input {
+  width:100%;
+  margin:10px 0;
+}
+
+.panel button {
+  margin:5px;
+}
+
+.host-title {
+  color:#f4c542;
+  font-size:24px;
+}
+
+#adminError {
+  color:#ff6978;
+}
+
+#adminStatus {
+  color:#38d996;
+}
+
+button:disabled {
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+@media(max-width:600px) {
   .sidebar {
-    width:125px;
-    padding:8px;
+    width:115px;
+    padding:7px;
   }
 
-  .logo { font-size:18px; }
+  .logo { font-size:17px; }
 
   .chat-item { font-size:11px; }
 
-  .delete { padding:2px; }
+  .main { padding:6px; }
 
-  .main { padding:8px; }
+  h1 { font-size:27px; }
 
-  h1 { font-size:28px; }
+  .message {
+    margin-left:0;
+    margin-right:0;
+  }
 
-  .message { margin-left:0; margin-right:0; }
+  .history-title { font-size:10px; }
 }
 </style>
 </head>
@@ -220,41 +263,108 @@ button:disabled {
 <body>
 
 <aside class="sidebar">
-  <div class="logo">IPON AI</div>
 
-  <button class="newchat" id="newChat">
-    + Yeni Sohbet
-  </button>
+<div class="logo">IPON AI</div>
 
-  <div class="history-title">SOHBET GEÇMİŞİ</div>
+<button class="newchat" id="newChat">
++ Yeni Sohbet
+</button>
 
-  <div id="chatList"></div>
+<div class="history-title">SOHBETLER</div>
+
+<div id="chatList"></div>
+
 </aside>
 
 <main class="main">
 
 <header>
-  <h1>IPON AI</h1>
-  <p class="subtitle">İSİM ABLAMDAN İLHAMLA</p>
+<h1>IPON AI</h1>
+<p class="subtitle">İSİM ABLAMDAN İLHAMLA</p>
+
+<button class="admin-btn" id="adminLoginBtn">
+👑 HOST GİRİŞİ
+</button>
 </header>
 
+<!-- ADMIN GİRİŞ -->
+
+<div class="panel" id="adminLogin">
+
+<h2>🔐 HOST GİRİŞİ</h2>
+
+<input
+id="adminPassword"
+type="password"
+placeholder="Admin şifresi"
+>
+
+<button id="loginButton">GİRİŞ YAP</button>
+
+<p id="adminError"></p>
+
+</div>
+
+<!-- ADMIN PANEL -->
+
+<div class="panel" id="adminPanel">
+
+<h2 class="host-title">👑 IPON AI HOST PANELİ</h2>
+
+<h3>Hoş geldin Alperen!</h3>
+
+<p id="adminStatus">HOST yetkisi aktif!</p>
+
+<hr>
+
+<p>Yetki: HOST / ADMIN</p>
+
+<p>Proje: IPON AI</p>
+
+<p>Durum: Aktif</p>
+
+<button onclick="adminLogout()">
+🚪 ÇIKIŞ YAP
+</button>
+
+</div>
+
+<!-- MODLAR -->
+
 <div class="modes">
-  <button class="mode good" id="goodMode">😇 İYİ MOD</button>
-  <button class="mode bad" id="badMode">😈 KÖTÜ MOD</button>
+
+<button class="mode good" id="goodMode">
+😇 İYİ MOD
+</button>
+
+<button class="mode bad" id="badMode">
+😈 KÖTÜ MOD
+</button>
+
 </div>
 
 <p id="modeInfo"></p>
 
+<!-- SOHBET -->
+
 <div id="chat"></div>
 
 <form id="form">
-  <input id="message" placeholder="IPON AI'ye mesaj yaz..." required>
-  <button id="sendButton">Gönder</button>
+
+<input
+id="message"
+placeholder="IPON AI'ye mesaj yaz..."
+required
+>
+
+<button id="sendButton">Gönder</button>
+
 </form>
 
 </main>
 
 <script>
+
 const chat = document.getElementById("chat");
 const chatList = document.getElementById("chatList");
 const form = document.getElementById("form");
@@ -264,262 +374,447 @@ let mode = localStorage.getItem("ipon_mode") || "good";
 let chats = [];
 let currentChat = null;
 
-try {
-  chats = JSON.parse(localStorage.getItem("ipon_chats") || "[]");
+const ADMIN_TOKEN = "ipon_admin_token";
 
-  if (!Array.isArray(chats)) chats = [];
+// SOHBETLERİ YÜKLE
+
+try {
+
+chats = JSON.parse(
+localStorage.getItem("ipon_chats") || "[]"
+);
+
+if (!Array.isArray(chats)) chats = [];
+
 } catch {
-  chats = [];
+chats = [];
 }
 
-// Eski sohbetleri yeni sisteme aktar
-if (chats.length === 0) {
-  try {
-    const oldMessages = JSON.parse(
-      localStorage.getItem("ipon_messages") || "[]"
-    );
+// ESKİ SOHBETLERİ AKTAR
 
-    if (Array.isArray(oldMessages) && oldMessages.length) {
-      chats.push({
-        id: Date.now(),
-        title: "Eski sohbet",
-        messages: oldMessages
-      });
-    }
-  } catch {}
+if (chats.length === 0) {
+
+try {
+
+const old = JSON.parse(
+localStorage.getItem("ipon_messages") || "[]"
+);
+
+if (Array.isArray(old) && old.length) {
+
+chats.push({
+id:Date.now(),
+title:"Eski sohbet",
+messages:old
+});
+
+}
+
+} catch {}
+
 }
 
 function saveChats() {
-  localStorage.setItem("ipon_chats", JSON.stringify(chats));
+
+localStorage.setItem(
+"ipon_chats",
+JSON.stringify(chats)
+);
+
 }
+
+function addMessage(role,content) {
+
+const div = document.createElement("div");
+
+div.className =
+"message " +
+(role === "user" ? "user" : "assistant");
+
+div.textContent = content;
+
+chat.appendChild(div);
+
+chat.scrollTop = chat.scrollHeight;
+
+}
+
+// YENİ SOHBET
 
 function newChat() {
-  const id = Date.now();
 
-  chats.unshift({
-    id,
-    title: "Yeni Sohbet",
-    messages: []
-  });
+const id = Date.now();
 
-  currentChat = id;
+chats.unshift({
+id,
+title:"Yeni Sohbet",
+messages:[]
+});
 
-  saveChats();
-  render();
+currentChat = id;
+
+saveChats();
+
+render();
+
 }
+
+// SOHBETLERİ GÖSTER
 
 function render() {
-  chatList.innerHTML = "";
 
-  chats.forEach(c => {
-    const item = document.createElement("div");
-    item.className = "chat-item" +
-      (c.id === currentChat ? " active" : "");
+chatList.innerHTML = "";
 
-    const title = document.createElement("span");
-    title.textContent = c.title;
+chats.forEach(c => {
 
-    title.onclick = () => {
-      currentChat = c.id;
-      render();
-    };
+const item = document.createElement("div");
 
-    const del = document.createElement("button");
-    del.className = "delete";
-    del.textContent = "✕";
+item.className =
+"chat-item" +
+(c.id === currentChat ? " active" : "");
 
-    del.onclick = e => {
-      e.stopPropagation();
+const title = document.createElement("span");
 
-      chats = chats.filter(x => x.id !== c.id);
+title.textContent = c.title;
 
-      if (currentChat === c.id) {
-        currentChat = chats.length ? chats[0].id : null;
-      }
+title.onclick = () => {
 
-      saveChats();
+currentChat = c.id;
+render();
 
-      if (!currentChat) newChat();
-      else render();
-    };
+};
 
-    item.append(title, del);
-    chatList.appendChild(item);
-  });
+const del = document.createElement("button");
 
-  chat.innerHTML = "";
+del.className = "delete";
+del.textContent = "✕";
 
-  const selected = chats.find(c => c.id === currentChat);
+del.onclick = e => {
 
-  if (!selected || selected.messages.length === 0) {
-    chat.innerHTML =
-      '<div class="welcome"><h2>IPON AI\'ye Hoş Geldin!</h2><p>Nasıl yardımcı olabilirim?</p></div>';
-  } else {
-    selected.messages.forEach(m => {
-      addMessage(m.role, m.content);
-    });
-  }
+e.stopPropagation();
 
-  updateMode();
+chats = chats.filter(x => x.id !== c.id);
+
+if (currentChat === c.id) {
+currentChat = chats.length ? chats[0].id : null;
 }
 
-function addMessage(role, content) {
-  const div = document.createElement("div");
+saveChats();
 
-  div.className = "message " +
-    (role === "user" ? "user" : "assistant");
+if (!currentChat) newChat();
+else render();
 
-  div.textContent = content;
+};
 
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
+item.append(title,del);
+
+chatList.appendChild(item);
+
+});
+
+chat.innerHTML = "";
+
+const selected = chats.find(
+c => c.id === currentChat
+);
+
+if (!selected || selected.messages.length === 0) {
+
+chat.innerHTML = `
+<div class="welcome">
+<h2>IPON AI'ye Hoş Geldin!</h2>
+<p>Nasıl yardımcı olabilirim?</p>
+</div>
+`;
+
+} else {
+
+selected.messages.forEach(m => {
+addMessage(m.role,m.content);
+});
+
 }
+
+updateMode();
+
+}
+
+// MOD SİSTEMİ
 
 function updateMode() {
-  document.getElementById("goodMode")
-    .classList.toggle("active", mode === "good");
 
-  document.getElementById("badMode")
-    .classList.toggle("active", mode === "bad");
+document.getElementById("goodMode")
+.classList.toggle("active",mode === "good");
 
-  document.getElementById("modeInfo").textContent =
-    mode === "good"
-    ? "Şu anda İyi Moddasın 😇"
-    : "Şu anda Kötü Moddasın 😈";
+document.getElementById("badMode")
+.classList.toggle("active",mode === "bad");
 
-  input.placeholder = mode === "good"
-    ? "IPON AI'ye mesaj yaz..."
-    : "IPON AI'yi kızdır bakalım 😈";
+document.getElementById("modeInfo").textContent =
+mode === "good"
+? "Şu anda İyi Moddasın 😇"
+: "Şu anda Kötü Moddasın 😈";
+
+input.placeholder =
+mode === "good"
+? "IPON AI'ye mesaj yaz..."
+: "IPON AI'yi kızdır bakalım 😈";
+
 }
 
 function changeMode(value) {
-  mode = value;
-  localStorage.setItem("ipon_mode", mode);
-  updateMode();
+
+mode = value;
+
+localStorage.setItem("ipon_mode",mode);
+
+updateMode();
+
 }
 
 document.getElementById("goodMode").onclick =
-  () => changeMode("good");
+() => changeMode("good");
 
 document.getElementById("badMode").onclick =
-  () => changeMode("bad");
+() => changeMode("bad");
 
-document.getElementById("newChat").onclick = newChat;
+document.getElementById("newChat").onclick =
+newChat;
 
-form.addEventListener("submit", async e => {
-  e.preventDefault();
+// MESAJ GÖNDERME
 
-  const content = input.value.trim();
-  if (!content) return;
+form.addEventListener("submit",async e => {
 
-  if (!currentChat) newChat();
+e.preventDefault();
 
-  const selected = chats.find(c => c.id === currentChat);
+const content = input.value.trim();
 
-  selected.messages.push({
-    role:"user",
-    content
-  });
+if (!content) return;
 
-  if (selected.title === "Yeni Sohbet") {
-    selected.title = content.slice(0,25);
-  }
+if (!currentChat) newChat();
 
-  addMessage("user", content);
+const selected = chats.find(
+c => c.id === currentChat
+);
 
-  input.value = "";
-  saveChats();
-  renderHistoryOnly();
-
-  const sendButton = document.getElementById("sendButton");
-  sendButton.disabled = true;
-
-  try {
-    const response = await fetch("/api/chat", {
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        messages:selected.messages.slice(-20),
-        mode
-      })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || "Bağlantı hatası.");
-    }
-
-    if (typeof data.answer !== "string") {
-      throw new Error("Geçersiz cevap.");
-    }
-
-    selected.messages.push({
-      role:"assistant",
-      content:data.answer
-    });
-
-    saveChats();
-    addMessage("assistant", data.answer);
-
-  } catch(error) {
-    addMessage("assistant", "Hata: " + error.message);
-  }
-
-  sendButton.disabled = false;
-  input.focus();
+selected.messages.push({
+role:"user",
+content
 });
 
-function renderHistoryOnly() {
-  const selected = currentChat;
-
-  chatList.innerHTML = "";
-
-  chats.forEach(c => {
-    const item = document.createElement("div");
-    item.className = "chat-item" +
-      (c.id === selected ? " active" : "");
-
-    const title = document.createElement("span");
-    title.textContent = c.title;
-
-    title.onclick = () => {
-      currentChat = c.id;
-      render();
-    };
-
-    const del = document.createElement("button");
-    del.className = "delete";
-    del.textContent = "✕";
-
-    del.onclick = e => {
-      e.stopPropagation();
-      chats = chats.filter(x => x.id !== c.id);
-
-      if (currentChat === c.id) {
-        currentChat = chats.length ? chats[0].id : null;
-      }
-
-      saveChats();
-
-      if (!currentChat) newChat();
-      else render();
-    };
-
-    item.append(title, del);
-    chatList.appendChild(item);
-  });
+if (selected.title === "Yeni Sohbet") {
+selected.title = content.slice(0,25);
 }
 
+saveChats();
+
+render();
+
+const sendButton =
+document.getElementById("sendButton");
+
+sendButton.disabled = true;
+
+try {
+
+const response = await fetch("/api/chat",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+messages:selected.messages.slice(-20),
+mode
+
+})
+
+});
+
+const data = await response.json();
+
+if (!response.ok) {
+throw new Error(data.error || "Bağlantı hatası");
+}
+
+if (typeof data.answer !== "string") {
+throw new Error("Geçersiz cevap");
+}
+
+selected.messages.push({
+role:"assistant",
+content:data.answer
+});
+
+saveChats();
+
+if (currentChat === selected.id) {
+render();
+}
+
+} catch(error) {
+
+if (currentChat === selected.id) {
+addMessage(
+"assistant",
+"Bağlantı hatası: " + error.message
+);
+}
+
+} finally {
+
+sendButton.disabled = false;
+input.focus();
+
+}
+
+});
+
+// ADMIN SİSTEMİ
+
+const adminLoginBtn =
+document.getElementById("adminLoginBtn");
+
+adminLoginBtn.onclick = async () => {
+
+const token = localStorage.getItem(ADMIN_TOKEN);
+
+if (token) {
+
+try {
+
+const response = await fetch(
+"/api/admin/check",
+{
+headers:{
+Authorization:"Bearer " + token
+}
+}
+);
+
+if (response.ok) {
+
+document.getElementById("adminPanel")
+.style.display = "block";
+
+document.getElementById("adminLogin")
+.style.display = "none";
+
+return;
+
+}
+
+} catch {}
+
+localStorage.removeItem(ADMIN_TOKEN);
+
+}
+
+document.getElementById("adminLogin")
+.style.display = "block";
+
+document.getElementById("adminPanel")
+.style.display = "none";
+
+};
+
+// ADMIN GİRİŞ
+
+async function adminLogin() {
+
+const password =
+document.getElementById("adminPassword").value;
+
+const error =
+document.getElementById("adminError");
+
+error.textContent = "";
+
+try {
+
+const response = await fetch(
+"/api/admin/login",
+{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({password})
+
+});
+
+const data = await response.json();
+
+if (!response.ok) {
+throw new Error(data.error || "Giriş başarısız");
+}
+
+localStorage.setItem(
+ADMIN_TOKEN,
+data.token
+);
+
+document.getElementById("adminLogin")
+.style.display = "none";
+
+document.getElementById("adminPanel")
+.style.display = "block";
+
+document.getElementById("adminPassword").value = "";
+
+} catch(e) {
+
+error.textContent = e.message;
+
+}
+
+}
+
+document.getElementById("loginButton").onclick =
+adminLogin;
+
+// ENTER İLE GİRİŞ
+
+document.getElementById("adminPassword")
+.addEventListener("keydown",e => {
+
+if (e.key === "Enter") adminLogin();
+
+});
+
+// ADMIN ÇIKIŞ
+
+function adminLogout() {
+
+localStorage.removeItem(ADMIN_TOKEN);
+
+document.getElementById("adminPanel")
+.style.display = "none";
+
+document.getElementById("adminLogin")
+.style.display = "none";
+
+}
+
+// BAŞLAT
+
 if (chats.length) {
-  currentChat = chats[0].id;
+
+currentChat = chats[0].id;
+
 } else {
-  newChat();
+
+newChat();
+
 }
 
 render();
+
 </script>
 
 </body>
