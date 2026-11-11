@@ -619,7 +619,7 @@ async function loadPrivacy(){
   const allowed=!!(data.allowed??data.consent??data.shareChats);
   $("privacyStatus").textContent=allowed?"HOST sohbet erişimi: AÇIK":"HOST sohbet erişimi: KAPALI";
   $("privacyButton").textContent=allowed?"🔓 İzni kapat":"🔒 İzin ver";
-  $("requestHuman").disabled=!allowed;
+  if($("requestHuman")) $("requestHuman").disabled=!allowed;
   return allowed;
  }catch{
   $("privacyStatus").textContent="Paylaşım izni kontrol edilemedi.";
