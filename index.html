@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -9,1004 +8,753 @@
 *{box-sizing:border-box}
 body{margin:0;background:#101522;color:white;font-family:Arial,sans-serif;height:100vh;overflow:hidden}
 button{border:0;border-radius:10px;padding:12px;color:white;background:#6475ed;cursor:pointer;font-weight:bold}
-button:hover{filter:brightness(1.15)}
-button:disabled{opacity:.5;cursor:not-allowed}
-input,textarea{font-family:Arial,sans-serif}
-.hidden{display:none!important}
+button:hover{filter:brightness(1.15)}button:disabled{opacity:.5;cursor:not-allowed}
+input,textarea{font-family:Arial,sans-serif}.hidden{display:none!important}
 #authScreen{height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
 .auth-box{width:100%;max-width:390px;background:#171f30;border:1px solid #30394d;border-radius:18px;padding:28px;box-shadow:0 15px 50px #0005}
 .auth-logo{text-align:center;font-size:32px;font-weight:bold;color:#a5b4fc;margin-bottom:5px}
 .auth-subtitle{text-align:center;color:#9aa6c4;margin:0 0 25px;font-size:13px}
-.auth-tabs{display:flex;gap:8px;margin-bottom:18px}
-.auth-tabs button{flex:1;background:#30394d}
+.auth-tabs{display:flex;gap:8px;margin-bottom:18px}.auth-tabs button{flex:1;background:#30394d}
 .auth-tabs button.active{background:#6475ed}
 .auth-box input{width:100%;padding:14px;margin:7px 0;border:1px solid #424d68;border-radius:9px;background:#101522;color:white;outline:none}
-.auth-submit{width:100%;margin-top:12px}
-.auth-info{font-size:12px;color:#9aa6c4;line-height:1.5}
+.auth-submit{width:100%;margin-top:12px}.auth-info{font-size:12px;color:#9aa6c4;line-height:1.5}
 .auth-error{color:#ff7785;font-size:13px;min-height:18px}
-.auth-success{color:#38d996;font-size:13px}
-.app{display:flex;height:100vh}
-.sidebar{width:250px;flex-shrink:0;background:#171c29;padding:16px;display:flex;flex-direction:column;border-right:1px solid #30394d}
+.app{display:flex;height:100vh}.sidebar{width:250px;flex-shrink:0;background:#171c29;padding:16px;display:flex;flex-direction:column;border-right:1px solid #30394d}
 .logo{text-align:center;font-size:25px;font-weight:bold;margin:12px 0 25px;color:#a5b4fc}
-.newchat{width:100%;margin-bottom:20px}
-.history-title{font-size:12px;color:#9aa6c4;margin:8px 0}
-#chatList{overflow-y:auto}
-.chat-item{padding:11px;border-radius:9px;margin-bottom:7px;background:#252b3b;display:flex;align-items:center;gap:5px;cursor:pointer}
-.chat-item.active{background:#39476b}
-.chat-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
-.delete{background:transparent;color:#ff7785;padding:5px}
-.sidebar-user{margin-top:auto;border-top:1px solid #30394d;padding-top:12px;overflow:hidden}
+.newchat{width:100%;margin-bottom:20px}.history-title{font-size:12px;color:#9aa6c4;margin:8px 0}
+#chatList{overflow-y:auto}.chat-item{padding:11px;border-radius:9px;margin-bottom:7px;background:#252b3b;display:flex;align-items:center;gap:5px;cursor:pointer}
+.chat-item.active{background:#39476b}.chat-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+.delete{background:transparent;color:#ff7785;padding:5px}.sidebar-user{margin-top:auto;border-top:1px solid #30394d;padding-top:12px;overflow:hidden}
 #usernameLabel{font-size:12px;color:#a5b4fc;overflow-wrap:anywhere;margin-bottom:8px}
 .user-logout{width:100%;background:#30394d;font-size:12px}
 .main{flex:1;min-width:0;padding:15px;display:flex;flex-direction:column;align-items:center}
-header{text-align:center;width:100%}
-h1{font-size:36px;margin:5px}
-.subtitle{color:#a5b4fc;margin:5px}
+header{text-align:center;width:100%}h1{font-size:36px;margin:5px}.subtitle{color:#a5b4fc;margin:5px}
 .admin-btn{background:#b58a25;margin:10px auto;display:block}
 .modes{display:flex;gap:12px;width:100%;max-width:500px;margin:12px auto}
-.mode{flex:1;background:#343b50}
-.mode.active.good{background:#19875a}
-.mode.active.bad{background:#a33c50}
+.mode{flex:1;background:#343b50}.mode.active.good{background:#19875a}.mode.active.bad{background:#a33c50}
 #modeInfo{color:#aeb8d0;font-size:13px;margin:0 0 10px}
 #chat{width:100%;max-width:850px;flex:1;overflow-y:auto;padding:12px;margin-bottom:12px}
 .welcome{text-align:center;color:#9eabc8;margin-top:65px}
 .message{max-width:80%;padding:13px 16px;border-radius:14px;margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45}
-.message.user{background:#4659a8;margin-left:auto}
-.message.assistant{background:#252e42;margin-right:auto}
-.message img{display:block;max-width:230px;max-height:220px;border-radius:10px;margin-bottom:8px}
+.message.user{background:#4659a8;margin-left:auto}.message.assistant{background:#252e42;margin-right:auto}
+.message.host{background:#315b50;margin-right:auto}.message img{display:block;max-width:230px;max-height:220px;border-radius:10px;margin-bottom:8px}
 #chatForm{display:flex;gap:8px;width:100%;max-width:850px}
 #message{flex:1;min-width:0;padding:15px;border:0;border-radius:12px;background:#252b3b;color:white;outline:none}
-#sendButton{min-width:85px}
-.bottom-tools{display:flex;gap:8px;width:100%;max-width:850px;margin-bottom:8px}
-.tool-btn{background:#30394d;font-size:12px;padding:9px 12px}
-#imageInput{display:none}
+#sendButton{min-width:85px}.bottom-tools{display:flex;gap:8px;width:100%;max-width:850px;margin-bottom:8px}
+.tool-btn{background:#30394d;font-size:12px;padding:9px 12px}#imageInput{display:none}
 #imageName{font-size:12px;color:#a5b4fc;align-self:center;overflow:hidden}
 .panel{display:none;background:#20283a;border:1px solid #b58a25;border-radius:15px;padding:20px;max-width:850px;width:100%;margin:15px auto;overflow-y:auto;max-height:85vh}
 .panel input,.panel textarea,.panel select{width:100%;padding:13px;margin:8px 0;border:1px solid #424d68;border-radius:9px;background:#151c2b;color:white}
-.panel textarea{min-height:100px;resize:vertical}
-.panel button{margin:5px}
-.host-title{color:#f4c542;font-size:24px}
-#adminError{color:#ff6978}
-#adminStatus{color:#38d996}
+.panel textarea{min-height:100px;resize:vertical}.panel button{margin:5px}
+.host-title{color:#f4c542;font-size:24px}#adminError{color:#ff6978}#adminStatus{color:#38d996}
 .admin-actions{display:flex;flex-wrap:wrap;justify-content:center}
 .privacy-box{background:#20283a;border:1px solid #424d68;border-radius:10px;padding:10px;margin-top:10px}
 .privacy-box p{font-size:11px;color:#aeb8d0;line-height:1.4;margin:6px 0}
 .privacy-button{width:100%;padding:9px;background:#30394d;font-size:11px}
 #privacyStatus{font-size:11px;color:#f4c542;margin:7px 0}
 #hostUsers{background:#151c2b;border-radius:10px;padding:12px;margin-top:15px}
-#hostUsers select{width:100%}
-.host-chat{background:#151c2b;border:1px solid #39445b;border-radius:10px;padding:12px;margin:10px 0}
+#hostUsers select{width:100%}.host-chat{background:#151c2b;border:1px solid #39445b;border-radius:10px;padding:12px;margin:10px 0}
 .host-message{padding:9px;border-radius:8px;margin:7px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
-.host-message.user{background:#344783}
-.host-message.assistant{background:#30394d}
+.host-message.user{background:#344783}.host-message.assistant{background:#30394d}.host-message.host{background:#315b50}
 .host-muted{font-size:12px;color:#aeb8d0}
+.human-box{width:100%;max-width:850px;background:#20283a;border:1px solid #4c6a8b;border-radius:10px;padding:10px;margin:5px 0 10px}
+.human-box p{font-size:12px;color:#c1cbe0;line-height:1.45;margin:5px 0 10px}
+.human-actions{display:flex;gap:8px;flex-wrap:wrap}.human-actions button{font-size:12px;padding:9px}
+#humanStatus{font-size:12px;color:#f4c542;margin-top:8px}
+.host-session{background:#20283a;border:1px solid #39445b;border-radius:10px;padding:12px;margin:9px 0}
+.host-session textarea{min-height:65px}
 @media(max-width:600px){
- .sidebar{width:115px;padding:7px}
- .logo{font-size:17px}
- .chat-item{padding:8px}
- .chat-title{font-size:11px}
- .delete{padding:3px}
- .main{padding:7px}
- h1{font-size:28px}
- .message{max-width:94%}
- .modes{gap:5px}
- .mode{font-size:11px;padding:10px 5px}
- #sendButton{min-width:65px;padding:10px}
- .sidebar-user{padding-top:8px}
- .user-logout{font-size:10px;padding:8px 3px}
- #usernameLabel{font-size:10px}
- .panel{padding:10px}
+ .sidebar{width:115px;padding:7px}.logo{font-size:17px}.chat-item{padding:8px}
+ .chat-title{font-size:11px}.delete{padding:3px}.main{padding:7px}h1{font-size:28px}
+ .message{max-width:94%}.modes{gap:5px}.mode{font-size:11px;padding:10px 5px}
+ #sendButton{min-width:65px;padding:10px}.sidebar-user{padding-top:8px}
+ .user-logout{font-size:10px;padding:8px 3px}#usernameLabel{font-size:10px}.panel{padding:10px}
 }
 </style>
 </head>
 <body>
-
 <section id="authScreen">
  <div class="auth-box">
-  <div class="auth-logo">IPON AI</div>
-  <p class="auth-subtitle">İSİM ABLAMDAN İLHAMLA</p>
-  <div class="auth-tabs">
-   <button id="showLoginTab" class="active">GİRİŞ YAP</button>
-   <button id="showRegisterTab">KAYIT OL</button>
-  </div>
+  <div class="auth-logo">IPON AI</div><p class="auth-subtitle">İSİM ABLAMDAN İLHAMLA</p>
+  <div class="auth-tabs"><button id="showLoginTab" class="active">GİRİŞ YAP</button><button id="showRegisterTab">KAYIT OL</button></div>
   <form id="authForm">
    <input id="authUsername" type="text" placeholder="Kullanıcı adı" minlength="3" maxlength="20" autocomplete="username" required>
    <input id="authPassword" type="password" placeholder="Şifre" minlength="8" maxlength="128" autocomplete="current-password" required>
    <button id="authSubmit" class="auth-submit" type="submit">GİRİŞ YAP</button>
   </form>
-  <p class="auth-info" id="authInfo">Hesabına giriş yap ve IPON AI ile sohbete başla.</p>
-  <p class="auth-error" id="authError"></p>
+  <p class="auth-info" id="authInfo">Hesabına giriş yap ve IPON AI ile sohbete başla.</p><p class="auth-error" id="authError"></p>
  </div>
 </section>
-
 <div class="app hidden" id="app">
 <aside class="sidebar">
- <div class="logo">IPON AI</div>
- <button class="newchat" id="newChat">＋ Yeni Sohbet</button>
- <div class="history-title">SOHBET GEÇMİŞİ</div>
- <div id="chatList"></div>
- <div class="sidebar-user">
-  <div id="usernameLabel"></div>
+ <div class="logo">IPON AI</div><button class="newchat" id="newChat">＋ Yeni Sohbet</button>
+ <div class="history-title">SOHBET GEÇMİŞİ</div><div id="chatList"></div>
+ <div class="sidebar-user"><div id="usernameLabel"></div>
   <div class="privacy-box">
-   <button class="privacy-button" id="privacyButton">🔒 Sohbet paylaşımı</button>
-   <div id="privacyStatus">Kontrol ediliyor...</div>
-   <p>Sadece izin verirsen sohbetlerin HOST panelinde görünür. İstediğin zaman kapatabilirsin. Fotoğrafların kendisi paylaşılmaz.</p>
-  </div>
-  <button class="user-logout" id="userLogout">🚪 HESAPTAN ÇIK</button>
+   <button class="privacy-button" id="privacyButton">🔒 Sohbet paylaşımı</button><div id="privacyStatus">Kontrol ediliyor...</div>
+   <p>İzin verirsen sohbetlerin HOST panelinde görünür. Ayrıca HOST'un sohbetine katılıp yanıt yazabileceğini kabul etmiş olursun. İstediğin zaman izni kapatabilirsin. Fotoğrafların kendisi paylaşılmaz.</p>
+  </div><button class="user-logout" id="userLogout">🚪 HESAPTAN ÇIK</button>
  </div>
 </aside>
-
 <main class="main">
-<header id="mainHeader">
- <h1>IPON AI</h1>
- <p class="subtitle">İSİM ABLAMDAN İLHAMLA</p>
- <button class="admin-btn" id="adminLoginBtn">👑 HOST GİRİŞİ</button>
-</header>
-
+<header id="mainHeader"><h1>IPON AI</h1><p class="subtitle">İSİM ABLAMDAN İLHAMLA</p><button class="admin-btn" id="adminLoginBtn">👑 HOST GİRİŞİ</button></header>
 <section class="panel" id="adminLogin">
- <h2>🔐 HOST GİRİŞİ</h2>
- <input id="adminPassword" type="password" placeholder="HOST şifresi">
- <button id="loginButton">GİRİŞ YAP</button>
- <button id="cancelLogin" style="background:#46516a">GERİ DÖN</button>
- <p id="adminError"></p>
+ <h2>🔐 HOST GİRİŞİ</h2><input id="adminPassword" type="password" placeholder="HOST şifresi">
+ <button id="loginButton">GİRİŞ YAP</button><button id="cancelLogin" style="background:#46516a">GERİ DÖN</button><p id="adminError"></p>
 </section>
-
 <section class="panel" id="adminPanel">
- <h2 class="host-title">👑 IPON AI HOST PANELİ</h2>
- <h3>Hoş geldin Alperen!</h3>
- <p id="adminStatus">HOST yetkisi aktif!</p>
- <hr>
- <p>Yetki: HOST / ADMIN</p>
- <p>Proje: IPON AI</p>
- <p>Durum: Aktif</p>
-
+ <h2 class="host-title">👑 IPON AI HOST PANELİ</h2><h3>Hoş geldin Alperen!</h3><p id="adminStatus">HOST yetkisi aktif!</p>
+ <hr><p>Yetki: HOST / ADMIN</p><p>Proje: IPON AI</p><p>Durum: Aktif</p>
  <label for="hostMemory">Sadece HOST oturumunda kullanılacak bilgiler:</label>
  <textarea id="hostMemory" placeholder="IPON AI'nin yalnızca HOST oturumunda kullanmasını istediğin bilgileri yaz..."></textarea>
  <button id="saveMemory">💾 Bilgileri Kaydet</button>
-
- <hr>
- <h3 class="host-title">👥 Kullanıcı Sohbetleri</h3>
- <p class="host-muted">Yalnızca sohbet paylaşımına açıkça izin veren kullanıcıların sohbetleri görüntülenebilir. Kullanıcıların izni olmadan sohbetlerini görüntüleyemezsin.</p>
+ <hr><h3 class="host-title">👥 Kullanıcı Sohbetleri</h3>
+ <p class="host-muted">Yalnızca sohbet paylaşımına ve HOST yanıtlarına izin veren kullanıcılar görüntülenebilir.</p>
  <button id="refreshUsers">🔄 Kullanıcıları Yenile</button>
- <div id="hostUsers">
-  <label for="hostUserSelect">Kullanıcı seç:</label>
-  <select id="hostUserSelect">
-   <option value="">Önce kullanıcıları yükle</option>
-  </select>
-  <button id="viewUserChats">💬 Sohbetlerini Görüntüle</button>
-  <div id="hostChatResults"></div>
- </div>
-
- <div class="admin-actions">
-  <button id="backToChat" style="background:#4659a8">💬 SOHBETE DÖN</button>
-  <button id="logoutButton" style="background:#9d3e50">🚪 HOST ÇIKIŞI</button>
- </div>
+ <div id="hostUsers"><label for="hostUserSelect">Kullanıcı seç:</label><select id="hostUserSelect"><option value="">Önce kullanıcıları yükle</option></select>
+ <button id="viewUserChats">💬 Sohbetlerini Görüntüle</button><div id="hostChatResults"></div></div>
+ <hr><h3 class="host-title">🎧 HOST destek talepleri</h3>
+ <p class="host-muted">Kullanıcıların HOST desteği istekleri burada görünür. Kabul ettiğinde sohbete yanıt yazabilirsin.</p>
+ <button id="refreshHumanChats">🔄 Talepleri Yenile</button><div id="humanChatQueue"></div>
+ <div class="admin-actions"><button id="backToChat" style="background:#4659a8">💬 SOHBETE DÖN</button><button id="logoutButton" style="background:#9d3e50">🚪 HOST ÇIKIŞI</button></div>
 </section>
-
 <section id="chatView" style="width:100%;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center">
- <div class="modes">
-  <button class="mode good" id="goodMode">😇 İYİ MOD</button>
-  <button class="mode bad" id="badMode">😈 KÖTÜ MOD</button>
- </div>
+ <div class="modes"><button class="mode good" id="goodMode">😇 İYİ MOD</button><button class="mode bad" id="badMode">😈 KÖTÜ MOD</button></div>
  <p id="modeInfo"></p>
- <div class="bottom-tools">
-  <button class="tool-btn" id="trollMode">🎭 TROLLEME: KAPALI</button>
-  <button class="tool-btn" id="photoButton">🖼️ FOTOĞRAF EKLE</button>
-  <input id="imageInput" type="file" accept="image/*">
-  <span id="imageName"></span>
+ <div class="bottom-tools"><button class="tool-btn" id="trollMode">🎭 TROLLEME: KAPALI</button><button class="tool-btn" id="photoButton">🖼️ FOTOĞRAF EKLE</button>
+ <input id="imageInput" type="file" accept="image/*"><span id="imageName"></span></div>
+ <div class="human-box">
+  <p><strong>HOST ile sohbet:</strong> HOST desteği isteyebilirsin. İstek gönderildiğinde HOST panelinde görünür. HOST yanıtladığında mesajları burada görürsün.</p>
+  <div class="human-actions"><button id="requestHuman" style="background:#287b67">👑 HOST desteği iste</button><button id="endHuman" style="background:#8d4655" disabled>HOST'a bitirme isteği gönder</button></div>
+  <div id="humanStatus">HOST sohbeti başlatılmadı.</div>
  </div>
  <div id="chat"></div>
- <form id="chatForm">
-  <input id="message" placeholder="IPON AI'ye mesaj yaz..." autocomplete="off" required>
-  <button id="sendButton" type="submit">Gönder</button>
- </form>
+ <form id="chatForm"><input id="message" placeholder="IPON AI'ye mesaj yaz..." autocomplete="off" required><button id="sendButton" type="submit">Gönder</button></form>
 </section>
-</main>
-</div>
-
+</main></div>
 <script>
-"use strict";
+ const API="";
+let authMode="login";
+let userToken=localStorage.getItem("ipon_user_token")||"";
+let userInfo=JSON.parse(localStorage.getItem("ipon_user_info")||"null");
+let adminToken=localStorage.getItem("ipon_admin_token")||"";
+let currentChat=null;
+let chats={};
+let mode="good";
+let trollMode=false;
+let selectedImage=null;
+let humanSession=null;
+let humanPoll=null;
+let adminPoll=null;
+let humanMessageIds=new Set();
 
-const $ = id => document.getElementById(id);
-const chat = $("chat");
-const chatList = $("chatList");
-const form = $("chatForm");
-const input = $("message");
-const imageInput = $("imageInput");
+const $=id=>document.getElementById(id);
+const request=async(url,options={})=>{
+ const headers={...(options.headers||{})};
+ if(userToken)headers.Authorization="Bearer "+userToken;
+ if(adminToken)headers["X-Admin-Token"]=adminToken;
+ if(options.body)headers["Content-Type"]="application/json";
+ const response=await fetch(API+url,{...options,headers});
+ const data=await response.json().catch(()=>({error:"Sunucu yanıtı okunamadı."}));
+ if(!response.ok)throw new Error(data.error||"İşlem başarısız.");
+ return data;
+};
 
-const ADMIN_TOKEN = "ipon_admin_token";
-const USER_TOKEN = "ipon_user_token";
-const USER_INFO = "ipon_user_info";
-const MEMORY_KEY = "ipon_host_memory";
-
-let chats = [];
-let currentChat = null;
-let currentUser = null;
-let authMode = "login";
-let mode = localStorage.getItem("ipon_mode") || "good";
-let trollMode = false;
-let isHost = false;
-let selectedImage = null;
-let sending = false;
-let chatSharingConsent = false;
-let syncTimer = null;
-
-function userChatsKey(){
- return "ipon_chats_user_" + currentUser.id;
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function getSafeChats(){
- return chats.map(c => ({
-  id:String(c.id),
-  title:String(c.title || "Yeni Sohbet").slice(0,100),
-  messages:(c.messages || []).slice(-200).map(m => ({
-   role:m.role === "assistant" ? "assistant" : "user",
-   content:String(m.content || "").slice(0,12000),
-   imageName:String(m.imageName || "").slice(0,200)
-  }))
- })).slice(0,100);
+function showAuth(){
+ $("authScreen").classList.remove("hidden");
+ $("app").classList.add("hidden");
+}
+
+function showApp(){
+ $("authScreen").classList.add("hidden");
+ $("app").classList.remove("hidden");
+ $("usernameLabel").textContent=userInfo?.username||"Kullanıcı";
+}
+
+function setAuthMode(value){
+ authMode=value;
+ $("showLoginTab").classList.toggle("active",value==="login");
+ $("showRegisterTab").classList.toggle("active",value==="register");
+ $("authSubmit").textContent=value==="login"?"GİRİŞ YAP":"KAYIT OL";
+ $("authInfo").textContent=value==="login"?"Hesabına giriş yap ve IPON AI ile sohbete başla.":"Yeni hesabını oluştur.";
+ $("authError").textContent="";
+ $("authPassword").autocomplete=value==="login"?"current-password":"new-password";
+}
+$("showLoginTab").onclick=()=>setAuthMode("login");
+$("showRegisterTab").onclick=()=>setAuthMode("register");
+
+$("authForm").onsubmit=async e=>{
+ e.preventDefault();
+ const username=$("authUsername").value.trim();
+ const password=$("authPassword").value;
+ if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)){
+  $("authError").textContent="Kullanıcı adı 3-20 karakter olmalı.";
+  return;
+ }
+ if(password.length<8||password.length>128){
+  $("authError").textContent="Şifre 8-128 karakter arasında olmalı.";
+  return;
+ }
+ $("authSubmit").disabled=true;
+ $("authError").textContent="İşlem yapılıyor...";
+ try{
+  const data=await request("/api/auth/"+authMode,{
+   method:"POST",body:JSON.stringify({username,password})
+  });
+  userToken=data.token;
+  userInfo=data.user;
+  localStorage.setItem("ipon_user_token",userToken);
+  localStorage.setItem("ipon_user_info",JSON.stringify(userInfo));
+  await startApp();
+ }catch(err){
+  $("authError").textContent=err.message;
+ }finally{
+  $("authSubmit").disabled=false;
+ }
+};
+
+async function startApp(){
+ showApp();
+ await loadPrivacy();
+ await loadChats();
+ if(!currentChat)newChat();
+}
+
+async function checkSession(){
+ if(!userToken)return showAuth();
+ try{
+  const data=await request("/api/auth/me");
+  userInfo=data.user||data;
+  localStorage.setItem("ipon_user_info",JSON.stringify(userInfo));
+  await startApp();
+ }catch{
+  userToken="";
+  localStorage.removeItem("ipon_user_token");
+  localStorage.removeItem("ipon_user_info");
+  showAuth();
+ }
+}
+
+$("userLogout").onclick=()=>{
+ if(humanPoll)clearInterval(humanPoll);
+ userToken="";
+ localStorage.removeItem("ipon_user_token");
+ localStorage.removeItem("ipon_user_info");
+ showAuth();
+};
+
+function chatStorageKey(){
+ return "ipon_chats_user_"+(userInfo?.id||"guest");
 }
 
 function saveChats(){
- if(!currentUser) return;
- localStorage.setItem(userChatsKey(),JSON.stringify(getSafeChats()));
-
- if(chatSharingConsent){
-  clearTimeout(syncTimer);
-  syncTimer = setTimeout(syncChatsToServer,700);
- }
+ localStorage.setItem(chatStorageKey(),JSON.stringify(chats));
 }
 
-async function syncChatsToServer(){
- if(!currentUser || !chatSharingConsent) return;
-
- const token = localStorage.getItem(USER_TOKEN);
- if(!token) return;
-
+async function loadChats(){
  try{
-  const response = await fetch("/api/user/chats/sync",{
-   method:"POST",
-   headers:{
-    "Content-Type":"application/json",
-    "Authorization":"Bearer " + token
-   },
-   body:JSON.stringify({chats:getSafeChats()})
-  });
-
-  if(!response.ok){
-   console.warn("Sohbet senkronizasyonu başarısız.");
-  }
- }catch(error){
-  console.warn("Sohbet senkronizasyon hatası:",error);
- }
-}
-
-async function loadPrivacy(){
- chatSharingConsent = false;
- $("privacyStatus").textContent = "Kontrol ediliyor...";
- $("privacyButton").textContent = "🔒 Sohbet paylaşımını aç";
-
- try{
-  const response = await fetch("/api/user/privacy",{
-   headers:{Authorization:"Bearer " + localStorage.getItem(USER_TOKEN)}
-  });
-  const data = await response.json();
-
-  if(!response.ok) throw new Error(data.error || "İzin bilgisi alınamadı.");
-
-  chatSharingConsent = data.consent === true;
-  updatePrivacyUI();
-
-  if(chatSharingConsent){
-   await syncChatsToServer();
-  }
- }catch(error){
-  $("privacyStatus").textContent = "İzin durumu alınamadı.";
-  console.error(error);
- }
-}
-
-function updatePrivacyUI(){
- $("privacyStatus").textContent = chatSharingConsent
-  ? "🟢 Paylaşım açık"
-  : "🔒 Paylaşım kapalı";
-
- $("privacyButton").textContent = chatSharingConsent
-  ? "🔓 Sohbet paylaşımını kapat"
-  : "🔒 Sohbet paylaşımını aç";
-}
-
-async function changePrivacy(){
- if(!currentUser) return;
-
- const nextValue = !chatSharingConsent;
-
- if(nextValue){
-  const accepted = confirm(
-   "Sohbet paylaşımını açmak istiyor musun?\n\n" +
-   "Açarsan sohbet geçmişin IPON AI sunucusuna kaydedilir ve HOST panelinde görüntülenebilir.\n\n" +
-   "Fotoğrafların kendisi paylaşılmaz. İstediğin zaman bu izni kapatabilirsin."
-  );
-  if(!accepted) return;
- }else{
-  const accepted = confirm(
-   "Sohbet paylaşımını kapatmak istiyor musun?\n\n" +
-   "Sunucuda kayıtlı sohbetlerin silinmesi istenecek. Tarayıcındaki sohbet geçmişin kalmaya devam eder."
-  );
-  if(!accepted) return;
- }
-
- $("privacyButton").disabled = true;
-
- try{
-  const response = await fetch("/api/user/privacy",{
-   method:"PUT",
-   headers:{
-    "Content-Type":"application/json",
-    "Authorization":"Bearer " + localStorage.getItem(USER_TOKEN)
-   },
-   body:JSON.stringify({consent:nextValue})
-  });
-
-  const data = await response.json();
-  if(!response.ok) throw new Error(data.error || "İzin değiştirilemedi.");
-
-  chatSharingConsent = nextValue;
-  updatePrivacyUI();
-
-  if(chatSharingConsent){
-   await syncChatsToServer();
-   alert("Sohbet paylaşımı açıldı.");
-  }else{
-   alert("Paylaşım kapatıldı. Sunucudaki sohbet kayıtlarının silinmesi istendi.");
-  }
- }catch(error){
-  alert("İşlem başarısız: " + error.message);
- }finally{
-  $("privacyButton").disabled = false;
- }
-}
-
-$("privacyButton").onclick = changePrivacy;
-
-function loadChats(){
- chats = [];
- currentChat = null;
-
- try{
-  const saved = localStorage.getItem(userChatsKey());
-  if(saved){
-   const parsed = JSON.parse(saved);
-   if(Array.isArray(parsed)) chats = parsed;
-  }
- }catch{
-  chats = [];
- }
-
- if(!chats.length){
-  try{
-   const oldChats = JSON.parse(localStorage.getItem("ipon_chats") || "[]");
-   if(Array.isArray(oldChats) && oldChats.length){
-    chats = oldChats;
-    saveChats();
-    localStorage.removeItem("ipon_chats");
-   }
-  }catch{}
- }
-
- if(!chats.length){
-  try{
-   const oldMessages = JSON.parse(localStorage.getItem("ipon_messages") || "[]");
-   if(Array.isArray(oldMessages) && oldMessages.length){
-    chats.push({
-     id:Date.now(),
-     title:"Eski sohbet",
-     messages:oldMessages
-    });
-    saveChats();
-    localStorage.removeItem("ipon_messages");
-   }
-  }catch{}
- }
-
- if(chats.length) currentChat = chats[0].id;
- else newChat();
-}
-
-function addMessage(role,content,imageData=null,imageName=""){
- const div = document.createElement("div");
- div.className = "message " + (role === "user" ? "user" : "assistant");
-
- if(imageData){
-  const img = document.createElement("img");
-  img.src = imageData;
-  img.alt = "Gönderilen fotoğraf";
-  div.appendChild(img);
- }else if(imageName){
-  const note = document.createElement("small");
-  note.textContent = "🖼️ " + imageName;
-  div.appendChild(note);
- }
-
- const text = document.createElement("div");
- text.textContent = content;
- div.appendChild(text);
-
- chat.appendChild(div);
- chat.scrollTop = chat.scrollHeight;
+  chats=JSON.parse(localStorage.getItem(chatStorageKey())||"{}");
+ }catch{chats={};}
+ renderChatList();
 }
 
 function newChat(){
- const id = Date.now();
- chats.unshift({id,title:"Yeni Sohbet",messages:[]});
- currentChat = id;
- saveChats();
- render();
- input.focus();
-}
-
-function render(){
- chatList.innerHTML = "";
-
- chats.forEach(c => {
-  const item = document.createElement("div");
-  item.className = "chat-item" + (c.id === currentChat ? " active" : "");
-
-  const title = document.createElement("span");
-  title.className = "chat-title";
-  title.textContent = c.title || "Yeni Sohbet";
-  title.onclick = () => {
-   currentChat = c.id;
-   render();
-  };
-
-  const del = document.createElement("button");
-  del.className = "delete";
-  del.textContent = "✕";
-  del.title = "Sohbeti sil";
-
-  del.onclick = e => {
-   e.stopPropagation();
-   chats = chats.filter(x => x.id !== c.id);
-
-   if(currentChat === c.id){
-    currentChat = chats.length ? chats[0].id : null;
-   }
-
-   saveChats();
-   if(!currentChat) newChat();
-   else render();
-  };
-
-  item.append(title,del);
-  item.onclick = () => {
-   currentChat = c.id;
-   render();
-  };
-
-  chatList.appendChild(item);
- });
-
- chat.innerHTML = "";
-
- const selected = chats.find(c => c.id === currentChat);
-
- if(!selected || !selected.messages.length){
-  const welcome = document.createElement("div");
-  welcome.className = "welcome";
-  const heading = document.createElement("h2");
-  heading.textContent = "IPON AI’ye Hoş Geldin!";
-  const paragraph = document.createElement("p");
-  paragraph.textContent = "Nasıl yardımcı olabilirim?";
-  welcome.append(heading,paragraph);
-  chat.appendChild(welcome);
- }else{
-  selected.messages.forEach(m => addMessage(m.role,m.content,null,m.imageName || ""));
+ if(humanSession){
+  alert("Önce HOST desteği sohbetini bitir.");
+  return;
  }
-
- updateMode();
+ const id="chat_"+Date.now();
+ chats[id]=[];
+ currentChat=id;
+ saveChats();
+ renderChatList();
+ renderMessages();
 }
 
-function updateMode(){
- $("goodMode").classList.toggle("active",mode === "good");
- $("badMode").classList.toggle("active",mode === "bad");
+$("newChat").onclick=newChat;
 
- $("modeInfo").textContent = mode === "good"
-  ? "Şu anda İyi Moddasın 😇"
-  : "Şu anda Kötü Moddasın 😈";
-
- input.placeholder = mode === "good"
-  ? "IPON AI'ye mesaj yaz..."
-  : "IPON AI'yi kızdır bakalım 😈";
+function renderChatList(){
+ const list=$("chatList");
+ list.innerHTML="";
+ Object.keys(chats).reverse().forEach(id=>{
+  const messages=chats[id]||[];
+  const first=messages.find(m=>m.role==="user");
+  const title=first?(first.content||"Yeni sohbet").slice(0,22):"Yeni sohbet";
+  const item=document.createElement("div");
+  item.className="chat-item"+(id===currentChat?" active":"");
+  item.innerHTML=`<span class="chat-title">${escapeHTML(title)}</span><button class="delete" title="Sohbeti sil">✕</button>`;
+  item.querySelector(".chat-title").onclick=()=>{
+   if(humanSession&&humanSession.chatId!==id){
+    alert("HOST sohbeti devam ederken başka sohbete geçemezsin.");
+    return;
+   }
+   currentChat=id;
+   renderChatList();
+   renderMessages();
+  };
+  item.querySelector(".delete").onclick=e=>{
+   e.stopPropagation();
+   if(humanSession?.chatId===id){
+    alert("Aktif HOST sohbetini önce bitir.");
+    return;
+   }
+   if(confirm("Bu sohbet silinsin mi?")){
+    delete chats[id];
+    if(currentChat===id)currentChat=null;
+    saveChats();
+    if(!currentChat)newChat();
+    renderChatList();
+   }
+  };
+  list.appendChild(item);
+ });
 }
 
-function changeMode(value){
- mode = value;
- localStorage.setItem("ipon_mode",mode);
- updateMode();
+function renderMessages(){
+ const area=$("chat");
+ area.innerHTML="";
+ const messages=chats[currentChat]||[];
+ if(!messages.length){
+  area.innerHTML='<div class="welcome"><h2>IPON AI’ye hoş geldin!</h2><p>Bugün ne konuşalım?</p></div>';
+  return;
+ }
+ messages.forEach(m=>addMessage(m.role,m.content));
+ area.scrollTop=area.scrollHeight;
 }
 
-$("goodMode").onclick = () => changeMode("good");
-$("badMode").onclick = () => changeMode("bad");
-$("newChat").onclick = newChat;
+function addMessage(role,content){
+ const area=$("chat");
+ const div=document.createElement("div");
+ div.className="message "+(role==="user"?"user":role==="host"?"host":"assistant");
+ div.textContent=content;
+ area.appendChild(div);
+ area.scrollTop=area.scrollHeight;
+}
 
-$("trollMode").onclick = () => {
- trollMode = !trollMode;
- $("trollMode").textContent = trollMode
-  ? "🎭 TROLLEME: AÇIK"
-  : "🎭 TROLLEME: KAPALI";
- $("trollMode").style.background = trollMode ? "#9a6330" : "#30394d";
+function setMode(value){
+ mode=value;
+ $("goodMode").classList.toggle("active",value==="good");
+ $("badMode").classList.toggle("active",value==="bad");
+ $("goodMode").classList.toggle("good",true);
+ $("badMode").classList.toggle("bad",true);
+ $("modeInfo").textContent=value==="good"?"IPON AI arkadaş canlısı modda.":"IPON AI daha sert ve esprili konuşur; hakaret ve tehdit olmadan.";
+}
+$("goodMode").onclick=()=>setMode("good");
+$("badMode").onclick=()=>setMode("bad");
+setMode("good");
+
+$("trollMode").onclick=()=>{
+ trollMode=!trollMode;
+ $("trollMode").textContent="🎭 TROLLEME: "+(trollMode?"AÇIK":"KAPALI");
+ $("trollMode").style.background=trollMode?"#8c4a67":"#30394d";
 };
 
-$("photoButton").onclick = () => imageInput.click();
-
-imageInput.onchange = () => {
- const file = imageInput.files && imageInput.files[0];
- if(!file) return;
-
+$("photoButton").onclick=()=>$("imageInput").click();
+$("imageInput").onchange=e=>{
+ const file=e.target.files[0];
+ if(!file)return;
+ if(file.size>5*1024*1024){
+  alert("Fotoğraf en fazla 5 MB olabilir.");
+  e.target.value="";
+  return;
+ }
  if(!file.type.startsWith("image/")){
   alert("Lütfen bir fotoğraf seç.");
-  imageInput.value = "";
+  e.target.value="";
   return;
  }
-
- if(file.size > 5 * 1024 * 1024){
-  alert("Fotoğraf en fazla 5 MB olabilir.");
-  imageInput.value = "";
-  return;
- }
-
- const reader = new FileReader();
- reader.onload = () => {
-  selectedImage = {data:reader.result,name:file.name};
-  $("imageName").textContent = "📎 " + file.name;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  selectedImage=reader.result;
+  $("imageName").textContent="📎 "+file.name;
  };
  reader.readAsDataURL(file);
 };
 
-/* KULLANICI GİRİŞ VE KAYIT */
-
-function setAuthMode(value){
- authMode = value;
- $("showLoginTab").classList.toggle("active",value === "login");
- $("showRegisterTab").classList.toggle("active",value === "register");
- $("authSubmit").textContent = value === "login" ? "GİRİŞ YAP" : "HESAP OLUŞTUR";
- $("authPassword").autocomplete = value === "login" ? "current-password" : "new-password";
- $("authInfo").textContent = value === "login"
-  ? "Hesabına giriş yap ve IPON AI ile sohbete başla."
-  : "Kullanıcı adın 3–20 karakter, şifren en az 8 karakter olmalı.";
- $("authError").textContent = "";
-}
-
-$("showLoginTab").onclick = () => setAuthMode("login");
-$("showRegisterTab").onclick = () => setAuthMode("register");
-
-function showAuth(){
- $("app").classList.add("hidden");
- $("authScreen").classList.remove("hidden");
- $("authPassword").value = "";
- $("authError").textContent = "";
-}
-
-async function startApp(user){
- currentUser = user;
- isHost = false;
-
- $("authScreen").classList.add("hidden");
- $("app").classList.remove("hidden");
- $("usernameLabel").textContent = "👤 " + user.username;
-
- loadChats();
- render();
- await loadPrivacy();
-}
-
-$("authForm").addEventListener("submit",async e => {
+async function sendChatMessage(e){
  e.preventDefault();
-
- const username = $("authUsername").value.trim();
- const password = $("authPassword").value;
- const error = $("authError");
- const submit = $("authSubmit");
-
- error.textContent = "";
-
- if(username.length < 3 || username.length > 20){
-  error.textContent = "Kullanıcı adı 3–20 karakter olmalı.";
+ const input=$("message");
+ const content=input.value.trim();
+ if(!content&&!selectedImage)return;
+ if(humanSession){
+  alert("HOST sohbeti sırasında mesajını HOST sohbet alanından gönder.");
   return;
  }
-
- if(!/^[a-zA-Z0-9_]+$/.test(username)){
-  error.textContent = "Kullanıcı adında sadece harf, rakam ve _ kullanabilirsin.";
-  return;
- }
-
- if(password.length < 8 || password.length > 128){
-  error.textContent = "Şifre 8–128 karakter arasında olmalı.";
-  return;
- }
-
- submit.disabled = true;
- submit.textContent = "Bekle...";
-
- try{
-  const endpoint = authMode === "login"
-   ? "/api/auth/login"
-   : "/api/auth/register";
-
-  const response = await fetch(endpoint,{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({username,password})
-  });
-
-  const data = await response.json();
-  if(!response.ok) throw new Error(data.error || "İşlem başarısız.");
-  if(!data.token || !data.user) throw new Error("Sunucudan geçersiz cevap geldi.");
-
-  localStorage.setItem(USER_TOKEN,data.token);
-  localStorage.setItem(USER_INFO,JSON.stringify(data.user));
-  $("authPassword").value = "";
-  await startApp(data.user);
-
- }catch(err){
-  error.textContent = err.message || "Bağlantı hatası.";
- }finally{
-  submit.disabled = false;
-  submit.textContent = authMode === "login" ? "GİRİŞ YAP" : "HESAP OLUŞTUR";
- }
-});
-
-async function checkUserSession(){
- const token = localStorage.getItem(USER_TOKEN);
- if(!token){
-  showAuth();
-  return;
- }
-
- try{
-  const response = await fetch("/api/auth/me",{
-   headers:{Authorization:"Bearer " + token}
-  });
-  const data = await response.json();
-  if(!response.ok || !data.user) throw new Error("Oturum geçersiz.");
-
-  localStorage.setItem(USER_INFO,JSON.stringify(data.user));
-  await startApp(data.user);
- }catch{
-  localStorage.removeItem(USER_TOKEN);
-  localStorage.removeItem(USER_INFO);
-  showAuth();
- }
-}
-
-$("userLogout").onclick = async () => {
- const token = localStorage.getItem(USER_TOKEN);
-
- try{
-  if(token){
-   await fetch("/api/auth/logout",{
-    method:"POST",
-    headers:{Authorization:"Bearer " + token}
-   });
-  }
- }catch{}
-
- localStorage.removeItem(USER_TOKEN);
- localStorage.removeItem(USER_INFO);
- currentUser = null;
- chats = [];
- currentChat = null;
- chatSharingConsent = false;
- isHost = false;
- showAuth();
-};
-
-/* SOHBET GÖNDERME */
-
-form.addEventListener("submit",async e => {
- e.preventDefault();
- if(sending || !currentUser) return;
-
- const content = input.value.trim();
- if(!content && !selectedImage) return;
- if(!currentChat) newChat();
-
- const selected = chats.find(c => c.id === currentChat);
- if(!selected) return;
-
- const imageForRequest = selectedImage;
- const userContent = content || "Bu fotoğrafı incele.";
-
- selected.messages.push({
-  role:"user",
-  content:userContent,
-  imageName:imageForRequest ? imageForRequest.name : ""
- });
-
- if(selected.title === "Yeni Sohbet"){
-  selected.title = (content || "Fotoğraf").slice(0,28);
- }
-
- addMessage("user",userContent,imageForRequest?.data || null);
- input.value = "";
- selectedImage = null;
- imageInput.value = "";
- $("imageName").textContent = "";
+ if(!currentChat)newChat();
+ const image=selectedImage;
+ input.value="";
+ selectedImage=null;
+ $("imageInput").value="";
+ $("imageName").textContent="";
+ const messages=chats[currentChat]||(chats[currentChat]=[]);
+ messages.push({role:"user",content:content||"Fotoğraf gönderildi."});
  saveChats();
-
- sending = true;
- const sendButton = $("sendButton");
- sendButton.disabled = true;
- sendButton.textContent = "Yazıyor...";
-
+ renderChatList();
+ renderMessages();
+ $("sendButton").disabled=true;
  try{
-  const token = isHost
-   ? localStorage.getItem(ADMIN_TOKEN)
-   : localStorage.getItem(USER_TOKEN);
-
-  if(!token) throw new Error("Oturum bulunamadı. Tekrar giriş yap.");
-
-  const response = await fetch("/api/chat",{
+  const data=await request("/api/chat",{
    method:"POST",
-   headers:{
-    "Content-Type":"application/json",
-    "Authorization":"Bearer " + token
-   },
    body:JSON.stringify({
-    messages:selected.messages.slice(-20),
-    mode,
-    trollMode,
-    isHost,
-    hostMemory:isHost ? localStorage.getItem(MEMORY_KEY) || "" : "",
-    image:imageForRequest ? imageForRequest.data : null
+    messages:messages.map(m=>({role:m.role==="assistant"?"assistant":"user",content:m.content})),
+    mode,trollMode,isHost:false,hostMemory:"",image
    })
   });
-
-  const data = await response.json();
-  if(!response.ok) throw new Error(data.error || "Bağlantı hatası.");
-  if(typeof data.answer !== "string") throw new Error("Geçersiz cevap.");
-
-  selected.messages.push({role:"assistant",content:data.answer});
+  const answer=data.reply||data.response||data.message||"Yanıt alınamadı.";
+  messages.push({role:"assistant",content:answer});
   saveChats();
-
-  if(currentChat === selected.id) addMessage("assistant",data.answer);
-
- }catch(error){
-  if(currentChat === selected.id){
-   addMessage("assistant","Bağlantı hatası: " + error.message);
-  }
+  renderMessages();
+ }catch(err){
+  messages.push({role:"assistant",content:"Bir hata oluştu: "+err.message});
+  saveChats();
+  renderMessages();
  }finally{
-  sending = false;
-  sendButton.disabled = false;
-  sendButton.textContent = "Gönder";
+  $("sendButton").disabled=false;
   input.focus();
  }
-});
-
-/* HOST PANELİ */
-
-function showChat(){
- $("adminLogin").style.display = "none";
- $("adminPanel").style.display = "none";
- $("chatView").classList.remove("hidden");
- $("mainHeader").classList.remove("hidden");
 }
+$("chatForm").onsubmit=sendChatMessage;
 
-function showLogin(){
- $("chatView").classList.add("hidden");
- $("adminPanel").style.display = "none";
- $("mainHeader").classList.add("hidden");
- $("adminLogin").style.display = "block";
- $("adminError").textContent = "";
-}
-
-async function showAdmin(){
- $("adminLogin").style.display = "none";
- $("chatView").classList.add("hidden");
- $("mainHeader").classList.add("hidden");
- $("adminPanel").style.display = "block";
- $("hostMemory").value = localStorage.getItem(MEMORY_KEY) || "";
- await loadHostUsers();
-}
-
-$("adminLoginBtn").onclick = async () => {
- const token = localStorage.getItem(ADMIN_TOKEN);
-
- if(token){
-  try{
-   const response = await fetch("/api/admin/check",{
-    headers:{Authorization:"Bearer " + token}
-   });
-   if(response.ok){
-    isHost = true;
-    await showAdmin();
-    return;
-   }
-  }catch{}
-  localStorage.removeItem(ADMIN_TOKEN);
+async function loadPrivacy(){
+ try{
+  const data=await request("/api/privacy");
+  const allowed=!!(data.allowed??data.consent??data.shareChats);
+  $("privacyStatus").textContent=allowed?"HOST sohbet erişimi: AÇIK":"HOST sohbet erişimi: KAPALI";
+  $("privacyButton").textContent=allowed?"🔓 İzni kapat":"🔒 İzin ver";
+  $("requestHuman").disabled=!allowed;
+  return allowed;
+ }catch{
+  $("privacyStatus").textContent="Paylaşım izni kontrol edilemedi.";
+  $("requestHuman").disabled=true;
+  return false;
  }
+}
 
- isHost = false;
- showLogin();
+$("privacyButton").onclick=async()=>{
+ try{
+  const currentlyAllowed=await loadPrivacy();
+  if(currentlyAllowed){
+   if(!confirm("HOST erişimini kapatmak istiyor musun?"))return;
+  }else{
+   if(!confirm("Sohbetlerinin HOST tarafından görüntülenmesine ve HOST'un sohbetine katılıp yanıt yazmasına izin veriyor musun?"))return;
+  }
+  await request("/api/privacy",{
+   method:"POST",
+   body:JSON.stringify({allowed:!currentlyAllowed})
+  });
+  await loadPrivacy();
+ }catch(err){alert(err.message);}
 };
 
-$("cancelLogin").onclick = showChat;
-$("backToChat").onclick = showChat;
-
-async function adminLogin(){
- const password = $("adminPassword").value;
- const error = $("adminError");
- error.textContent = "";
-
- if(!password){
-  error.textContent = "Şifreni gir.";
+async function requestHumanChat(){
+ if(!await loadPrivacy()){
+  alert("Önce HOST desteği için izin vermelisin.");
   return;
  }
-
+ if(!currentChat)newChat();
  try{
-  const response = await fetch("/api/admin/login",{
+  const data=await request("/api/human-chat/request",{
+   method:"POST",
+   body:JSON.stringify({chatId:String(currentChat)})
+  });
+  humanSession={chatId:currentChat,sessionId:data.sessionId,status:data.status||"pending"};
+  humanMessageIds.clear();
+  updateHumanControls();
+  $("humanStatus").textContent="HOST desteği isteğin gönderildi. HOST'un kabul etmesini bekliyorsun.";
+  startHumanPolling();
+ }catch(err){alert("HOST isteği gönderilemedi: "+err.message);}
+}
+$("requestHuman").onclick=requestHumanChat;
+
+function updateHumanControls(){
+ const active=!!humanSession;
+ $("requestHuman").disabled=active;
+ $("endHuman").disabled=!active;
+ $("message").disabled=active;
+ $("sendButton").disabled=active;
+ $("photoButton").disabled=active;
+ $("trollMode").disabled=active;
+ $("goodMode").disabled=active;
+ $("badMode").disabled=active;
+}
+
+function startHumanPolling(){
+ if(humanPoll)clearInterval(humanPoll);
+ checkHumanStatus();
+ humanPoll=setInterval(checkHumanStatus,3000);
+}
+
+async function checkHumanStatus(){
+ if(!humanSession)return;
+ try{
+  const data=await request("/api/human-chat/status?chatId="+encodeURIComponent(humanSession.chatId));
+  if(data.status)humanSession.status=data.status;
+  if(data.sessionId)humanSession.sessionId=data.sessionId;
+  if(data.messages)renderHumanMessages(data.messages);
+  if(humanSession.status==="accepted"){
+   $("humanStatus").textContent="HOST sohbete katıldı. Mesajlarını aşağıdan takip edebilirsin.";
+  }else if(humanSession.status==="pending"){
+   $("humanStatus").textContent="HOST isteğin beklemede...";
+  }else if(humanSession.status==="closed"){
+   $("humanStatus").textContent="HOST sohbeti sona erdi.";
+   finishHumanLocally();
+  }
+ }catch(err){
+  $("humanStatus").textContent="HOST durumu alınamadı: "+err.message;
+ }
+}
+
+function renderHumanMessages(messages){
+ const area=$("chat");
+ messages.forEach(m=>{
+  if(m.id&&humanMessageIds.has(String(m.id)))return;
+  if(m.id)humanMessageIds.add(String(m.id));
+  const role=m.sender==="user"?"user":m.sender==="host"?"host":"assistant";
+  addMessage(role,m.content);
+ });
+}
+
+function finishHumanLocally(){
+ if(humanPoll)clearInterval(humanPoll);
+ humanPoll=null;
+ humanSession=null;
+ updateHumanControls();
+}
+
+$("endHuman").onclick=async()=>{
+ if(!humanSession)return;
+ if(!confirm("HOST sohbetine bitirme isteği göndermek istiyor musun?"))return;
+ try{
+  await request("/api/human-chat/message",{
+   method:"POST",
+   body:JSON.stringify({
+    chatId:String(humanSession.chatId),
+    content:"HOST desteğini bitirmek istiyorum."
+   })
+  });
+  $("humanStatus").textContent="Bitirme isteğin HOST'a gönderildi.";
+ }catch(err){alert(err.message);}
+};
+
+function adminHeaders(){
+ return {"Content-Type":"application/json","X-Admin-Token":adminToken};
+}
+
+function stopAdminPolling(){
+ if(adminPoll)clearInterval(adminPoll);
+ adminPoll=null;
+}
+
+function showAdminLogin(){
+ $("mainHeader").classList.add("hidden");
+ $("chatView").classList.add("hidden");
+ $("adminPanel").style.display="none";
+ $("adminLogin").style.display="block";
+}
+function showAdminPanel(){
+ $("adminLogin").style.display="none";
+ $("adminPanel").style.display="block";
+ $("mainHeader").classList.add("hidden");
+ $("chatView").classList.add("hidden");
+}
+function hideAdmin(){
+ $("adminLogin").style.display="none";
+ $("adminPanel").style.display="none";
+ $("mainHeader").classList.remove("hidden");
+ $("chatView").classList.remove("hidden");
+}
+
+$("adminLoginBtn").onclick=showAdminLogin;
+$("cancelLogin").onclick=hideAdmin;
+$("backToChat").onclick=hideAdmin;
+
+$("loginButton").onclick=async()=>{
+ const password=$("adminPassword").value;
+ if(!password){$("adminError").textContent="Şifre gir.";return;}
+ try{
+  const data=await fetch(API+"/api/admin/login",{
    method:"POST",
    headers:{"Content-Type":"application/json"},
    body:JSON.stringify({password})
   });
-
-  const data = await response.json();
-  if(!response.ok) throw new Error(data.error || "Giriş başarısız.");
-  if(!data.token) throw new Error("HOST tokenı alınamadı.");
-
-  localStorage.setItem(ADMIN_TOKEN,data.token);
-  $("adminPassword").value = "";
-  isHost = true;
-  await showAdmin();
-
- }catch(e){
-  error.textContent = e.message;
- }
-}
-
-$("loginButton").onclick = adminLogin;
-$("adminPassword").addEventListener("keydown",e => {
- if(e.key === "Enter") adminLogin();
-});
-
-$("saveMemory").onclick = () => {
- localStorage.setItem(MEMORY_KEY,$("hostMemory").value.trim());
- $("adminStatus").textContent = "HOST bilgileri bu tarayıcıya kaydedildi!";
+  const result=await data.json();
+  if(!data.ok)throw new Error(result.error||"Giriş başarısız.");
+  adminToken=result.token;
+  localStorage.setItem("ipon_admin_token",adminToken);
+  $("adminPassword").value="";
+  showAdminPanel();
+  $("hostMemory").value=localStorage.getItem("ipon_host_memory")||"";
+  await loadHostUsers();
+  await loadHumanChats();
+  adminPoll=setInterval(loadHumanChats,4000);
+ }catch(err){$("adminError").textContent=err.message;}
 };
 
-/* HOST KULLANICI LİSTESİ */
+$("logoutButton").onclick=()=>{
+ stopAdminPolling();
+ adminToken="";
+ localStorage.removeItem("ipon_admin_token");
+ hideAdmin();
+};
+
+$("saveMemory").onclick=()=>{
+ localStorage.setItem("ipon_host_memory",$("hostMemory").value);
+ alert("HOST bilgileri bu tarayıcıya kaydedildi.");
+};
 
 async function loadHostUsers(){
- const select = $("hostUserSelect");
- const results = $("hostChatResults");
- results.textContent = "Kullanıcılar yükleniyor...";
- select.innerHTML = "";
-
  try{
-  const response = await fetch("/api/admin/users",{
-   headers:{Authorization:"Bearer " + localStorage.getItem(ADMIN_TOKEN)}
-  });
-
-  const data = await response.json();
-  if(!response.ok) throw new Error(data.error || "Kullanıcılar alınamadı.");
-
-  const users = Array.isArray(data.users) ? data.users : [];
-
-  const first = document.createElement("option");
-  first.value = "";
-  first.textContent = "Kullanıcı seç";
-  select.appendChild(first);
-
-  users.forEach(user => {
-   const option = document.createElement("option");
-   option.value = user.id;
-   option.textContent = user.username + (
-    user.chatSharingConsent === true ? " — 🟢 İzin verdi" : " — 🔒 İzin yok"
-   );
-   option.disabled = user.chatSharingConsent !== true;
+  const data=await request("/api/admin/users");
+  const select=$("hostUserSelect");
+  select.innerHTML='<option value="">Kullanıcı seç</option>';
+  (data.users||[]).forEach(u=>{
+   const option=document.createElement("option");
+   option.value=u.id;
+   option.textContent=u.username;
    select.appendChild(option);
   });
+ }catch(err){$("hostChatResults").textContent="Kullanıcılar yüklenemedi: "+err.message;}
+}
+$("refreshUsers").onclick=loadHostUsers;
 
-  results.textContent = users.length
-   ? "Kullanıcı listesi güncellendi. Yalnızca izin verenler seçilebilir."
-   : "Henüz kullanıcı bulunamadı.";
+$("viewUserChats").onclick=async()=>{
+ const id=$("hostUserSelect").value;
+ if(!id){alert("Önce kullanıcı seç.");return;}
+ try{
+  const data=await request("/api/admin/users/"+encodeURIComponent(id)+"/chats");
+  const results=$("hostChatResults");
+  results.innerHTML="";
+  (data.chats||[]).forEach(chat=>{
+   const box=document.createElement("div");
+   box.className="host-chat";
+   const heading=document.createElement("h4");
+   heading.textContent=chat.title||"Kullanıcı sohbeti";
+   box.appendChild(heading);
+   (chat.messages||[]).forEach(m=>{
+    const msg=document.createElement("div");
+    msg.className="host-message "+(m.role==="user"?"user":"assistant");
+    msg.textContent=(m.role==="user"?"Kullanıcı: ":"IPON AI: ")+m.content;
+    box.appendChild(msg);
+   });
+   results.appendChild(box);
+  });
+ }catch(err){$("hostChatResults").textContent="Sohbetler yüklenemedi: "+err.message;}
+};
 
- }catch(error){
-  results.textContent = "Hata: " + error.message;
- }
+async function loadHumanChats(){
+ if(!adminToken)return;
+ try{
+  const data=await request("/api/admin/human-chats");
+  const queue=$("humanChatQueue");
+  queue.innerHTML="";
+  (data.sessions||[]).forEach(s=>{
+   const box=document.createElement("div");
+   box.className="host-session";
+   const heading=document.createElement("strong");
+   heading.textContent=(s.username||"Kullanıcı")+" — "+(s.status||"bekliyor");
+   box.appendChild(heading);
+   const info=document.createElement("p");
+   info.className="host-muted";
+   info.textContent="Sohbet: "+(s.chat_id||s.chatId||"");
+   box.appendChild(info);
+   const open=document.createElement("button");
+   open.textContent="Sohbeti aç";
+   open.onclick=()=>openHumanSession(s.id);
+   box.appendChild(open);
+   if(s.status==="pending"){
+    const accept=document.createElement("button");
+    accept.textContent="Kabul et";
+    accept.style.background="#287b67";
+    accept.onclick=()=>acceptHumanSession(s.id);
+    box.appendChild(accept);
+   }
+   queue.appendChild(box);
+  });
+  if(!data.sessions?.length)queue.textContent="Bekleyen HOST desteği talebi yok.";
+ }catch(err){$("humanChatQueue").textContent="Talepler yüklenemedi: "+err.message;}
 }
 
-$("refreshUsers").onclick = loadHostUsers;
-
-$("viewUserChats").onclick = async () => {
- const userId = $("hostUserSelect").value;
- const results = $("hostChatResults");
- results.textContent = "";
-
- if(!userId){
-  results.textContent = "Önce izin vermiş bir kullanıcı seç.";
-  return;
- }
-
+async function acceptHumanSession(id){
  try{
-  const response = await fetch(
-   "/api/admin/users/" + encodeURIComponent(userId) + "/chats",
-   {headers:{Authorization:"Bearer " + localStorage.getItem(ADMIN_TOKEN)}}
-  );
+  await request("/api/admin/human-chats/"+encodeURIComponent(id)+"/accept",{method:"POST"});
+  await openHumanSession(id);
+  await loadHumanChats();
+ }catch(err){alert(err.message);}
+}
 
-  const data = await response.json();
-  if(!response.ok) throw new Error(data.error || "Sohbetler alınamadı.");
-
-  const userChats = Array.isArray(data.chats)
-   ? data.chats
-   : (Array.isArray(data.logs) ? data.logs : []);
-
-  if(!userChats.length){
-   results.textContent = "Bu kullanıcının paylaşılmış sohbeti bulunmuyor.";
-   return;
+async function openHumanSession(id){
+ try{
+  const data=await request("/api/admin/human-chats/"+encodeURIComponent(id));
+  const queue=$("humanChatQueue");
+  let box=document.getElementById("activeHuman_"+id);
+  if(!box){
+   box=document.createElement("div");
+   box.id="activeHuman_"+id;
+   box.className="host-session";
+   queue.prepend(box);
   }
-
-  userChats.forEach(savedChat => {
-   const card = document.createElement("div");
-   card.className = "host-chat";
-
-   const title = document.createElement("h4");
-   title.textContent = savedChat.title || "İsimsiz sohbet";
-   card.appendChild(title);
-
-   const messages = Array.isArray(savedChat.messages) ? savedChat.messages : [];
-
-   messages.forEach(message => {
-    const bubble = document.createElement("div");
-    bubble.className = "host-message " +
-     (message.role === "user" ? "user" : "assistant");
-
-    const who = document.createElement("strong");
-    who.textContent = message.role === "user" ? "Kullanıcı: " : "IPON AI: ";
-
-    const content = document.createElement("span");
-    content.textContent = String(message.content || "");
-
-    bubble.append(who,content);
-
-    if(message.imageName){
-     const imageNote = document.createElement("div");
-     imageNote.className = "host-muted";
-     imageNote.textContent = "🖼️ Fotoğraf gönderilmiş: " + message.imageName;
-     bubble.appendChild(imageNote);
-    }
-
-    card.appendChild(bubble);
-   });
-
-   results.appendChild(card);
+  box.innerHTML="";
+  const title=document.createElement("h3");
+  title.textContent="HOST sohbeti";
+  box.appendChild(title);
+  const messages=document.createElement("div");
+  messages.className="host-chat";
+  (data.messages||[]).forEach(m=>{
+   const line=document.createElement("div");
+   line.className="host-message "+(m.sender==="host"?"host":m.sender==="user"?"user":"assistant");
+   line.textContent=(m.sender==="host"?"HOST: ":m.sender==="user"?"Kullanıcı: ":"IPON AI: ")+m.content;
+   messages.appendChild(line);
   });
+  box.appendChild(messages);
+  const textarea=document.createElement("textarea");
+  textarea.placeholder="HOST yanıtını buraya yaz...";
+  box.appendChild(textarea);
+  const send=document.createElement("button");
+  send.textContent="Yanıtı gönder";
+  send.style.background="#287b67";
+  send.onclick=async()=>{
+   const content=textarea.value.trim();
+   if(!content)return;
+   send.disabled=true;
+   try{
+    await request("/api/admin/human-chats/"+encodeURIComponent(id)+"/reply",{
+     method:"POST",body:JSON.stringify({content})
+    });
+    textarea.value="";
+    await openHumanSession(id);
+   }catch(err){alert(err.message);}
+   finally{send.disabled=false;}
+  };
+  box.appendChild(send);
+  const close=document.createElement("button");
+  close.textContent="Sohbeti kapat";
+  close.style.background="#8d4655";
+  close.onclick=async()=>{
+   if(!confirm("Bu HOST sohbetini kapatmak istiyor musun?"))return;
+   try{
+    await request("/api/admin/human-chats/"+encodeURIComponent(id)+"/close",{method:"POST"});
+    await loadHumanChats();
+   }catch(err){alert(err.message);}
+  };
+  box.appendChild(close);
+ }catch(err){alert("Sohbet açılamadı: "+err.message);}
+}
 
- }catch(error){
-  results.textContent = "Hata: " + error.message;
- }
-};
-
-$("logoutButton").onclick = async () => {
- const token = localStorage.getItem(ADMIN_TOKEN);
-
- try{
-  if(token){
-   await fetch("/api/admin/logout",{
-    method:"POST",
-    headers:{Authorization:"Bearer " + token}
-   });
-  }
- }catch{}
-
- localStorage.removeItem(ADMIN_TOKEN);
- isHost = false;
- showChat();
-};
-
-/* UYGULAMAYI BAŞLAT */
-checkUserSession();
-</script>
+if(adminToken){
+ $("adminLoginBtn").textContent="👑 HOST PANELİ";
+ $("adminLoginBtn").onclick=()=>{
+  showAdminPanel();
+  loadHostUsers();
+  loadHumanChats();
+  stopAdminPolling();
+  adminPoll=setInterval(loadHumanChats,4000);
+ };
+}
+checkSession();
+ </script>
 </body>
 </html>
