@@ -63,7 +63,201 @@ header{text-align:center;width:100%}h1{font-size:36px;margin:5px}.subtitle{color
 #humanStatus{font-size:12px;color:#f4c542;margin-top:8px}
 .host-session{background:#20283a;border:1px solid #39445b;border-radius:10px;padding:12px;margin:9px 0}
 .host-session textarea{min-height:65px}
+
 @media(max-width:600px){
+  /* Mobil uygulama düzeni */
+  .app{
+    height:100dvh;
+    flex-direction:column;
+  }
+
+  /* Üst menü */
+  .sidebar{
+    width:100%;
+    height:auto;
+    flex:0 0 auto;
+    padding:8px 10px;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    border-right:0;
+    border-bottom:1px solid #30394d;
+  }
+
+  .logo{
+    font-size:19px;
+    margin:0;
+    text-align:left;
+  }
+
+  .newchat{
+    width:auto;
+    margin:0;
+    padding:9px 12px;
+    font-size:12px;
+  }
+
+  /* Mobilde geçmiş listesini gizle */
+  .history-title,
+  #chatList{
+    display:none;
+  }
+
+  /* Kullanıcı ve çıkış alanı */
+  .sidebar-user{
+    margin-top:0;
+    padding-top:7px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    border-top:1px solid #30394d;
+    overflow:visible;
+  }
+
+  #usernameLabel{
+    flex:0 1 auto;
+    max-width:85px;
+    font-size:11px;
+    margin:0;
+    overflow-wrap:anywhere;
+  }
+
+  .privacy-box{
+    flex:1;
+    min-width:0;
+    margin:0;
+    padding:5px;
+  }
+
+  .privacy-box p{
+    display:none;
+  }
+
+  .privacy-button{
+    padding:8px 4px;
+    font-size:10px;
+  }
+
+  #privacyStatus{
+    font-size:9px;
+    margin:3px 0 0;
+  }
+
+  .user-logout{
+    width:auto;
+    flex:0 0 auto;
+    padding:10px 8px;
+    font-size:10px;
+    background:#9d3e50;
+  }
+
+  /* Ana sohbet alanı */
+  .main{
+    flex:1;
+    min-height:0;
+    padding:7px;
+  }
+
+  h1{
+    font-size:25px;
+  }
+
+  .subtitle{
+    font-size:11px;
+  }
+
+  .admin-btn{
+    margin:5px auto;
+    padding:9px;
+    font-size:11px;
+  }
+
+  #chatView{
+    min-height:0;
+  }
+
+  .modes{
+    gap:5px;
+    margin:6px auto;
+  }
+
+  .mode{
+    font-size:11px;
+    padding:9px 4px;
+  }
+
+  #modeInfo{
+    font-size:11px;
+    margin-bottom:5px;
+  }
+
+  .human-box{
+    padding:7px;
+    margin:3px 0 6px;
+  }
+
+  .human-box p{
+    font-size:10px;
+  }
+
+  .human-actions button{
+    font-size:10px;
+    padding:8px;
+  }
+
+  #chat{
+    min-height:0;
+    padding:7px;
+    margin-bottom:7px;
+  }
+
+  .message{
+    max-width:96%;
+    padding:10px 12px;
+    font-size:14px;
+  }
+
+  .bottom-tools{
+    flex-wrap:wrap;
+    gap:5px;
+    margin-bottom:5px;
+  }
+
+  .tool-btn{
+    font-size:10px;
+    padding:8px;
+  }
+
+  #chatForm{
+    gap:5px;
+  }
+
+  #message{
+    padding:12px;
+    font-size:14px;
+  }
+
+  #sendButton{
+    min-width:60px;
+    padding:10px;
+    font-size:12px;
+  }
+
+  .panel{
+    padding:10px;
+    max-height:75dvh;
+    margin:5px auto;
+  }
+
+  .panel button{
+    font-size:11px;
+  }
+
+  .admin-actions{
+    gap:5px;
+  }
+}
+
  .sidebar{width:115px;padding:7px}.logo{font-size:17px}.chat-item{padding:8px}
  .chat-title{font-size:11px}.delete{padding:3px}.main{padding:7px}h1{font-size:28px}
  .message{max-width:94%}.modes{gap:5px}.mode{font-size:11px;padding:10px 5px}
