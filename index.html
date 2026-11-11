@@ -401,9 +401,14 @@ async function sendChatMessage(e){
    method:"POST",
    body:JSON.stringify({
     messages:messages.map(m=>({role:m.role==="assistant"?"assistant":"user",content:m.content})),
-mode,trollMode,isHost:false,hostMemory:"",image,
+mode,
+trollMode,
+isHost:false,
+hostMemory:"",
+image,
 chatId:String(currentChat)
-  });
+ })
+});
   const answer=data.reply||data.response||data.message||"Yanıt alınamadı.";
   messages.push({role:"assistant",content:answer});
   saveChats();
