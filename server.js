@@ -1,5 +1,5 @@
+
 import path from "path";
-import fs from "fs/promises";
 import crypto from "crypto";
 import { promisify } from "util";
 import { fileURLToPath } from "url";
@@ -7,8 +7,11 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import rateLimit from "express-rate-limit";
+import pg from "pg";
 
 dotenv.config();
+
+const { Pool } = pg;
 
 const app = express();
 app.set("trust proxy", 1);
@@ -19,51 +22,38 @@ const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 3000;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-
-// Render kalıcı disk bağlanınca DATA_DIR=/var/data olacak.
-const DATA_DIR = process.env.DATA_DIR || __dirname;
-const USERS_FILE = path.join(DATA_DIR, "users.json");
+const DATABASE_URL = process.env.DATABASE_URL;
 
 const scrypt = promisify(crypto.scrypt);
 
-if (!GROQ_API_KEY) {
-  throw new Error("GROQ_API_KEY eksik!");
-}
+if (!GROQ_API_KEY) throw new Error("GROQ_API_KEY eksik!");
+if (!ADMIN_PASSWORD) throw new Error("ADMIN_PASSWORD eksik!");
+if (!DATABASE_URL) throw new Error("DATABASE_URL eksik!");
 
-if (!ADMIN_PASSWORD) {
-  throw new Error("ADMIN_PASSWORD eksik!");
-}
+const pool = new Pool({
+  connectionString: DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+  max: 5,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000
+});
 
-await fs.mkdir(DATA_DIR, { recursive: true });
+// Veritabanı tablolarını hazırla
+await pool.query(`
+  CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    username TEXT NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  )
+`);
 
-let users = [];
+await pool.query(`
+  CREATE UNIQUE INDEX IF NOT EXISTS users_username_lower_idx
+  ON users (LOWER(username))
+`);
 
-try {
-  const savedUsers = await fs.readFile(USERS_FILE, "utf8");
-  users = JSON.parse(savedUsers);
-
-  if (!Array.isArray(users)) {
-    users = [];
-  }
-} catch {
-  await fs.writeFile(USERS_FILE, "[]", "utf8");
-}
-
-let saveQueue = Promise.resolve();
-
-function saveUsers() {
-  saveQueue = saveQueue.then(async () => {
-    const temporaryFile = USERS_FILE + ".tmp";
-    await fs.writeFile(
-      temporaryFile,
-      JSON.stringify(users, null, 2),
-      "utf8"
-    );
-    await fs.rename(temporaryFile, USERS_FILE);
-  });
-
-  return saveQueue;
-}
+console.log("PostgreSQL bağlantısı hazır!");
 
 app.use(cors());
 app.use(express.json({ limit: "10mb" }));
@@ -103,24 +93,19 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// TOKEN OLUŞTURMA
 function createToken() {
   return crypto.randomBytes(32).toString("hex");
 }
 
-// ŞİFRE HASHLEME
 async function hashPassword(password) {
   const salt = crypto.randomBytes(16).toString("hex");
   const derivedKey = await scrypt(password, salt, 64);
-
   return `${salt}:${derivedKey.toString("hex")}`;
 }
 
-// ŞİFRE KONTROLÜ
 async function verifyPassword(password, storedHash) {
   try {
     const [salt, key] = storedHash.split(":");
-
     if (!salt || !key) return false;
 
     const derivedKey = await scrypt(password, salt, 64);
@@ -135,15 +120,15 @@ async function verifyPassword(password, storedHash) {
   }
 }
 
-// KULLANICI TOKEN KONTROLÜ
-function getUserFromRequest(req) {
+function getBearerToken(req) {
   const header = req.headers.authorization || "";
+  return header.startsWith("Bearer ") ? header.slice(7) : "";
+}
 
-  if (!header.startsWith("Bearer ")) {
-    return null;
-  }
+async function getUserFromRequest(req) {
+  const token = getBearerToken(req);
+  if (!token) return null;
 
-  const token = header.slice(7);
   const session = userSessions.get(token);
 
   if (!session || session.expiry < Date.now()) {
@@ -151,16 +136,16 @@ function getUserFromRequest(req) {
     return null;
   }
 
-  return users.find(user => user.id === session.userId) || null;
+  const result = await pool.query(
+    "SELECT id, username, created_at FROM users WHERE id = $1",
+    [session.userId]
+  );
+
+  return result.rows[0] || null;
 }
 
-// HOST TOKEN KONTROLÜ
 function isValidAdmin(req) {
-  const header = req.headers.authorization || "";
-  const token = header.startsWith("Bearer ")
-    ? header.slice(7)
-    : "";
-
+  const token = getBearerToken(req);
   if (!token) return false;
 
   const expiry = adminSessions.get(token);
@@ -176,8 +161,7 @@ function isValidAdmin(req) {
 // KULLANICI KAYDI
 app.post("/api/auth/register", async (req, res) => {
   try {
-    const username = req.body?.username;
-    const password = req.body?.password;
+    const { username, password } = req.body || {};
 
     if (
       typeof username !== "string" ||
@@ -202,26 +186,28 @@ app.post("/api/auth/register", async (req, res) => {
       });
     }
 
-    const exists = users.some(
-      user => user.username.toLowerCase() === cleanUsername.toLowerCase()
-    );
+    const passwordHash = await hashPassword(password);
+    const id = crypto.randomUUID();
 
-    if (exists) {
-      return res.status(409).json({
-        error: "Bu kullanıcı adı zaten alınmış."
-      });
+    let result;
+
+    try {
+      result = await pool.query(
+        `INSERT INTO users (id, username, password_hash)
+         VALUES ($1, $2, $3)
+         RETURNING id, username`,
+        [id, cleanUsername, passwordHash]
+      );
+    } catch (error) {
+      if (error.code === "23505") {
+        return res.status(409).json({
+          error: "Bu kullanıcı adı zaten alınmış."
+        });
+      }
+      throw error;
     }
 
-    const user = {
-      id: crypto.randomUUID(),
-      username: cleanUsername,
-      passwordHash: await hashPassword(password),
-      createdAt: new Date().toISOString()
-    };
-
-    users.push(user);
-    await saveUsers();
-
+    const user = result.rows[0];
     const token = createToken();
 
     userSessions.set(token, {
@@ -232,15 +218,10 @@ app.post("/api/auth/register", async (req, res) => {
     res.status(201).json({
       success: true,
       token,
-      user: {
-        id: user.id,
-        username: user.username
-      }
+      user
     });
-
   } catch (error) {
     console.error("Kayıt hatası:", error.message);
-
     res.status(500).json({
       error: "Kayıt sırasında bir sorun oluştu."
     });
@@ -250,8 +231,7 @@ app.post("/api/auth/register", async (req, res) => {
 // KULLANICI GİRİŞİ
 app.post("/api/auth/login", async (req, res) => {
   try {
-    const username = req.body?.username;
-    const password = req.body?.password;
+    const { username, password } = req.body || {};
 
     if (
       typeof username !== "string" ||
@@ -262,11 +242,16 @@ app.post("/api/auth/login", async (req, res) => {
       });
     }
 
-    const user = users.find(
-      item => item.username.toLowerCase() === username.trim().toLowerCase()
+    const result = await pool.query(
+      `SELECT id, username, password_hash
+       FROM users
+       WHERE LOWER(username) = LOWER($1)`,
+      [username.trim()]
     );
 
-    if (!user || !(await verifyPassword(password, user.passwordHash))) {
+    const user = result.rows[0];
+
+    if (!user || !(await verifyPassword(password, user.password_hash))) {
       return res.status(401).json({
         error: "Kullanıcı adı veya şifre yanlış."
       });
@@ -287,10 +272,8 @@ app.post("/api/auth/login", async (req, res) => {
         username: user.username
       }
     });
-
   } catch (error) {
     console.error("Giriş hatası:", error.message);
-
     res.status(500).json({
       error: "Giriş sırasında bir sorun oluştu."
     });
@@ -298,33 +281,34 @@ app.post("/api/auth/login", async (req, res) => {
 });
 
 // OTURUM KONTROLÜ
-app.get("/api/auth/me", (req, res) => {
-  const user = getUserFromRequest(req);
+app.get("/api/auth/me", async (req, res) => {
+  try {
+    const user = await getUserFromRequest(req);
 
-  if (!user) {
-    return res.status(401).json({
-      error: "Oturum bulunamadı."
+    if (!user) {
+      return res.status(401).json({
+        error: "Oturum bulunamadı."
+      });
+    }
+
+    res.json({
+      valid: true,
+      user: {
+        id: user.id,
+        username: user.username
+      }
+    });
+  } catch (error) {
+    console.error("Oturum kontrol hatası:", error.message);
+    res.status(500).json({
+      error: "Oturum kontrol edilemedi."
     });
   }
-
-  res.json({
-    valid: true,
-    user: {
-      id: user.id,
-      username: user.username
-    }
-  });
 });
 
 // KULLANICI ÇIKIŞI
 app.post("/api/auth/logout", (req, res) => {
-  const header = req.headers.authorization || "";
-  const token = header.startsWith("Bearer ")
-    ? header.slice(7)
-    : "";
-
-  userSessions.delete(token);
-
+  userSessions.delete(getBearerToken(req));
   res.json({ success: true });
 });
 
@@ -352,14 +336,11 @@ app.post("/api/admin/login", (req, res) => {
     }
 
     const token = createToken();
-
     adminSessions.set(token, Date.now() + 60 * 60 * 1000);
 
     res.json({ token });
-
   } catch (error) {
-    console.error(error);
-
+    console.error("HOST giriş hatası:", error.message);
     res.status(500).json({
       error: "Giriş hatası."
     });
@@ -378,31 +359,38 @@ app.get("/api/admin/check", (req, res) => {
 });
 
 // HOST KULLANICI LİSTESİ
-app.get("/api/admin/users", (req, res) => {
+app.get("/api/admin/users", async (req, res) => {
   if (!isValidAdmin(req)) {
     return res.status(401).json({
       error: "HOST yetkisi gerekli."
     });
   }
 
-  res.json({
-    users: users.map(user => ({
-      id: user.id,
-      username: user.username,
-      createdAt: user.createdAt
-    }))
-  });
+  try {
+    const result = await pool.query(
+      `SELECT id, username, created_at
+       FROM users
+       ORDER BY created_at DESC`
+    );
+
+    res.json({
+      users: result.rows.map(user => ({
+        id: user.id,
+        username: user.username,
+        createdAt: user.created_at
+      }))
+    });
+  } catch (error) {
+    console.error("Kullanıcı listesi hatası:", error.message);
+    res.status(500).json({
+      error: "Kullanıcı listesi alınamadı."
+    });
+  }
 });
 
 // HOST ÇIKIŞI
 app.post("/api/admin/logout", (req, res) => {
-  const header = req.headers.authorization || "";
-  const token = header.startsWith("Bearer ")
-    ? header.slice(7)
-    : "";
-
-  adminSessions.delete(token);
-
+  adminSessions.delete(getBearerToken(req));
   res.json({ success: true });
 });
 
@@ -417,6 +405,15 @@ app.post("/api/chat", async (req, res) => {
       hostMemory,
       image
     } = req.body || {};
+
+    const hostAuthorized = isHost === true && isValidAdmin(req);
+    const user = await getUserFromRequest(req);
+
+    if (!user && !hostAuthorized) {
+      return res.status(401).json({
+        error: "Sohbet etmek için giriş yapmalısın."
+      });
+    }
 
     if (!Array.isArray(messages)) {
       return res.status(400).json({
@@ -443,10 +440,7 @@ app.post("/api/chat", async (req, res) => {
       });
     }
 
-    const hostAuthorized = isHost === true && isValidAdmin(req);
-
-    let systemPrompt =
-      mode === "bad" ? BAD_MODE : GOOD_MODE;
+    let systemPrompt = mode === "bad" ? BAD_MODE : GOOD_MODE;
 
     if (trollMode === true) {
       systemPrompt += `
@@ -506,10 +500,7 @@ Bu bilgileri yalnızca bu yetkili HOST oturumunda kullan.
       finalMessages[lastUserIndex] = {
         role: "user",
         content: [
-          {
-            type: "text",
-            text: lastMessage.content
-          },
+          { type: "text", text: lastMessage.content },
           {
             type: "image_url",
             image_url: { url: image }
@@ -525,16 +516,13 @@ Bu bilgileri yalnızca bu yetkili HOST oturumunda kullan.
       {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${GROQ_API_KEY}`,
+          Authorization: `Bearer ${GROQ_API_KEY}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           model,
           messages: [
-            {
-              role: "system",
-              content: systemPrompt
-            },
+            { role: "system", content: systemPrompt },
             ...finalMessages
           ]
         })
@@ -545,7 +533,6 @@ Bu bilgileri yalnızca bu yetkili HOST oturumunda kullan.
 
     if (!response.ok) {
       console.error("Groq hatası:", data.error?.message);
-
       return res.status(502).json({
         error: "Yapay zekâ bağlantısında sorun oluştu."
       });
@@ -558,10 +545,8 @@ Bu bilgileri yalnızca bu yetkili HOST oturumunda kullan.
     }
 
     res.json({ answer });
-
   } catch (error) {
     console.error("IPON AI hatası:", error.message);
-
     res.status(500).json({
       error: "IPON AI şu anda cevap veremedi."
     });
