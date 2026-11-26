@@ -8,321 +8,224 @@
 *{box-sizing:border-box}
 body{margin:0;background:#101522;color:white;font-family:Arial,sans-serif;height:100vh;overflow:hidden}
 button{border:0;border-radius:10px;padding:12px;color:white;background:#6475ed;cursor:pointer;font-weight:bold}
-button:hover{filter:brightness(1.15)}button:disabled{opacity:.5;cursor:not-allowed}
-input,textarea{font-family:Arial,sans-serif}.hidden{display:none!important}
+button:hover{filter:brightness(1.15)}
+button:disabled{opacity:.5;cursor:not-allowed}
+input,textarea{font-family:Arial,sans-serif}
+.hidden{display:none!important}
 #authScreen{height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
 .auth-box{width:100%;max-width:390px;background:#171f30;border:1px solid #30394d;border-radius:18px;padding:28px;box-shadow:0 15px 50px #0005}
 .auth-logo{text-align:center;font-size:32px;font-weight:bold;color:#a5b4fc;margin-bottom:5px}
 .auth-subtitle{text-align:center;color:#9aa6c4;margin:0 0 25px;font-size:13px}
-.auth-tabs{display:flex;gap:8px;margin-bottom:18px}.auth-tabs button{flex:1;background:#30394d}
+.auth-tabs{display:flex;gap:8px;margin-bottom:18px}
+.auth-tabs button{flex:1;background:#30394d}
 .auth-tabs button.active{background:#6475ed}
 .auth-box input{width:100%;padding:14px;margin:7px 0;border:1px solid #424d68;border-radius:9px;background:#101522;color:white;outline:none}
-.auth-submit{width:100%;margin-top:12px}.auth-info{font-size:12px;color:#9aa6c4;line-height:1.5}
+.auth-submit{width:100%;margin-top:12px}
+.auth-info{font-size:12px;color:#9aa6c4;line-height:1.5}
 .auth-error{color:#ff7785;font-size:13px;min-height:18px}
-.app{display:flex;height:100vh}.sidebar{width:250px;flex-shrink:0;background:#171c29;padding:16px;display:flex;flex-direction:column;border-right:1px solid #30394d}
+.app{display:flex;height:100vh}
+.sidebar{width:250px;flex-shrink:0;background:#171c29;padding:16px;display:flex;flex-direction:column;border-right:1px solid #30394d}
 .logo{text-align:center;font-size:25px;font-weight:bold;margin:12px 0 25px;color:#a5b4fc}
-.newchat{width:100%;margin-bottom:20px}.history-title{font-size:12px;color:#9aa6c4;margin:8px 0}
-#chatList{overflow-y:auto}.chat-item{padding:11px;border-radius:9px;margin-bottom:7px;background:#252b3b;display:flex;align-items:center;gap:5px;cursor:pointer}
-.chat-item.active{background:#39476b}.chat-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
-.delete{background:transparent;color:#ff7785;padding:5px}.sidebar-user{margin-top:auto;border-top:1px solid #30394d;padding-top:12px;overflow:hidden}
+.newchat{width:100%;margin-bottom:20px}
+.history-title{font-size:12px;color:#9aa6c4;margin:8px 0}
+#chatList{overflow-y:auto}
+.chat-item{padding:11px;border-radius:9px;margin-bottom:7px;background:#252b3b;display:flex;align-items:center;gap:5px;cursor:pointer}
+.chat-item.active{background:#39476b}
+.chat-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+.delete{background:transparent;color:#ff7785;padding:5px}
+.sidebar-user{margin-top:auto;border-top:1px solid #30394d;padding-top:12px;overflow:hidden}
 #usernameLabel{font-size:12px;color:#a5b4fc;overflow-wrap:anywhere;margin-bottom:8px}
 .user-logout{width:100%;background:#30394d;font-size:12px}
 .main{flex:1;min-width:0;padding:15px;display:flex;flex-direction:column;align-items:center}
-header{text-align:center;width:100%}h1{font-size:36px;margin:5px}.subtitle{color:#a5b4fc;margin:5px}
+header{text-align:center;width:100%}
+h1{font-size:36px;margin:5px}
+.subtitle{color:#a5b4fc;margin:5px}
 .admin-btn{background:#b58a25;margin:10px auto;display:block}
 .modes{display:flex;gap:12px;width:100%;max-width:500px;margin:12px auto}
-.mode{flex:1;background:#343b50}.mode.active.good{background:#19875a}.mode.active.bad{background:#a33c50}
+.mode{flex:1;background:#343b50}
+.mode.active.good{background:#19875a}
+.mode.active.bad{background:#a33c50}
 #modeInfo{color:#aeb8d0;font-size:13px;margin:0 0 10px}
 #chat{width:100%;max-width:850px;flex:1;overflow-y:auto;padding:12px;margin-bottom:12px}
 .welcome{text-align:center;color:#9eabc8;margin-top:65px}
 .message{max-width:80%;padding:13px 16px;border-radius:14px;margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45}
-.message.user{background:#4659a8;margin-left:auto}.message.assistant{background:#252e42;margin-right:auto}
-.message.host{background:#315b50;margin-right:auto}.message img{display:block;max-width:230px;max-height:220px;border-radius:10px;margin-bottom:8px}
+.message.user{background:#4659a8;margin-left:auto}
+.message.assistant{background:#252e42;margin-right:auto}
+.message.host{background:#315b50;margin-right:auto}
+.message img{display:block;max-width:230px;max-height:220px;border-radius:10px;margin-bottom:8px}
 #chatForm{display:flex;gap:8px;width:100%;max-width:850px}
 #message{flex:1;min-width:0;padding:15px;border:0;border-radius:12px;background:#252b3b;color:white;outline:none}
-#sendButton{min-width:85px}.bottom-tools{display:flex;gap:8px;width:100%;max-width:850px;margin-bottom:8px}
-.tool-btn{background:#30394d;font-size:12px;padding:9px 12px}#imageInput{display:none}
+#sendButton{min-width:85px}
+.bottom-tools{display:flex;gap:8px;width:100%;max-width:850px;margin-bottom:8px}
+.tool-btn{background:#30394d;font-size:12px;padding:9px 12px}
+#imageInput{display:none}
 #imageName{font-size:12px;color:#a5b4fc;align-self:center;overflow:hidden}
 .panel{display:none;background:#20283a;border:1px solid #b58a25;border-radius:15px;padding:20px;max-width:850px;width:100%;margin:15px auto;overflow-y:auto;max-height:85vh}
 .panel input,.panel textarea,.panel select{width:100%;padding:13px;margin:8px 0;border:1px solid #424d68;border-radius:9px;background:#151c2b;color:white}
-.panel textarea{min-height:100px;resize:vertical}.panel button{margin:5px}
-.host-title{color:#f4c542;font-size:24px}#adminError{color:#ff6978}#adminStatus{color:#38d996}
+.panel textarea{min-height:100px;resize:vertical}
+.panel button{margin:5px}
+.host-title{color:#f4c542;font-size:24px}
+#adminError{color:#ff6978}
+#adminStatus{color:#38d996}
 .admin-actions{display:flex;flex-wrap:wrap;justify-content:center}
 .privacy-box{background:#20283a;border:1px solid #424d68;border-radius:10px;padding:10px;margin-top:10px}
 .privacy-box p{font-size:11px;color:#aeb8d0;line-height:1.4;margin:6px 0}
 .privacy-button{width:100%;padding:9px;background:#30394d;font-size:11px}
 #privacyStatus{font-size:11px;color:#f4c542;margin:7px 0}
 #hostUsers{background:#151c2b;border-radius:10px;padding:12px;margin-top:15px}
-#hostUsers select{width:100%}.host-chat{background:#151c2b;border:1px solid #39445b;border-radius:10px;padding:12px;margin:10px 0}
+#hostUsers select{width:100%}
+.host-chat{background:#151c2b;border:1px solid #39445b;border-radius:10px;padding:12px;margin:10px 0}
 .host-message{padding:9px;border-radius:8px;margin:7px 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}
-.host-message.user{background:#344783}.host-message.assistant{background:#30394d}.host-message.host{background:#315b50}
+.host-message.user{background:#344783}
+.host-message.assistant{background:#30394d}
+.host-message.host{background:#315b50}
 .host-muted{font-size:12px;color:#aeb8d0}
 .human-box{width:100%;max-width:850px;background:#20283a;border:1px solid #4c6a8b;border-radius:10px;padding:10px;margin:5px 0 10px}
 .human-box p{font-size:12px;color:#c1cbe0;line-height:1.45;margin:5px 0 10px}
-.human-actions{display:flex;gap:8px;flex-wrap:wrap}.human-actions button{font-size:12px;padding:9px}
+.human-actions{display:flex;gap:8px;flex-wrap:wrap}
+.human-actions button{font-size:12px;padding:9px}
 #humanStatus{font-size:12px;color:#f4c542;margin-top:8px}
 .host-session{background:#20283a;border:1px solid #39445b;border-radius:10px;padding:12px;margin:9px 0}
 .host-session textarea{min-height:65px}
 
 @media(max-width:600px){
-  /* Mobil uygulama düzeni */
-  .app{
-    height:100dvh;
-    flex-direction:column;
-  }
-
-  /* Üst menü */
-  .sidebar{
-    width:100%;
-    height:auto;
-    flex:0 0 auto;
-    padding:8px 10px;
-    display:flex;
-    flex-direction:column;
-    gap:7px;
-    border-right:0;
-    border-bottom:1px solid #30394d;
-  }
-
-  .logo{
-    font-size:19px;
-    margin:0;
-    text-align:left;
-  }
-
-  .newchat{
-    width:auto;
-    margin:0;
-    padding:9px 12px;
-    font-size:12px;
-  }
-
-  /* Mobilde geçmiş listesini gizle */
-  .history-title,
-  #chatList{
-    display:none;
-  }
-
-  /* Kullanıcı ve çıkış alanı */
-  .sidebar-user{
-    margin-top:0;
-    padding-top:7px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    border-top:1px solid #30394d;
-    overflow:visible;
-  }
-
-  #usernameLabel{
-    flex:0 1 auto;
-    max-width:85px;
-    font-size:11px;
-    margin:0;
-    overflow-wrap:anywhere;
-  }
-
-  .privacy-box{
-    flex:1;
-    min-width:0;
-    margin:0;
-    padding:5px;
-  }
-
-  .privacy-box p{
-    display:none;
-  }
-
-  .privacy-button{
-    padding:8px 4px;
-    font-size:10px;
-  }
-
-  #privacyStatus{
-    font-size:9px;
-    margin:3px 0 0;
-  }
-
-  .user-logout{
-    width:auto;
-    flex:0 0 auto;
-    padding:10px 8px;
-    font-size:10px;
-    background:#9d3e50;
-  }
-
-  /* Ana sohbet alanı */
-  .main{
-    flex:1;
-    min-height:0;
-    padding:7px;
-  }
-
-  h1{
-    font-size:25px;
-  }
-
-  .subtitle{
-    font-size:11px;
-  }
-
-  .admin-btn{
-    margin:5px auto;
-    padding:9px;
-    font-size:11px;
-  }
-
-  #chatView{
-    min-height:0;
-  }
-
-  .modes{
-    gap:5px;
-    margin:6px auto;
-  }
-
-  .mode{
-    font-size:11px;
-    padding:9px 4px;
-  }
-
-  #modeInfo{
-    font-size:11px;
-    margin-bottom:5px;
-  }
-
-  .human-box{
-    padding:7px;
-    margin:3px 0 6px;
-  }
-
-  .human-box p{
-    font-size:10px;
-  }
-
-  .human-actions button{
-    font-size:10px;
-    padding:8px;
-  }
-
-  #chat{
-    min-height:0;
-    padding:7px;
-    margin-bottom:7px;
-  }
-
-  .message{
-    max-width:96%;
-    padding:10px 12px;
-    font-size:14px;
-  }
-
-  .bottom-tools{
-    flex-wrap:wrap;
-    gap:5px;
-    margin-bottom:5px;
-  }
-
-  .tool-btn{
-    font-size:10px;
-    padding:8px;
-  }
-
-  #chatForm{
-    gap:5px;
-  }
-
-  #message{
-    padding:12px;
-    font-size:14px;
-  }
-
-  #sendButton{
-    min-width:60px;
-    padding:10px;
-    font-size:12px;
-  }
-
-  .panel{
-    padding:10px;
-    max-height:75dvh;
-    margin:5px auto;
-  }
-
-  .panel button{
-    font-size:11px;
-  }
-
-  .admin-actions{
-    gap:5px;
-  }
-}
-
- .sidebar{width:115px;padding:7px}.logo{font-size:17px}.chat-item{padding:8px}
- .chat-title{font-size:11px}.delete{padding:3px}.main{padding:7px}h1{font-size:28px}
- .message{max-width:94%}.modes{gap:5px}.mode{font-size:11px;padding:10px 5px}
- #sendButton{min-width:65px;padding:10px}.sidebar-user{padding-top:8px}
- .user-logout{font-size:10px;padding:8px 3px}#usernameLabel{font-size:10px}.panel{padding:10px}
+.app{height:100dvh;flex-direction:column}
+.sidebar{width:100%;height:auto;flex:0 0 auto;padding:8px 10px;display:flex;flex-direction:column;gap:7px;border-right:0;border-bottom:1px solid #30394d}
+.logo{font-size:19px;margin:0;text-align:left}
+.newchat{width:auto;margin:0;padding:9px 12px;font-size:12px}
+.history-title,#chatList{display:none}
+.sidebar-user{margin-top:0;padding-top:7px;display:flex;align-items:center;gap:8px;border-top:1px solid #30394d;overflow:visible}
+#usernameLabel{flex:0 1 auto;max-width:85px;font-size:11px;margin:0;overflow-wrap:anywhere}
+.privacy-box{flex:1;min-width:0;margin:0;padding:5px}
+.privacy-box p{display:none}
+.privacy-button{padding:8px 4px;font-size:10px}
+#privacyStatus{font-size:9px;margin:3px 0 0}
+.user-logout{width:auto;flex:0 0 auto;padding:10px 8px;font-size:10px;background:#9d3e50}
+.main{flex:1;min-height:0;padding:7px}
+h1{font-size:25px}
+.subtitle{font-size:11px}
+.admin-btn{margin:5px auto;padding:9px;font-size:11px}
+#chatView{min-height:0}
+.modes{gap:5px;margin:6px auto}
+.mode{font-size:11px;padding:9px 4px}
+#modeInfo{font-size:11px;margin-bottom:5px}
+.human-box{padding:7px;margin:3px 0 6px}
+.human-box p{font-size:10px}
+.human-actions button{font-size:10px;padding:8px}
+#chat{min-height:0;padding:7px;margin-bottom:7px}
+.message{max-width:96%;padding:10px 12px;font-size:14px}
+.bottom-tools{flex-wrap:wrap;gap:5px;margin-bottom:5px}
+.tool-btn{font-size:10px;padding:8px}
+#chatForm{gap:5px}
+#message{padding:12px;font-size:14px}
+#sendButton{min-width:60px;padding:10px;font-size:12px}
+.panel{padding:10px;max-height:75dvh;margin:5px auto}
+.panel button{font-size:11px}
+.admin-actions{gap:5px}
 }
 </style>
 </head>
 <body>
 <section id="authScreen">
  <div class="auth-box">
-  <div class="auth-logo">IPON AI</div><p class="auth-subtitle">İSİM ABLAMDAN İLHAMLA</p>
-  <div class="auth-tabs"><button id="showLoginTab" class="active">GİRİŞ YAP</button><button id="showRegisterTab">KAYIT OL</button></div>
+  <div class="auth-logo">IPON AI</div>
+  <p class="auth-subtitle">İSİM ABLAMDAN İLHAMLA</p>
+  <div class="auth-tabs">
+   <button id="showLoginTab" class="active">GİRİŞ YAP</button>
+   <button id="showRegisterTab">KAYIT OL</button>
+  </div>
   <form id="authForm">
    <input id="authUsername" type="text" placeholder="Kullanıcı adı" minlength="3" maxlength="20" autocomplete="username" required>
    <input id="authPassword" type="password" placeholder="Şifre" minlength="8" maxlength="128" autocomplete="current-password" required>
    <button id="authSubmit" class="auth-submit" type="submit">GİRİŞ YAP</button>
   </form>
-  <p class="auth-info" id="authInfo">Hesabına giriş yap ve IPON AI ile sohbete başla.</p><p class="auth-error" id="authError"></p>
+  <p class="auth-info" id="authInfo">Hesabına giriş yap ve IPON AI ile sohbete başla.</p>
+  <p class="auth-error" id="authError"></p>
  </div>
 </section>
 <div class="app hidden" id="app">
 <aside class="sidebar">
- <div class="logo">IPON AI</div><button class="newchat" id="newChat">＋ Yeni Sohbet</button>
- <div class="history-title">SOHBET GEÇMİŞİ</div><div id="chatList"></div>
- <div class="sidebar-user"><div id="usernameLabel"></div>
+ <div class="logo">IPON AI</div>
+ <button class="newchat" id="newChat">＋ Yeni Sohbet</button>
+ <div class="history-title">SOHBET GEÇMİŞİ</div>
+ <div id="chatList"></div>
+ <div class="sidebar-user">
+  <div id="usernameLabel"></div>
   <div class="privacy-box">
-   <button class="privacy-button" id="privacyButton">🔒 Sohbet paylaşımı</button><div id="privacyStatus">Kontrol ediliyor...</div>
+   <button class="privacy-button" id="privacyButton">🔒 Sohbet paylaşımı</button>
+   <div id="privacyStatus">Kontrol ediliyor...</div>
    <p>İzin verirsen sohbetlerin HOST panelinde görünür. Ayrıca HOST'un sohbetine katılıp yanıt yazabileceğini kabul etmiş olursun. İstediğin zaman izni kapatabilirsin. Fotoğrafların kendisi paylaşılmaz.</p>
-  </div><button class="user-logout" id="userLogout">🚪 HESAPTAN ÇIK</button>
+  </div>
+  <button class="user-logout" id="userLogout">🚪 HESAPTAN ÇIK</button>
  </div>
 </aside>
 <main class="main">
-<header id="mainHeader"><h1>IPON AI</h1><p class="subtitle">İSİM ABLAMDAN İLHAMLA</p><button class="admin-btn" id="adminLoginBtn">👑 HOST GİRİŞİ</button></header>
+<header id="mainHeader">
+ <h1>IPON AI</h1>
+ <p class="subtitle">İSİM ABLAMDAN İLHAMLA</p>
+ <button class="admin-btn" id="adminLoginBtn">👥 Arkadaşlarımın Sohbetlerine Gir</button>
+</header>
 <section class="panel" id="adminLogin">
- <h2>🔐 HOST GİRİŞİ</h2><input id="adminPassword" type="password" placeholder="HOST şifresi">
- <button id="loginButton">GİRİŞ YAP</button><button id="cancelLogin" style="background:#46516a">GERİ DÖN</button><p id="adminError"></p>
+ <h2>🔐 HOST GİRİŞİ</h2>
+ <input id="adminPassword" type="password" placeholder="HOST şifresi">
+ <button id="loginButton">GİRİŞ YAP</button>
+ <button id="cancelLogin" style="background:#46516a">GERİ DÖN</button>
+ <p id="adminError"></p>
 </section>
 <section class="panel" id="adminPanel">
- <h2 class="host-title">👑 IPON AI HOST PANELİ</h2><h3>Hoş geldin Alperen!</h3><p id="adminStatus">HOST yetkisi aktif!</p>
- <hr><p>Yetki: HOST / ADMIN</p><p>Proje: IPON AI</p><p>Durum: Aktif</p>
+ <h2 class="host-title">👑 IPON AI HOST PANELİ</h2>
+ <h3>Hoş geldin Alperen!</h3>
+ <p id="adminStatus">HOST yetkisi aktif!</p>
+ <hr>
+ <p>Yetki: HOST / ADMIN</p>
+ <p>Proje: IPON AI</p>
+ <p>Durum: Aktif</p>
  <label for="hostMemory">Sadece HOST oturumunda kullanılacak bilgiler:</label>
  <textarea id="hostMemory" placeholder="IPON AI'nin yalnızca HOST oturumunda kullanmasını istediğin bilgileri yaz..."></textarea>
  <button id="saveMemory">💾 Bilgileri Kaydet</button>
- <hr><h3 class="host-title">👥 Kullanıcı Sohbetleri</h3>
+ <hr>
+ <h3 class="host-title">👥 Kullanıcı Sohbetleri</h3>
  <p class="host-muted">Yalnızca sohbet paylaşımına ve HOST yanıtlarına izin veren kullanıcılar görüntülenebilir.</p>
  <button id="refreshUsers">🔄 Kullanıcıları Yenile</button>
- <div id="hostUsers"><label for="hostUserSelect">Kullanıcı seç:</label><select id="hostUserSelect"><option value="">Önce kullanıcıları yükle</option></select>
- <button id="viewUserChats">💬 Sohbetlerini Görüntüle</button><div id="hostChatResults"></div></div>
- <hr><h3 class="host-title">🎧 HOST destek talepleri</h3>
+ <div id="hostUsers">
+  <label for="hostUserSelect">Kullanıcı seç:</label>
+  <select id="hostUserSelect"><option value="">Önce kullanıcıları yükle</option></select>
+  <button id="viewUserChats">💬 Sohbetlerini Görüntüle</button>
+  <div id="hostChatResults"></div>
+ </div>
+ <hr>
+ <h3 class="host-title">🎧 HOST destek talepleri</h3>
  <p class="host-muted">Kullanıcıların HOST desteği istekleri burada görünür. Kabul ettiğinde sohbete yanıt yazabilirsin.</p>
- <button id="refreshHumanChats">🔄 Talepleri Yenile</button><div id="humanChatQueue"></div>
- <div class="admin-actions"><button id="backToChat" style="background:#4659a8">💬 SOHBETE DÖN</button><button id="logoutButton" style="background:#9d3e50">🚪 HOST ÇIKIŞI</button></div>
+ <button id="refreshHumanChats">🔄 Talepleri Yenile</button>
+ <div id="humanChatQueue"></div>
+ <div class="admin-actions">
+  <button id="backToChat" style="background:#4659a8">💬 SOHBETE DÖN</button>
+  <button id="logoutButton" style="background:#9d3e50">🚪 HOST ÇIKIŞI</button>
+ </div>
 </section>
 <section id="chatView" style="width:100%;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center">
- <div class="modes"><button class="mode good" id="goodMode">😇 İYİ MOD</button><button class="mode bad" id="badMode">😈 KÖTÜ MOD</button></div>
+ <div class="modes">
+  <button class="mode good" id="goodMode">😇 İYİ MOD</button>
+  <button class="mode bad" id="badMode">😈 KÖTÜ MOD</button>
+ </div>
  <p id="modeInfo"></p>
- <div class="bottom-tools"><button class="tool-btn" id="trollMode">🎭 TROLLEME: KAPALI</button><button class="tool-btn" id="photoButton">🖼️ FOTOĞRAF EKLE</button>
- <input id="imageInput" type="file" accept="image/*"><span id="imageName"></span></div>
+  <div class="bottom-tools">
+  <button class="tool-btn" id="trollMode">🎭 TROLLEME: KAPALI</button>
+  <button class="tool-btn" id="photoButton">🖼️ FOTOĞRAF EKLE</button>
+  <input id="imageInput" type="file" accept="image/*">
+  <span id="imageName"></span>
+ </div>
  <div id="chat"></div>
- <form id="chatForm"><input id="message" placeholder="IPON AI'ye mesaj yaz..." autocomplete="off" required><button id="sendButton" type="submit">Gönder</button></form>
+ <form id="chatForm">
+  <input id="message" placeholder="IPON AI'ye mesaj yaz..." autocomplete="off" required>
+  <button id="sendButton" type="submit">Gönder</button>
+ </form>
 </section>
-</main></div>
+</main>
+</div>
+
 <script>
- const API="";
+const API="";
 let authMode="login";
 let userToken=localStorage.getItem("ipon_user_token")||"";
 let userInfo=JSON.parse(localStorage.getItem("ipon_user_info")||"null");
@@ -338,6 +241,7 @@ let adminPoll=null;
 let humanMessageIds=new Set();
 
 const $=id=>document.getElementById(id);
+
 const request=async(url,options={})=>{
  const headers={...(options.headers||{})};
  if(userToken)headers.Authorization="Bearer "+userToken;
@@ -350,7 +254,9 @@ const request=async(url,options={})=>{
 };
 
 function escapeHTML(value){
- return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ return String(value??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
 }
 
 function showAuth(){
@@ -369,10 +275,13 @@ function setAuthMode(value){
  $("showLoginTab").classList.toggle("active",value==="login");
  $("showRegisterTab").classList.toggle("active",value==="register");
  $("authSubmit").textContent=value==="login"?"GİRİŞ YAP":"KAYIT OL";
- $("authInfo").textContent=value==="login"?"Hesabına giriş yap ve IPON AI ile sohbete başla.":"Yeni hesabını oluştur.";
+ $("authInfo").textContent=value==="login"
+  ?"Hesabına giriş yap ve IPON AI ile sohbete başla."
+  :"Yeni hesabını oluştur.";
  $("authError").textContent="";
  $("authPassword").autocomplete=value==="login"?"current-password":"new-password";
 }
+
 $("showLoginTab").onclick=()=>setAuthMode("login");
 $("showRegisterTab").onclick=()=>setAuthMode("register");
 
@@ -380,6 +289,7 @@ $("authForm").onsubmit=async e=>{
  e.preventDefault();
  const username=$("authUsername").value.trim();
  const password=$("authPassword").value;
+
  if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)){
   $("authError").textContent="Kullanıcı adı 3-20 karakter olmalı.";
   return;
@@ -388,11 +298,14 @@ $("authForm").onsubmit=async e=>{
   $("authError").textContent="Şifre 8-128 karakter arasında olmalı.";
   return;
  }
+
  $("authSubmit").disabled=true;
  $("authError").textContent="İşlem yapılıyor...";
+
  try{
   const data=await request("/api/auth/"+authMode,{
-   method:"POST",body:JSON.stringify({username,password})
+   method:"POST",
+   body:JSON.stringify({username,password})
   });
   userToken=data.token;
   userInfo=data.user;
@@ -415,6 +328,7 @@ async function startApp(){
 
 async function checkSession(){
  if(!userToken)return showAuth();
+
  try{
   const data=await request("/api/auth/me");
   userInfo=data.user||data;
@@ -447,7 +361,12 @@ function saveChats(){
 async function loadChats(){
  try{
   chats=JSON.parse(localStorage.getItem(chatStorageKey())||"{}");
- }catch{chats={};}
+ }catch{
+  chats={};
+ }
+ if(!chats||typeof chats!=="object"||Array.isArray(chats)){
+  chats={};
+ }
  renderChatList();
 }
 
@@ -469,13 +388,24 @@ $("newChat").onclick=newChat;
 function renderChatList(){
  const list=$("chatList");
  list.innerHTML="";
+
+ if(!chats||typeof chats!=="object"||Array.isArray(chats)){
+  chats={};
+ }
+
  Object.keys(chats).reverse().forEach(id=>{
-  const messages=chats[id]||[];
-  const first=messages.find(m=>m.role==="user");
-  const title=first?(first.content||"Yeni sohbet").slice(0,22):"Yeni sohbet";
+  if(!Array.isArray(chats[id]))chats[id]=[];
+
+  const messages=chats[id];
+  const first=messages.find(m=>m&&m.role==="user");
+  const title=first
+   ?String(first.content||"Yeni sohbet").slice(0,22)
+   :"Yeni sohbet";
+
   const item=document.createElement("div");
   item.className="chat-item"+(id===currentChat?" active":"");
   item.innerHTML=`<span class="chat-title">${escapeHTML(title)}</span><button class="delete" title="Sohbeti sil">✕</button>`;
+
   item.querySelector(".chat-title").onclick=()=>{
    if(humanSession&&humanSession.chatId!==id){
     alert("HOST sohbeti devam ederken başka sohbete geçemezsin.");
@@ -485,6 +415,7 @@ function renderChatList(){
    renderChatList();
    renderMessages();
   };
+
   item.querySelector(".delete").onclick=e=>{
    e.stopPropagation();
    if(humanSession?.chatId===id){
@@ -499,18 +430,22 @@ function renderChatList(){
     renderChatList();
    }
   };
+
   list.appendChild(item);
  });
+ saveChats();
 }
 
 function renderMessages(){
  const area=$("chat");
  area.innerHTML="";
- const messages=chats[currentChat]||[];
+ const messages=Array.isArray(chats[currentChat])?chats[currentChat]:[];
+
  if(!messages.length){
   area.innerHTML='<div class="welcome"><h2>IPON AI’ye hoş geldin!</h2><p>Bugün ne konuşalım?</p></div>';
   return;
  }
+
  messages.forEach(m=>addMessage(m.role,m.content));
  area.scrollTop=area.scrollHeight;
 }
@@ -530,8 +465,11 @@ function setMode(value){
  $("badMode").classList.toggle("active",value==="bad");
  $("goodMode").classList.toggle("good",true);
  $("badMode").classList.toggle("bad",true);
- $("modeInfo").textContent=value==="good"?"IPON AI arkadaş canlısı modda.":"IPON AI daha sert ve esprili konuşur; hakaret ve tehdit olmadan.";
+ $("modeInfo").textContent=value==="good"
+  ?"IPON AI arkadaş canlısı modda."
+  :"IPON AI daha sert ve esprili konuşur; hakaret ve tehdit olmadan.";
 }
+
 $("goodMode").onclick=()=>setMode("good");
 $("badMode").onclick=()=>setMode("bad");
 setMode("good");
@@ -543,9 +481,11 @@ $("trollMode").onclick=()=>{
 };
 
 $("photoButton").onclick=()=>$("imageInput").click();
+
 $("imageInput").onchange=e=>{
  const file=e.target.files[0];
  if(!file)return;
+
  if(file.size>5*1024*1024){
   alert("Fotoğraf en fazla 5 MB olabilir.");
   e.target.value="";
@@ -556,6 +496,7 @@ $("imageInput").onchange=e=>{
   e.target.value="";
   return;
  }
+
  const reader=new FileReader();
  reader.onload=()=>{
   selectedImage=reader.result;
@@ -568,52 +509,68 @@ async function sendChatMessage(e){
  e.preventDefault();
  const input=$("message");
  const content=input.value.trim();
+
  if(!content&&!selectedImage)return;
+
  if(humanSession){
   alert("HOST sohbeti sırasında mesajını HOST sohbet alanından gönder.");
   return;
  }
+
  if(!currentChat)newChat();
+
  const image=selectedImage;
  input.value="";
  selectedImage=null;
  $("imageInput").value="";
  $("imageName").textContent="";
+
  const messages=chats[currentChat]||(chats[currentChat]=[]);
- messages.push({role:"user",content:content||"Fotoğraf gönderildi."});
+ messages.push({
+  role:"user",
+  content:content||"Fotoğraf gönderildi."
+ });
+
  saveChats();
  renderChatList();
  renderMessages();
  $("sendButton").disabled=true;
+
  try{
   const data=await request("/api/chat",{
    method:"POST",
    body:JSON.stringify({
-    messages:messages.map(m=>({role:m.role==="assistant"?"assistant":"user",content:m.content})),
-mode,
-trollMode,
-isHost:false,
-hostMemory:"",
-image,
-chatId:String(currentChat)
- })
-});
+    messages:messages.map(m=>({
+     role:m.role==="assistant"?"assistant":"user",
+     content:m.content
+    })),
+    mode,
+    trollMode,
+    isHost:false,
+    hostMemory:"",
+    image,
+    chatId:String(currentChat)
+   })
+  });
+
   const answer=data.reply||data.response||data.message||"Yanıt alınamadı.";
   messages.push({role:"assistant",content:answer});
   saveChats();
   renderMessages();
+
  }catch(err){
   messages.push({role:"assistant",content:"Bir hata oluştu: "+err.message});
   saveChats();
   renderMessages();
+
  }finally{
   $("sendButton").disabled=false;
   input.focus();
  }
 }
-$("chatForm").onsubmit=sendChatMessage;
 
-async function loadPrivacy(){
+$("chatForm").onsubmit=sendChatMessage;
+  async function loadPrivacy(){
  try{
   const data=await request("/api/privacy");
   const allowed=!!(data.allowed??data.consent??data.shareChats);
@@ -623,7 +580,7 @@ async function loadPrivacy(){
   return allowed;
  }catch{
   $("privacyStatus").textContent="Paylaşım izni kontrol edilemedi.";
-  $("requestHuman").disabled=true;
+  if($("requestHuman")) $("requestHuman").disabled=true;
   return false;
  }
 }
@@ -653,8 +610,7 @@ async function requestHumanChat(){
  try{
   const data=await request("/api/human-chat/request",{
    method:"POST",
-   body:JSON.stringify({chatId:String(currentChat)
-    })
+   body:JSON.stringify({chatId:String(currentChat)})
   });
   humanSession={chatId:currentChat,sessionId:data.sessionId,status:data.status||"pending"};
   humanMessageIds.clear();
@@ -663,12 +619,12 @@ async function requestHumanChat(){
   startHumanPolling();
  }catch(err){alert("HOST isteği gönderilemedi: "+err.message);}
 }
-$("requestHuman").onclick=requestHumanChat;
+if($("requestHuman")) $("requestHuman").onclick=requestHumanChat;
 
 function updateHumanControls(){
  const active=!!humanSession;
- $("requestHuman").disabled=active;
- $("endHuman").disabled=!active;
+ if($("requestHuman")) $("requestHuman").disabled=active;
+ if($("endHuman")) $("endHuman").disabled=!active;
  $("message").disabled=active;
  $("sendButton").disabled=active;
  $("photoButton").disabled=active;
@@ -763,7 +719,7 @@ function hideAdmin(){
  $("chatView").classList.remove("hidden");
 }
 
-$("Arkadaşlarımın Sohbetlerine Gir").onclick=showAdminLogin
+$("adminLoginBtn").onclick=showAdminLogin;
 $("cancelLogin").onclick=hideAdmin;
 $("backToChat").onclick=hideAdmin;
 
@@ -940,7 +896,7 @@ async function openHumanSession(id){
 }
 
 if(adminToken){
- $("adminLoginBtn").textContent="👑 HOST PANELİ";
+ $("adminLoginBtn").textContent="👥 Arkadaşlarımın Sohbetlerine Gir";
  $("adminLoginBtn").onclick=()=>{
   showAdminPanel();
   loadHostUsers();
@@ -950,6 +906,6 @@ if(adminToken){
  };
 }
 checkSession();
- </script>
+</script>
 </body>
 </html>
