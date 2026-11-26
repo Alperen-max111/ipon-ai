@@ -320,11 +320,13 @@ function escapeHTML(value){
 function showAuth(){
  $("authScreen").classList.remove("hidden");
  $("app").classList.add("hidden");
+ $("bookAd").classList.remove("visible");
 }
 
 function showApp(){
  $("authScreen").classList.add("hidden");
  $("app").classList.remove("hidden");
+ $("bookAd").classList.add("visible");
  $("usernameLabel").textContent=userInfo?.username||"Kullanıcı";
 }
 
