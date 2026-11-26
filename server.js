@@ -531,6 +531,10 @@ app.get("/api/admin/users", requireAdmin, async (req, res) => {
 // -------------------------
 // HOST KULLANICI SOHBETLERİ
 // -------------------------
+// -------------------------
+// HOST KULLANICI SOHBETLERİ
+// -------------------------
+
 app.get("/api/admin/users/:id/chats", requireAdmin, async (req, res) => {
   try {
     const userId = req.params.id;
@@ -560,20 +564,17 @@ app.get("/api/admin/users/:id/chats", requireAdmin, async (req, res) => {
 
     res.json({
       chats: result.rows.map(row => ({
-  chat_id: row.chat_id,
-  title: row.chat_id,
-  messages: row.messages || []
-}))
+        chat_id: row.chat_id,
+        title: row.chat_id,
+        messages: row.messages || []
       }))
     });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Sohbetler alınamadı." });
   }
 });
-// -------------------------
-// HOST, İZİN VEREN KULLANICININ SOHBETİNİ AÇAR
-// -------------------------
 // -------------------------
 // HOST, İZİN VEREN KULLANICININ SOHBETİNİ AÇAR
 // -------------------------
