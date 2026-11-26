@@ -560,8 +560,10 @@ app.get("/api/admin/users/:id/chats", requireAdmin, async (req, res) => {
 
     res.json({
       chats: result.rows.map(row => ({
-        title: row.chat_id,
-        messages: row.messages || []
+  chat_id: row.chat_id,
+  title: row.chat_id,
+  messages: row.messages || []
+}))
       }))
     });
   } catch (err) {
