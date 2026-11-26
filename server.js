@@ -12,6 +12,11 @@ import { scrypt as scryptCallback } from "node:crypto";
 
 const scrypt = promisify(scryptCallback);
 const app = express();
+app.get("/google1489caeadc69323b.html", (req, res) => {
+  res.sendFile("google1489caeadc69323b.html", {
+    root: process.cwd()
+  });
+});
 const { Pool } = pg;
 
 app.use(cors());
