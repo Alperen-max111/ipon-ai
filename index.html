@@ -313,7 +313,7 @@ let humanMessageIds=new Set();
 let hostObserverPoll=null;
 let hostObserverIds=new Set();
 let hostIdentityKnown=false;
-
+let hostViewingSession = null;
 const $=id=>document.getElementById(id);
 
 const request=async(url,options={})=>{
@@ -572,7 +572,25 @@ async function sendChatMessage(e){
  const input=$("message");
  const content=input.value.trim();
  if(!content&&!selectedImage)return;
-
+ if(hostViewingSession){
+  try{
+   $("sendButton").disabled=true;
+   await request(
+    "/api/admin/human-chats/"+encodeURIComponent(hostViewingSession.sessionId)+"/reply",
+    {
+     method:"POST",
+     body:JSON.stringify({content})
+    }
+   );
+   input.value="";
+   await openHumanSession(hostViewingSession.sessionId);
+  }catch(err){
+   alert("HOST mesajı gönderilemedi: "+err.message);
+  }finally{
+   $("sendButton").disabled=false;
+  }
+  return;
+ }
  if(humanSession){
   if(humanSession.status!=="accepted"){
    alert("HOST henüz sohbete katılmadı.");
@@ -923,7 +941,7 @@ $("viewUserChats").onclick=async()=>{
       {method:"POST"}
      );
      await loadHumanChats();
-     await openHumanSession(result.sessionId);
+    await openHumanSession(result.sessionId, chat.messages || [], chatId);
      alert("HOST sohbeti açıldı. Mesajların HOST olarak görünecek.");
     }catch(err){
      alert("Sohbete katılınamadı: "+err.message);
@@ -993,77 +1011,72 @@ async function acceptHumanSession(id){
  }catch(err){alert(err.message);}
 }
 
-async function openHumanSession(id){
+async function openHumanSession(id, initialMessages=[], chatId=null){
  try{
-  const data=await request("/api/admin/human-chats/"+encodeURIComponent(id));
-  const queue=$("humanChatQueue");
-  let box=document.getElementById("activeHuman_"+id);
+  const data=await request(
+   "/api/admin/human-chats/"+encodeURIComponent(id)
+  );
 
-  if(!box){
-   box=document.createElement("div");
-   box.id="activeHuman_"+id;
-   box.className="host-session";
-   queue.prepend(box);
-  }
+  hostViewingSession={
+   sessionId:id,
+   chatId,
+   initialMessages
+  };
 
-  box.innerHTML="";
-  const title=document.createElement("h3");
-  title.textContent="HOST sohbeti";
-  box.appendChild(title);
+  // HOST panelinden normal sohbet ekranına geç
+  hideAdmin();
 
-  const messages=document.createElement("div");
-  messages.className="host-chat";
+  const chatArea=$("chat");
+  chatArea.innerHTML="";
 
-  (data.messages||[]).forEach(m=>{
-   const line=document.createElement("div");
-   line.className="host-message "+(m.sender==="host"?"host":m.sender==="user"?"user":"assistant");
-   line.textContent=(m.sender==="host"?"HOST: ":m.sender==="user"?"Kullanıcı: ":"IPON AI: ")+m.content;
-   messages.appendChild(line);
+  // Eski sohbet mesajlarını göster
+  (initialMessages||[]).forEach(m=>{
+   const role=m.role==="user"?"user":
+    m.role==="host"?"host":"assistant";
+   addMessage(role,m.content||"");
   });
 
-  box.appendChild(messages);
+  // HOST oturumundaki yeni mesajları göster
+  (data.messages||[]).forEach(m=>{
+   const role=m.sender==="user"?"user":
+    m.sender==="host"?"host":"assistant";
+   addMessage(role,m.content||"");
+  });
 
-  const textarea=document.createElement("textarea");
-  textarea.placeholder="HOST yanıtını buraya yaz...";
-  box.appendChild(textarea);
+  $("message").placeholder="HOST olarak mesaj yaz...";
 
-  const send=document.createElement("button");
-  send.textContent="Yanıtı gönder";
-  send.style.background="#287b67";
+  // HOST paneline dönme butonu
+  let bar=document.getElementById("hostModeBar");
+  if(!bar){
+   bar=document.createElement("div");
+   bar.id="hostModeBar";
+   $("chatView").prepend(bar);
+  }
 
-  send.onclick=async()=>{
-   const content=textarea.value.trim();
-   if(!content)return;
+  bar.innerHTML="";
 
-   send.disabled=true;
-   try{
-    await request("/api/admin/human-chats/"+encodeURIComponent(id)+"/reply",{
-     method:"POST",body:JSON.stringify({content})
-    });
-    textarea.value="";
-    await openHumanSession(id);
-   }catch(err){alert(err.message);}
-   finally{send.disabled=false;}
+  const label=document.createElement("span");
+  label.textContent="👑 HOST olarak kullanıcıyla sohbet ediyorsun";
+  bar.appendChild(label);
+
+  const back=document.createElement("button");
+  back.textContent="HOST paneline dön";
+  back.onclick=()=>{
+   hostViewingSession=null;
+   $("message").placeholder="Mesajını yaz...";
+   bar.remove();
+   showAdminPanel();
+   loadHostUsers();
+   loadHumanChats();
+   stopAdminPolling();
+   adminPoll=setInterval(loadHumanChats,4000);
   };
+  bar.appendChild(back);
 
-  box.appendChild(send);
-
-  const close=document.createElement("button");
-  close.textContent="Sohbeti kapat";
-  close.style.background="#8d4655";
-
-  close.onclick=async()=>{
-   if(!confirm("Bu HOST sohbetini kapatmak istiyor musun?"))return;
-   try{
-    await request("/api/admin/human-chats/"+encodeURIComponent(id)+"/close",{method:"POST"});
-    await loadHumanChats();
-   }catch(err){alert(err.message);}
-  };
-
-  box.appendChild(close);
- }catch(err){alert("Sohbet açılamadı: "+err.message);}
+ }catch(err){
+  alert("Sohbet açılamadı: "+err.message);
+ }
 }
-
 if(adminToken){
  $("adminLoginBtn").textContent="👥 Arkadaşlarımın Sohbetlerine Gir";
  $("adminLoginBtn").onclick=()=>{
