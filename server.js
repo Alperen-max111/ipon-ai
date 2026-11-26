@@ -531,12 +531,11 @@ app.get("/api/admin/users", requireAdmin, async (req, res) => {
 // -------------------------
 // HOST KULLANICI SOHBETLERİ
 // -------------------------
-
 app.get("/api/admin/users/:id/chats", requireAdmin, async (req, res) => {
   try {
-    const userId = Number(req.params.id);
+    const userId = req.params.id;
 
-    if (!Number.isInteger(userId)) {
+    if (!/^[0-9a-f-]{36}$/i.test(userId)) {
       return res.status(400).json({ error: "Geçersiz kullanıcı." });
     }
 
@@ -546,7 +545,9 @@ app.get("/api/admin/users/:id/chats", requireAdmin, async (req, res) => {
     );
 
     if (!consent.rows[0]?.share_consent) {
-      return res.status(403).json({ error: "Kullanıcı paylaşım izni vermemiş." });
+      return res.status(403).json({
+        error: "Kullanıcı paylaşım izni vermemiş."
+      });
     }
 
     const result = await pool.query(
@@ -571,13 +572,19 @@ app.get("/api/admin/users/:id/chats", requireAdmin, async (req, res) => {
 // -------------------------
 // HOST, İZİN VEREN KULLANICININ SOHBETİNİ AÇAR
 // -------------------------
+// -------------------------
+// HOST, İZİN VEREN KULLANICININ SOHBETİNİ AÇAR
+// -------------------------
+
 app.post("/api/admin/users/:id/chats/:chatId/open", requireAdmin, async (req, res) => {
   try {
-    const userId = Number(req.params.id);
+    const userId = req.params.id;
     const chatId = req.params.chatId;
 
-    if (!Number.isInteger(userId) || !validChatId(chatId)) {
-      return res.status(400).json({ error: "Kullanıcı veya sohbet geçersiz." });
+    if (!/^[0-9a-f-]{36}$/i.test(userId) || !validChatId(chatId)) {
+      return res.status(400).json({
+        error: "Kullanıcı veya sohbet geçersiz."
+      });
     }
 
     const user = await pool.query(
@@ -586,21 +593,27 @@ app.post("/api/admin/users/:id/chats/:chatId/open", requireAdmin, async (req, re
     );
 
     if (!user.rows.length) {
-      return res.status(403).json({ error: "Kullanıcı izin vermemiş." });
+      return res.status(403).json({
+        error: "Kullanıcı izin vermemiş."
+      });
     }
 
     const chat = await pool.query(
-      "SELECT 1 FROM ipon_chat_logs WHERE user_id = $1 AND chat_id = $2",
-      [String(userId), chatId]
+      `SELECT 1 FROM ipon_chat_logs
+       WHERE user_id = $1 AND chat_id = $2`,
+      [userId, chatId]
     );
 
     if (!chat.rows.length) {
-      return res.status(404).json({ error: "Sohbet bulunamadı." });
+      return res.status(404).json({
+        error: "Sohbet bulunamadı."
+      });
     }
 
     const existing = await pool.query(
       `SELECT id FROM human_chat_sessions
-       WHERE user_id = $1 AND chat_id = $2 AND status = 'accepted'
+       WHERE user_id = $1 AND chat_id = $2
+       AND status = 'accepted'
        ORDER BY created_at DESC LIMIT 1`,
       [userId, chatId]
     );
@@ -626,7 +639,9 @@ app.post("/api/admin/users/:id/chats/:chatId/open", requireAdmin, async (req, re
 
   } catch (err) {
     console.error("HOST sohbet açma hatası:", err);
-    res.status(500).json({ error: "HOST sohbeti açılamadı." });
+    res.status(500).json({
+      error: "HOST sohbeti açılamadı."
+    });
   }
 });
 // -------------------------
