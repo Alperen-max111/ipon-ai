@@ -1,61 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IPON AI</title>
-/* SEN VARSIN DİYE kitap reklamı */
-#bookAd{
-  position:fixed;
-  right:18px;
-  top:50%;
-  transform:translateY(-50%);
-  width:190px;
-  padding:12px;
-  background:#20283a;
-  border:1px solid #6475ed;
-  border-radius:15px;
-  z-index:1000;
-  text-align:center;
-  box-shadow:0 8px 30px #0008;
-}
-#bookAd img{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-  border-radius:9px;
-}
-#bookAd h3{font-size:16px;margin:10px 0 4px}
-#bookAd p{font-size:12px;color:#aeb8d0;margin:4px 0 10px}
-#bookAd a{
-  display:block;
-  padding:10px 5px;
-  margin-top:7px;
-  border-radius:8px;
-  background:#6475ed;
-  color:white;
-  text-decoration:none;
-  font-size:12px;
-  font-weight:bold;
-}
-#bookAd a:last-child{background:#30394d}
-@media(max-width:600px){
-  #bookAd{
-    position:static;
-    transform:none;
-    width:100%;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:7px;
-    margin:5px 0;
-  }
-  #bookAd img{width:55px;height:75px;flex-shrink:0}
-  #bookAd h3{margin:0 0 4px}
-  #bookAd p{margin:3px 0}
-  #bookAd a{display:inline-block;padding:7px;margin:3px 2px;font-size:10px}
-}
- <style>
+
+<style>
 *{box-sizing:border-box}
 body{margin:0;background:#101522;color:white;font-family:Arial,sans-serif;height:100vh;overflow:hidden}
 button{border:0;border-radius:10px;padding:12px;color:white;background:#6475ed;cursor:pointer;font-weight:bold}
@@ -63,6 +14,19 @@ button:hover{filter:brightness(1.15)}
 button:disabled{opacity:.5;cursor:not-allowed}
 input,textarea{font-family:Arial,sans-serif}
 .hidden{display:none!important}
+
+#bookAd{
+ position:fixed;right:18px;top:50%;transform:translateY(-50%);
+ width:190px;padding:12px;background:#20283a;
+ border:1px solid #6475ed;border-radius:15px;z-index:1000;
+ text-align:center;box-shadow:0 8px 30px #0008
+}
+#bookAd img{width:100%;height:220px;object-fit:cover;border-radius:9px}
+#bookAd h3{font-size:16px;margin:10px 0 4px}
+#bookAd p{font-size:12px;color:#aeb8d0;margin:4px 0 10px}
+#bookAd a{display:block;padding:10px 5px;margin-top:7px;border-radius:8px;background:#6475ed;color:white;text-decoration:none;font-size:12px;font-weight:bold}
+#bookAd a:last-child{background:#30394d}
+
 #authScreen{height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
 .auth-box{width:100%;max-width:390px;background:#171f30;border:1px solid #30394d;border-radius:18px;padding:28px;box-shadow:0 15px 50px #0005}
 .auth-logo{text-align:center;font-size:32px;font-weight:bold;color:#a5b4fc;margin-bottom:5px}
@@ -74,6 +38,7 @@ input,textarea{font-family:Arial,sans-serif}
 .auth-submit{width:100%;margin-top:12px}
 .auth-info{font-size:12px;color:#9aa6c4;line-height:1.5}
 .auth-error{color:#ff7785;font-size:13px;min-height:18px}
+
 .app{display:flex;height:100vh}
 .sidebar{width:250px;flex-shrink:0;background:#171c29;padding:16px;display:flex;flex-direction:column;border-right:1px solid #30394d}
 .logo{text-align:center;font-size:25px;font-weight:bold;margin:12px 0 25px;color:#a5b4fc}
@@ -87,6 +52,7 @@ input,textarea{font-family:Arial,sans-serif}
 .sidebar-user{margin-top:auto;border-top:1px solid #30394d;padding-top:12px;overflow:hidden}
 #usernameLabel{font-size:12px;color:#a5b4fc;overflow-wrap:anywhere;margin-bottom:8px}
 .user-logout{width:100%;background:#30394d;font-size:12px}
+
 .main{flex:1;min-width:0;padding:15px;display:flex;flex-direction:column;align-items:center}
 header{text-align:center;width:100%}
 h1{font-size:36px;margin:5px}
@@ -97,6 +63,7 @@ h1{font-size:36px;margin:5px}
 .mode.active.good{background:#19875a}
 .mode.active.bad{background:#a33c50}
 #modeInfo{color:#aeb8d0;font-size:13px;margin:0 0 10px}
+
 #chat{width:100%;max-width:850px;flex:1;overflow-y:auto;padding:12px;margin-bottom:12px}
 .welcome{text-align:center;color:#9eabc8;margin-top:65px}
 .message{max-width:80%;padding:13px 16px;border-radius:14px;margin:10px 0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.45}
@@ -104,6 +71,7 @@ h1{font-size:36px;margin:5px}
 .message.assistant{background:#252e42;margin-right:auto}
 .message.host{background:#315b50;margin-right:auto}
 .message img{display:block;max-width:230px;max-height:220px;border-radius:10px;margin-bottom:8px}
+
 #chatForm{display:flex;gap:8px;width:100%;max-width:850px}
 #message{flex:1;min-width:0;padding:15px;border:0;border-radius:12px;background:#252b3b;color:white;outline:none}
 #sendButton{min-width:85px}
@@ -111,6 +79,7 @@ h1{font-size:36px;margin:5px}
 .tool-btn{background:#30394d;font-size:12px;padding:9px 12px}
 #imageInput{display:none}
 #imageName{font-size:12px;color:#a5b4fc;align-self:center;overflow:hidden}
+
 .panel{display:none;background:#20283a;border:1px solid #b58a25;border-radius:15px;padding:20px;max-width:850px;width:100%;margin:15px auto;overflow-y:auto;max-height:85vh}
 .panel input,.panel textarea,.panel select{width:100%;padding:13px;margin:8px 0;border:1px solid #424d68;border-radius:9px;background:#151c2b;color:white}
 .panel textarea{min-height:100px;resize:vertical}
@@ -119,10 +88,12 @@ h1{font-size:36px;margin:5px}
 #adminError{color:#ff6978}
 #adminStatus{color:#38d996}
 .admin-actions{display:flex;flex-wrap:wrap;justify-content:center}
+
 .privacy-box{background:#20283a;border:1px solid #424d68;border-radius:10px;padding:10px;margin-top:10px}
 .privacy-box p{font-size:11px;color:#aeb8d0;line-height:1.4;margin:6px 0}
 .privacy-button{width:100%;padding:9px;background:#30394d;font-size:11px}
 #privacyStatus{font-size:11px;color:#f4c542;margin:7px 0}
+
 #hostUsers{background:#151c2b;border-radius:10px;padding:12px;margin-top:15px}
 #hostUsers select{width:100%}
 .host-chat{background:#151c2b;border:1px solid #39445b;border-radius:10px;padding:12px;margin:10px 0}
@@ -139,53 +110,65 @@ h1{font-size:36px;margin:5px}
 .host-session{background:#20283a;border:1px solid #39445b;border-radius:10px;padding:12px;margin:9px 0}
 .host-session textarea{min-height:65px}
 
+@media(max-width:850px){
+ #bookAd{position:static;transform:none;width:100%;display:flex;align-items:center;gap:10px;padding:7px;margin:5px 0}
+ #bookAd img{width:55px;height:75px;flex-shrink:0}
+ #bookAd h3{margin:0 0 4px}
+ #bookAd p{margin:3px 0}
+ #bookAd a{display:inline-block;padding:7px;margin:3px 2px;font-size:10px}
+}
+
 @media(max-width:600px){
-.app{height:100dvh;flex-direction:column}
-.sidebar{width:100%;height:auto;flex:0 0 auto;padding:8px 10px;display:flex;flex-direction:column;gap:7px;border-right:0;border-bottom:1px solid #30394d}
-.logo{font-size:19px;margin:0;text-align:left}
-.newchat{width:auto;margin:0;padding:9px 12px;font-size:12px}
-.history-title,#chatList{display:none}
-.sidebar-user{margin-top:0;padding-top:7px;display:flex;align-items:center;gap:8px;border-top:1px solid #30394d;overflow:visible}
-#usernameLabel{flex:0 1 auto;max-width:85px;font-size:11px;margin:0;overflow-wrap:anywhere}
-.privacy-box{flex:1;min-width:0;margin:0;padding:5px}
-.privacy-box p{display:none}
-.privacy-button{padding:8px 4px;font-size:10px}
-#privacyStatus{font-size:9px;margin:3px 0 0}
-.user-logout{width:auto;flex:0 0 auto;padding:10px 8px;font-size:10px;background:#9d3e50}
-.main{flex:1;min-height:0;padding:7px}
-h1{font-size:25px}
-.subtitle{font-size:11px}
-.admin-btn{margin:5px auto;padding:9px;font-size:11px}
-#chatView{min-height:0}
-.modes{gap:5px;margin:6px auto}
-.mode{font-size:11px;padding:9px 4px}
-#modeInfo{font-size:11px;margin-bottom:5px}
-.human-box{padding:7px;margin:3px 0 6px}
-.human-box p{font-size:10px}
-.human-actions button{font-size:10px;padding:8px}
-#chat{min-height:0;padding:7px;margin-bottom:7px}
-.message{max-width:96%;padding:10px 12px;font-size:14px}
-.bottom-tools{flex-wrap:wrap;gap:5px;margin-bottom:5px}
-.tool-btn{font-size:10px;padding:8px}
-#chatForm{gap:5px}
-#message{padding:12px;font-size:14px}
-#sendButton{min-width:60px;padding:10px;font-size:12px}
-.panel{padding:10px;max-height:75dvh;margin:5px auto}
-.panel button{font-size:11px}
-.admin-actions{gap:5px}
+ body{height:100dvh}
+ .app{height:100dvh;flex-direction:column}
+ .sidebar{width:100%;height:auto;flex:0 0 auto;padding:8px 10px;display:flex;flex-direction:column;gap:7px;border-right:0;border-bottom:1px solid #30394d}
+ .logo{font-size:19px;margin:0;text-align:left}
+ .newchat{width:auto;margin:0;padding:9px 12px;font-size:12px}
+ .history-title,#chatList{display:none}
+ .sidebar-user{margin-top:0;padding-top:7px;display:flex;align-items:center;gap:8px;border-top:1px solid #30394d;overflow:visible}
+ #usernameLabel{flex:0 1 auto;max-width:85px;font-size:11px;margin:0;overflow-wrap:anywhere}
+ .privacy-box{flex:1;min-width:0;margin:0;padding:5px}
+ .privacy-box p{display:none}
+ .privacy-button{padding:8px 4px;font-size:10px}
+ #privacyStatus{font-size:9px;margin:3px 0 0}
+ .user-logout{width:auto;flex:0 0 auto;padding:10px 8px;font-size:10px;background:#9d3e50}
+ .main{flex:1;min-height:0;padding:7px}
+ h1{font-size:25px}
+ .subtitle{font-size:11px}
+ .admin-btn{margin:5px auto;padding:9px;font-size:11px}
+ #chatView{min-height:0}
+ .modes{gap:5px;margin:6px auto}
+ .mode{font-size:11px;padding:9px 4px}
+ #modeInfo{font-size:11px;margin-bottom:5px}
+ .human-box{padding:7px;margin:3px 0 6px}
+ .human-box p{font-size:10px}
+ .human-actions button{font-size:10px;padding:8px}
+ #chat{min-height:0;padding:7px;margin-bottom:7px}
+ .message{max-width:96%;padding:10px 12px;font-size:14px}
+ .bottom-tools{flex-wrap:wrap;gap:5px;margin-bottom:5px}
+ .tool-btn{font-size:10px;padding:8px}
+ #chatForm{gap:5px}
+ #message{padding:12px;font-size:14px}
+ #sendButton{min-width:60px;padding:10px;font-size:12px}
+ .panel{padding:10px;max-height:75dvh;margin:5px auto}
+ .panel button{font-size:11px}
+ .admin-actions{gap:5px}
 }
 </style>
 </head>
+
+<body>
+
 <div id="bookAd">
-  <img src="/sen-varsin-diye.jpg" alt="Sen Varsın Diye kitap kapağı">
-  <div>
-    <h3>Sen Varsın Diye</h3>
-    <p>Yazar: Cihan Durmaz</p>
-    <a href="https://ty.gl/jqfz56v435fxr" target="_blank">Kitabı Satın Al</a>
-    <a href="https://youtube.com/@chndrmz?si=v9U1ygwvrHgtff7c" target="_blank">YouTube Kanalı</a>
-  </div>
+ <img src="/sen-varsin-diye.jpg" alt="Sen Varsın Diye kitap kapağı">
+ <div>
+  <h3>Sen Varsın Diye</h3>
+  <p>Yazar: Cihan Durmaz</p>
+  <a href="https://ty.gl/jqfz56v435fxr" target="_blank" rel="noopener noreferrer">Kitabı Satın Al</a>
+  <a href="https://youtube.com/@chndrmz?si=v9U1ygwvrHgtff7c" target="_blank" rel="noopener noreferrer">YouTube Kanalı</a>
+ </div>
 </div>
- <body>
+
 <section id="authScreen">
  <div class="auth-box">
   <div class="auth-logo">IPON AI</div>
@@ -203,6 +186,7 @@ h1{font-size:25px}
   <p class="auth-error" id="authError"></p>
  </div>
 </section>
+
 <div class="app hidden" id="app">
 <aside class="sidebar">
  <div class="logo">IPON AI</div>
@@ -219,12 +203,14 @@ h1{font-size:25px}
   <button class="user-logout" id="userLogout">🚪 HESAPTAN ÇIK</button>
  </div>
 </aside>
+
 <main class="main">
 <header id="mainHeader">
  <h1>IPON AI</h1>
  <p class="subtitle">İSİM ABLAMDAN İLHAMLA</p>
  <button class="admin-btn" id="adminLoginBtn">👥 Arkadaşlarımın Sohbetlerine Gir</button>
 </header>
+
 <section class="panel" id="adminLogin">
  <h2>🔐 HOST GİRİŞİ</h2>
  <input id="adminPassword" type="password" placeholder="HOST şifresi">
@@ -232,6 +218,7 @@ h1{font-size:25px}
  <button id="cancelLogin" style="background:#46516a">GERİ DÖN</button>
  <p id="adminError"></p>
 </section>
+
 <section class="panel" id="adminPanel">
  <h2 class="host-title">👑 IPON AI HOST PANELİ</h2>
  <h3>Hoş geldin Alperen!</h3>
@@ -263,13 +250,24 @@ h1{font-size:25px}
   <button id="logoutButton" style="background:#9d3e50">🚪 HOST ÇIKIŞI</button>
  </div>
 </section>
+
 <section id="chatView" style="width:100%;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center">
  <div class="modes">
   <button class="mode good" id="goodMode">😇 İYİ MOD</button>
   <button class="mode bad" id="badMode">😈 KÖTÜ MOD</button>
  </div>
  <p id="modeInfo"></p>
-  <div class="bottom-tools">
+
+ <div class="human-box">
+  <p>Bir konuda HOST desteği almak istersen istek gönderebilirsin.</p>
+  <div class="human-actions">
+   <button id="requestHuman">🎧 HOST desteği iste</button>
+   <button id="endHuman" disabled style="background:#8d4655">Desteği bitir</button>
+  </div>
+  <div id="humanStatus"></div>
+ </div>
+
+ <div class="bottom-tools">
   <button class="tool-btn" id="trollMode">🎭 TROLLEME: KAPALI</button>
   <button class="tool-btn" id="photoButton">🖼️ FOTOĞRAF EKLE</button>
   <input id="imageInput" type="file" accept="image/*">
@@ -404,6 +402,7 @@ async function checkSession(){
 
 $("userLogout").onclick=()=>{
  if(humanPoll)clearInterval(humanPoll);
+ humanPoll=null;
  userToken="";
  localStorage.removeItem("ipon_user_token");
  localStorage.removeItem("ipon_user_info");
@@ -448,19 +447,13 @@ $("newChat").onclick=newChat;
 function renderChatList(){
  const list=$("chatList");
  list.innerHTML="";
-
- if(!chats||typeof chats!=="object"||Array.isArray(chats)){
-  chats={};
- }
+ if(!chats||typeof chats!=="object"||Array.isArray(chats))chats={};
 
  Object.keys(chats).reverse().forEach(id=>{
   if(!Array.isArray(chats[id]))chats[id]=[];
-
   const messages=chats[id];
   const first=messages.find(m=>m&&m.role==="user");
-  const title=first
-   ?String(first.content||"Yeni sohbet").slice(0,22)
-   :"Yeni sohbet";
+  const title=first?String(first.content||"Yeni sohbet").slice(0,22):"Yeni sohbet";
 
   const item=document.createElement("div");
   item.className="chat-item"+(id===currentChat?" active":"");
@@ -490,7 +483,6 @@ function renderChatList(){
     renderChatList();
    }
   };
-
   list.appendChild(item);
  });
  saveChats();
@@ -500,12 +492,10 @@ function renderMessages(){
  const area=$("chat");
  area.innerHTML="";
  const messages=Array.isArray(chats[currentChat])?chats[currentChat]:[];
-
  if(!messages.length){
   area.innerHTML='<div class="welcome"><h2>IPON AI’ye hoş geldin!</h2><p>Bugün ne konuşalım?</p></div>';
   return;
  }
-
  messages.forEach(m=>addMessage(m.role,m.content));
  area.scrollTop=area.scrollHeight;
 }
@@ -545,7 +535,6 @@ $("photoButton").onclick=()=>$("imageInput").click();
 $("imageInput").onchange=e=>{
  const file=e.target.files[0];
  if(!file)return;
-
  if(file.size>5*1024*1024){
   alert("Fotoğraf en fazla 5 MB olabilir.");
   e.target.value="";
@@ -556,7 +545,6 @@ $("imageInput").onchange=e=>{
   e.target.value="";
   return;
  }
-
  const reader=new FileReader();
  reader.onload=()=>{
   selectedImage=reader.result;
@@ -569,14 +557,11 @@ async function sendChatMessage(e){
  e.preventDefault();
  const input=$("message");
  const content=input.value.trim();
-
  if(!content&&!selectedImage)return;
-
  if(humanSession){
-  alert("HOST sohbeti sırasında mesajını HOST sohbet alanından gönder.");
+  alert("HOST sohbeti sırasında normal mesaj gönderemezsin.");
   return;
  }
-
  if(!currentChat)newChat();
 
  const image=selectedImage;
@@ -586,11 +571,7 @@ async function sendChatMessage(e){
  $("imageName").textContent="";
 
  const messages=chats[currentChat]||(chats[currentChat]=[]);
- messages.push({
-  role:"user",
-  content:content||"Fotoğraf gönderildi."
- });
-
+ messages.push({role:"user",content:content||"Fotoğraf gönderildi."});
  saveChats();
  renderChatList();
  renderMessages();
@@ -600,47 +581,36 @@ async function sendChatMessage(e){
   const data=await request("/api/chat",{
    method:"POST",
    body:JSON.stringify({
-    messages:messages.map(m=>({
-     role:m.role==="assistant"?"assistant":"user",
-     content:m.content
-    })),
-    mode,
-    trollMode,
-    isHost:false,
-    hostMemory:"",
-    image,
-    chatId:String(currentChat)
+    messages:messages.map(m=>({role:m.role==="assistant"?"assistant":"user",content:m.content})),
+    mode,trollMode,isHost:false,hostMemory:"",image,chatId:String(currentChat)
    })
   });
-
   const answer=data.reply||data.response||data.message||"Yanıt alınamadı.";
   messages.push({role:"assistant",content:answer});
   saveChats();
   renderMessages();
-
  }catch(err){
   messages.push({role:"assistant",content:"Bir hata oluştu: "+err.message});
   saveChats();
   renderMessages();
-
  }finally{
   $("sendButton").disabled=false;
   input.focus();
  }
 }
-
 $("chatForm").onsubmit=sendChatMessage;
-  async function loadPrivacy(){
+
+async function loadPrivacy(){
  try{
   const data=await request("/api/privacy");
   const allowed=!!(data.allowed??data.consent??data.shareChats);
   $("privacyStatus").textContent=allowed?"HOST sohbet erişimi: AÇIK":"HOST sohbet erişimi: KAPALI";
   $("privacyButton").textContent=allowed?"🔓 İzni kapat":"🔒 İzin ver";
-  if($("requestHuman")) $("requestHuman").disabled=!allowed;
+  $("requestHuman").disabled=!allowed||!!humanSession;
   return allowed;
  }catch{
   $("privacyStatus").textContent="Paylaşım izni kontrol edilemedi.";
-  if($("requestHuman")) $("requestHuman").disabled=true;
+  $("requestHuman").disabled=true;
   return false;
  }
 }
@@ -653,10 +623,7 @@ $("privacyButton").onclick=async()=>{
   }else{
    if(!confirm("Sohbetlerinin HOST tarafından görüntülenmesine ve HOST'un sohbetine katılıp yanıt yazmasına izin veriyor musun?"))return;
   }
-  await request("/api/privacy",{
-   method:"POST",
-   body:JSON.stringify({allowed:!currentlyAllowed})
-  });
+  await request("/api/privacy",{method:"POST",body:JSON.stringify({allowed:!currentlyAllowed})});
   await loadPrivacy();
  }catch(err){alert(err.message);}
 };
@@ -669,8 +636,7 @@ async function requestHumanChat(){
  if(!currentChat)newChat();
  try{
   const data=await request("/api/human-chat/request",{
-   method:"POST",
-   body:JSON.stringify({chatId:String(currentChat)})
+   method:"POST",body:JSON.stringify({chatId:String(currentChat)})
   });
   humanSession={chatId:currentChat,sessionId:data.sessionId,status:data.status||"pending"};
   humanMessageIds.clear();
@@ -679,12 +645,12 @@ async function requestHumanChat(){
   startHumanPolling();
  }catch(err){alert("HOST isteği gönderilemedi: "+err.message);}
 }
-if($("requestHuman")) $("requestHuman").onclick=requestHumanChat;
+$("requestHuman").onclick=requestHumanChat;
 
 function updateHumanControls(){
  const active=!!humanSession;
- if($("requestHuman")) $("requestHuman").disabled=active;
- if($("endHuman")) $("endHuman").disabled=!active;
+ $("requestHuman").disabled=active;
+ $("endHuman").disabled=!active;
  $("message").disabled=active;
  $("sendButton").disabled=active;
  $("photoButton").disabled=active;
@@ -706,6 +672,7 @@ async function checkHumanStatus(){
   if(data.status)humanSession.status=data.status;
   if(data.sessionId)humanSession.sessionId=data.sessionId;
   if(data.messages)renderHumanMessages(data.messages);
+
   if(humanSession.status==="accepted"){
    $("humanStatus").textContent="HOST sohbete katıldı. Mesajlarını aşağıdan takip edebilirsin.";
   }else if(humanSession.status==="pending"){
@@ -734,26 +701,20 @@ function finishHumanLocally(){
  humanPoll=null;
  humanSession=null;
  updateHumanControls();
+ loadPrivacy();
 }
 
-if($("endHuman")) $("endHuman").onclick=async()=>{
+$("endHuman").onclick=async()=>{
  if(!humanSession)return;
  if(!confirm("HOST sohbetine bitirme isteği göndermek istiyor musun?"))return;
  try{
   await request("/api/human-chat/message",{
    method:"POST",
-   body:JSON.stringify({
-    chatId:String(humanSession.chatId),
-    content:"HOST desteğini bitirmek istiyorum."
-   })
+   body:JSON.stringify({chatId:String(humanSession.chatId),content:"HOST desteğini bitirmek istiyorum."})
   });
   $("humanStatus").textContent="Bitirme isteğin HOST'a gönderildi.";
  }catch(err){alert(err.message);}
 };
-
-function adminHeaders(){
- return {"Content-Type":"application/json","X-Admin-Token":adminToken};
-}
 
 function stopAdminPolling(){
  if(adminPoll)clearInterval(adminPoll);
@@ -766,12 +727,14 @@ function showAdminLogin(){
  $("adminPanel").style.display="none";
  $("adminLogin").style.display="block";
 }
+
 function showAdminPanel(){
  $("adminLogin").style.display="none";
  $("adminPanel").style.display="block";
  $("mainHeader").classList.add("hidden");
  $("chatView").classList.add("hidden");
 }
+
 function hideAdmin(){
  $("adminLogin").style.display="none";
  $("adminPanel").style.display="none";
@@ -787,13 +750,13 @@ $("loginButton").onclick=async()=>{
  const password=$("adminPassword").value;
  if(!password){$("adminError").textContent="Şifre gir.";return;}
  try{
-  const data=await fetch(API+"/api/admin/login",{
+  const response=await fetch(API+"/api/admin/login",{
    method:"POST",
    headers:{"Content-Type":"application/json"},
    body:JSON.stringify({password})
   });
-  const result=await data.json();
-  if(!data.ok)throw new Error(result.error||"Giriş başarısız.");
+  const result=await response.json();
+  if(!response.ok)throw new Error(result.error||"Giriş başarısız.");
   adminToken=result.token;
   localStorage.setItem("ipon_admin_token",adminToken);
   $("adminPassword").value="";
@@ -801,6 +764,7 @@ $("loginButton").onclick=async()=>{
   $("hostMemory").value=localStorage.getItem("ipon_host_memory")||"";
   await loadHostUsers();
   await loadHumanChats();
+  stopAdminPolling();
   adminPoll=setInterval(loadHumanChats,4000);
  }catch(err){$("adminError").textContent=err.message;}
 };
@@ -828,7 +792,9 @@ async function loadHostUsers(){
    option.textContent=u.username;
    select.appendChild(option);
   });
- }catch(err){$("hostChatResults").textContent="Kullanıcılar yüklenemedi: "+err.message;}
+ }catch(err){
+  $("hostChatResults").textContent="Kullanıcılar yüklenemedi: "+err.message;
+ }
 }
 $("refreshUsers").onclick=loadHostUsers;
 
@@ -853,7 +819,9 @@ $("viewUserChats").onclick=async()=>{
    });
    results.appendChild(box);
   });
- }catch(err){$("hostChatResults").textContent="Sohbetler yüklenemedi: "+err.message;}
+ }catch(err){
+  $("hostChatResults").textContent="Sohbetler yüklenemedi: "+err.message;
+ }
 };
 
 async function loadHumanChats(){
@@ -876,6 +844,7 @@ async function loadHumanChats(){
    open.textContent="Sohbeti aç";
    open.onclick=()=>openHumanSession(s.id);
    box.appendChild(open);
+
    if(s.status==="pending"){
     const accept=document.createElement("button");
     accept.textContent="Kabul et";
@@ -886,8 +855,11 @@ async function loadHumanChats(){
    queue.appendChild(box);
   });
   if(!data.sessions?.length)queue.textContent="Bekleyen HOST desteği talebi yok.";
- }catch(err){$("humanChatQueue").textContent="Talepler yüklenemedi: "+err.message;}
+ }catch(err){
+  $("humanChatQueue").textContent="Talepler yüklenemedi: "+err.message;
+ }
 }
+$("refreshHumanChats").onclick=loadHumanChats;
 
 async function acceptHumanSession(id){
  try{
@@ -912,6 +884,7 @@ async function openHumanSession(id){
   const title=document.createElement("h3");
   title.textContent="HOST sohbeti";
   box.appendChild(title);
+
   const messages=document.createElement("div");
   messages.className="host-chat";
   (data.messages||[]).forEach(m=>{
@@ -921,9 +894,11 @@ async function openHumanSession(id){
    messages.appendChild(line);
   });
   box.appendChild(messages);
+
   const textarea=document.createElement("textarea");
   textarea.placeholder="HOST yanıtını buraya yaz...";
   box.appendChild(textarea);
+
   const send=document.createElement("button");
   send.textContent="Yanıtı gönder";
   send.style.background="#287b67";
@@ -941,6 +916,7 @@ async function openHumanSession(id){
    finally{send.disabled=false;}
   };
   box.appendChild(send);
+
   const close=document.createElement("button");
   close.textContent="Sohbeti kapat";
   close.style.background="#8d4655";
@@ -965,6 +941,7 @@ if(adminToken){
   adminPoll=setInterval(loadHumanChats,4000);
  };
 }
+
 checkSession();
 </script>
 </body>
