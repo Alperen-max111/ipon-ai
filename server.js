@@ -568,7 +568,67 @@ app.get("/api/admin/users/:id/chats", requireAdmin, async (req, res) => {
     res.status(500).json({ error: "Sohbetler alınamadı." });
   }
 });
+// -------------------------
+// HOST, İZİN VEREN KULLANICININ SOHBETİNİ AÇAR
+// -------------------------
+app.post("/api/admin/users/:id/chats/:chatId/open", requireAdmin, async (req, res) => {
+  try {
+    const userId = Number(req.params.id);
+    const chatId = req.params.chatId;
 
+    if (!Number.isInteger(userId) || !validChatId(chatId)) {
+      return res.status(400).json({ error: "Kullanıcı veya sohbet geçersiz." });
+    }
+
+    const user = await pool.query(
+      "SELECT id FROM users WHERE id = $1 AND share_consent = TRUE",
+      [userId]
+    );
+
+    if (!user.rows.length) {
+      return res.status(403).json({ error: "Kullanıcı izin vermemiş." });
+    }
+
+    const chat = await pool.query(
+      "SELECT 1 FROM ipon_chat_logs WHERE user_id = $1 AND chat_id = $2",
+      [String(userId), chatId]
+    );
+
+    if (!chat.rows.length) {
+      return res.status(404).json({ error: "Sohbet bulunamadı." });
+    }
+
+    const existing = await pool.query(
+      `SELECT id FROM human_chat_sessions
+       WHERE user_id = $1 AND chat_id = $2 AND status = 'accepted'
+       ORDER BY created_at DESC LIMIT 1`,
+      [userId, chatId]
+    );
+
+    if (existing.rows.length) {
+      return res.json({
+        sessionId: existing.rows[0].id,
+        status: "accepted"
+      });
+    }
+
+    const created = await pool.query(
+      `INSERT INTO human_chat_sessions (user_id, chat_id, status)
+       VALUES ($1, $2, 'accepted')
+       RETURNING id, status`,
+      [userId, chatId]
+    );
+
+    res.json({
+      sessionId: created.rows[0].id,
+      status: created.rows[0].status
+    });
+
+  } catch (err) {
+    console.error("HOST sohbet açma hatası:", err);
+    res.status(500).json({ error: "HOST sohbeti açılamadı." });
+  }
+});
 // -------------------------
 // KULLANICI HOST DESTEĞİ İSTER
 // -------------------------
