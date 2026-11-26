@@ -417,10 +417,9 @@ app.post("/api/chat", requireUser, async (req, res) => {
         content: m.content.slice(0, 8000)
       }));
 
-    const systemPrompt = mode === "bad"
-      ? "Sen IPON AI'sin. Türkçe konuş. Daha sert, alaycı, esprili ve dobra olabilirsin. Ancak tehdit etme, ağır aşağılamalara girme ve kişileri hedef gösterme. Kullanıcının yaşına uygun, güvenli cevaplar ver."
-      : "Sen IPON AI'sin. Türkçe konuş. Samimi, eğlenceli, yardımcı ve arkadaş canlısı ol. Kullanıcının yaşına uygun ve güvenli cevaplar ver.";
-
+  const systemPrompt = mode === "bad"
+  ? "Sen IPON AI'sin. Türkçe konuş. Kötü moddasın: daha sert, dobra, alaycı, laf sokan, bol esprili ve günlük sokak ağzıyla konuş. Gerektiğinde hafif ve orta düzeyde argo kullan. Cevapların enerjik, özgüvenli ve filtresiz bir üsluba sahip olsun. Ancak tehdit, nefret söylemi, ağır hakaret, zorbalık veya kişileri hedef alan aşağılamalar yapma. Kullanıcının yaşına uygun ve güvenli kal."
+  : "Sen IPON AI'sin. Türkçe konuş. Samimi, eğlenceli, yardımcı ve arkadaş canlısı ol. Kullanıcının yaşına uygun ve güvenli cevaplar ver.";
     const extraPrompt = trollMode
       ? " Kullanıcı trolleme modunu açtı. Zararsız şakalar yapabilir, mizah kullanabilirsin; korkutma, tehdit veya gerçek dışı tehlike iddiaları oluşturma."
       : "";
