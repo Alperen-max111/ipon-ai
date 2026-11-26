@@ -4,7 +4,58 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IPON AI</title>
-<style>
+/* SEN VARSIN DİYE kitap reklamı */
+#bookAd{
+  position:fixed;
+  right:18px;
+  top:50%;
+  transform:translateY(-50%);
+  width:190px;
+  padding:12px;
+  background:#20283a;
+  border:1px solid #6475ed;
+  border-radius:15px;
+  z-index:1000;
+  text-align:center;
+  box-shadow:0 8px 30px #0008;
+}
+#bookAd img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  border-radius:9px;
+}
+#bookAd h3{font-size:16px;margin:10px 0 4px}
+#bookAd p{font-size:12px;color:#aeb8d0;margin:4px 0 10px}
+#bookAd a{
+  display:block;
+  padding:10px 5px;
+  margin-top:7px;
+  border-radius:8px;
+  background:#6475ed;
+  color:white;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:bold;
+}
+#bookAd a:last-child{background:#30394d}
+@media(max-width:600px){
+  #bookAd{
+    position:static;
+    transform:none;
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:7px;
+    margin:5px 0;
+  }
+  #bookAd img{width:55px;height:75px;flex-shrink:0}
+  #bookAd h3{margin:0 0 4px}
+  #bookAd p{margin:3px 0}
+  #bookAd a{display:inline-block;padding:7px;margin:3px 2px;font-size:10px}
+}
+ <style>
 *{box-sizing:border-box}
 body{margin:0;background:#101522;color:white;font-family:Arial,sans-serif;height:100vh;overflow:hidden}
 button{border:0;border-radius:10px;padding:12px;color:white;background:#6475ed;cursor:pointer;font-weight:bold}
@@ -125,7 +176,16 @@ h1{font-size:25px}
 }
 </style>
 </head>
-<body>
+<div id="bookAd">
+  <img src="/sen-varsin-diye.jpg" alt="Sen Varsın Diye kitap kapağı">
+  <div>
+    <h3>Sen Varsın Diye</h3>
+    <p>Yazar: Cihan Durmaz</p>
+    <a href="https://ty.gl/jqfz56v435fxr" target="_blank">Kitabı Satın Al</a>
+    <a href="https://youtube.com/@chndrmz?si=v9U1ygwvrHgtff7c" target="_blank">YouTube Kanalı</a>
+  </div>
+</div>
+ <body>
 <section id="authScreen">
  <div class="auth-box">
   <div class="auth-logo">IPON AI</div>
