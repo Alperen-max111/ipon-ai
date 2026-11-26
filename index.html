@@ -857,6 +857,7 @@ async function loadHostUsers(){
   (data.users||[]).forEach(u=>{
    const option=document.createElement("option");
    option.value=u.id;
+   console.log("HOST kullanıcı ID:", u.id, "Tür:", typeof u.id);
    option.textContent=u.username;
    select.appendChild(option);
   });
