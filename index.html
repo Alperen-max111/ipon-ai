@@ -319,6 +319,7 @@ body[data-theme="purple"] #message {
    <div id="privacyStatus">Kontrol ediliyor...</div>
    <p>İzin verirsen sohbetlerin HOST panelinde görünür. Ayrıca HOST'un sohbetine katılıp yanıt yazabileceğini kabul etmiş olursun. İstediğin zaman izni kapatabilirsin. Fotoğrafların kendisi paylaşılmaz.</p>
   </div>
+  <button id="themeButton">🎨 Tema: Koyu</button>
   <button class="user-logout" id="userLogout">🚪 HESAPTAN ÇIK</button>
  </div>
 </aside>
@@ -422,6 +423,33 @@ let hostObserverIds=new Set();
 let hostIdentityKnown=false;
 let hostViewingSession = null;
 const $=id=>document.getElementById(id);
+ // TEMA SİSTEMİ
+function setTheme(theme){
+ document.body.dataset.theme=theme;
+ localStorage.setItem("ipon_theme",theme);
+
+ const names={
+  dark:"Koyu",
+  light:"Açık",
+  purple:"Mor"
+ };
+
+ $("themeButton").textContent="🎨 Tema: "+names[theme];
+}
+
+$("themeButton").onclick=()=>{
+ const current=localStorage.getItem("ipon_theme")||"dark";
+
+ const next={
+  dark:"light",
+  light:"purple",
+  purple:"dark"
+ };
+
+ setTheme(next[current]||"dark");
+};
+
+setTheme(localStorage.getItem("ipon_theme")||"dark");
 
 const request=async(url,options={})=>{
  const headers={...(options.headers||{})};
