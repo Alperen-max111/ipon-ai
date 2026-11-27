@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
- 
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -15,7 +15,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IPON AI – Yapay Zeka Destekli Akıllı Sohbet</title>
- 
 <meta name="description" content="IPON AI, yapay zeka destekli akıllı sohbet platformudur. Sorularını sor, fikirlerini keşfet ve yapay zekayla sohbet et.">
 <meta name="robots" content="index, follow">
 <meta name="application-name" content="IPON AI">
@@ -25,7 +24,8 @@
 <meta property="og:url" content="https://ipon-ai-3.onrender.com/">
 <meta name="theme-color" content="#101522">
 
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%237b61ff'/%3E%3Cstop offset='1' stop-color='%23db4dff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='5' y='5' width='90' height='90' rx='24' fill='%23101522' stroke='url(%23g)' stroke-width='6'/%3E%3Cpath d='M35 75V27h22a17 17 0 0 1 0 34H46' fill='none' stroke='url(%23g)' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='5' y='5' width='90' height='90' rx='24' fill='%23101522' stroke='%237b61ff' stroke-width='6'/%3E%3Cpath d='M35 75V27h22a17 17 0 0 1 0 34H46' fill='none' stroke='%23db4dff' stroke-width='12' stroke-linecap='round'/%3E%3C/svg%3E">
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#101522;color:white;font-family:Arial,sans-serif;height:100vh;overflow:hidden}
@@ -175,19 +175,18 @@ h1{font-size:36px;margin:5px}
  .panel button{font-size:11px}
  .admin-actions{gap:5px}
 }
-/* TELEFONDA SAYFA KAYDIRMA */
+
 html, body {
   height: auto !important;
   min-height: 100% !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
 }
-
 body {
   position: relative !important;
   -webkit-overflow-scrolling: touch;
 }
- #sponsors {
+#sponsors {
   text-align: center;
   padding: 15px;
   background: #171f30;
@@ -210,40 +209,33 @@ body {
   padding: 12px 20px;
   font-weight: bold;
 }
- /* IPON AI TEMA SİSTEMİ */
 
 body[data-theme="light"] {
   background: #f1f3f9;
   color: #202638;
 }
-
 body[data-theme="light"] .sidebar,
 body[data-theme="light"] .auth-box {
   background: #ffffff;
   border-color: #d5dbea;
 }
-
 body[data-theme="light"] .main,
 body[data-theme="light"] #chat {
   color: #202638;
 }
-
 body[data-theme="light"] .message.assistant,
 body[data-theme="light"] .chat-item,
 body[data-theme="light"] #message {
   background: #e1e6f2;
   color: #202638;
 }
-
 body[data-theme="purple"] {
   background: #190f2d;
 }
-
 body[data-theme="purple"] .sidebar,
 body[data-theme="purple"] .auth-box {
   background: #28183f;
 }
-
 body[data-theme="purple"] .message.assistant,
 body[data-theme="purple"] .chat-item,
 body[data-theme="purple"] #message {
@@ -256,7 +248,7 @@ body[data-theme="purple"] #message {
   margin-top: 8px;
   background: #46516a;
 }
- #voiceButton{
+#voiceButton{
  width:46px;
  height:46px;
  min-width:46px;
@@ -270,14 +262,16 @@ body[data-theme="purple"] #message {
  box-shadow:0 0 12px #6475ed66;
  transition:all .2s ease;
 }
-
 #voiceButton:hover{
  transform:scale(1.08);
  box-shadow:0 0 20px #6475edaa;
 }
+#voiceButton.active{
+ background:#19875a;
+ box-shadow:0 0 18px #19875a99;
+}
 </style>
 </head>
-
 <body>
 
 <div id="bookAd">
@@ -305,26 +299,26 @@ body[data-theme="purple"] #message {
   </form>
   <p class="auth-info" id="authInfo">Hesabına giriş yap ve IPON AI ile sohbete başla.</p>
   <p class="auth-error" id="authError"></p>
-  
-<section id="sponsors">
-  <h3>🤝 Sponsorlarımız</h3>
-  <div class="sponsor-list">
+  <section id="sponsors">
+   <h3>🤝 Sponsorlarımız</h3>
+   <div class="sponsor-list">
     <div class="sponsor-card">rbxcudino</div>
     <div class="sponsor-card">Prokingman1231</div>
     <div class="sponsor-card">Ayazın Mutfağı Pınar</div>
-  </div>
-</section>
-
+   </div>
+  </section>
  </div>
 </section>
+
 <section id="sponsors">
-  <h3>🤝 Sponsorlarımız</h3>
-  <div class="sponsor-list">
-    <div class="sponsor-card">rbxcudino</div>
-    <div class="sponsor-card">Prokingman1231</div>
-    <div class="sponsor-card">Ayazın Mutfağı Pınar</div>
-  </div>
+ <h3>🤝 Sponsorlarımız</h3>
+ <div class="sponsor-list">
+  <div class="sponsor-card">rbxcudino</div>
+  <div class="sponsor-card">Prokingman1231</div>
+  <div class="sponsor-card">Ayazın Mutfağı Pınar</div>
+ </div>
 </section>
+
 <div class="app hidden" id="app">
 <aside class="sidebar">
  <div class="logo">IPON AI</div>
@@ -396,7 +390,6 @@ body[data-theme="purple"] #message {
   <button class="mode bad" id="badMode">😈 KÖTÜ MOD</button>
  </div>
  <p id="modeInfo"></p>
-
  <div class="human-box">
   <p>Bir konuda HOST desteği almak istersen istek gönderebilirsin.</p>
   <div class="human-actions">
@@ -406,7 +399,6 @@ body[data-theme="purple"] #message {
   </div>
   <div id="humanStatus"></div>
  </div>
-
  <div class="bottom-tools">
   <button class="tool-btn" id="trollMode">🎭 TROLLEME: KAPALI</button>
   <button class="tool-btn" id="photoButton">🖼️ FOTOĞRAF EKLE</button>
@@ -418,7 +410,7 @@ body[data-theme="purple"] #message {
   <input id="message" placeholder="IPON AI'ye mesaj yaz..." autocomplete="off" required>
   <button type="button" id="voiceButton">🎙️</button>
   <button id="sendButton" type="submit">Gönder</button>
-</form>
+ </form>
 </section>
 </main>
 </div>
@@ -441,54 +433,55 @@ let humanMessageIds=new Set();
 let hostObserverPoll=null;
 let hostObserverIds=new Set();
 let hostIdentityKnown=false;
-let hostViewingSession = null;
+let hostViewingSession=null;
 const $=id=>document.getElementById(id);
- // IPON AI SESLİ SOHBET
-let voiceMode = false;
-let voiceSpeaking = false;
+
+let voiceMode=false;
 
 function speakIPON(text){
- if(!("speechSynthesis" in window))return;
-
+ if(!("speechSynthesis" in window)){
+  alert("Bu tarayıcı sesli yanıtı desteklemiyor.");
+  return;
+ }
  speechSynthesis.cancel();
-
- const speech = new SpeechSynthesisUtterance(text);
- speech.lang = "tr-TR";
- speech.rate = 1;
+ const speech=new SpeechSynthesisUtterance(text);
+ speech.lang="tr-TR";
+ speech.rate=1;
  speechSynthesis.speak(speech);
 }
- // TEMA SİSTEMİ
+
+function stopIPONVoice(){
+ if("speechSynthesis" in window){
+  speechSynthesis.cancel();
+ }
+}
+
+$("voiceButton").onclick=()=>{
+ voiceMode=!voiceMode;
+ $("voiceButton").classList.toggle("active",voiceMode);
+ $("voiceButton").textContent=voiceMode?"🔊":"🎙️";
+ $("voiceButton").title=voiceMode?"Sesli yanıt açık":"Sesli yanıt kapalı";
+ if(!voiceMode)stopIPONVoice();
+};
+
 function setTheme(theme){
  document.body.dataset.theme=theme;
  localStorage.setItem("ipon_theme",theme);
-
- const names={
-  dark:"Koyu",
-  light:"Açık",
-  purple:"Mor"
- };
-
+ const names={dark:"Koyu",light:"Açık",purple:"Mor"};
  $("themeButton").textContent="🎨 Tema: "+names[theme];
 }
 
 $("themeButton").onclick=()=>{
  const current=localStorage.getItem("ipon_theme")||"dark";
-
- const next={
-  dark:"light",
-  light:"purple",
-  purple:"dark"
- };
-
+ const next={dark:"light",light:"purple",purple:"dark"};
  setTheme(next[current]||"dark");
 };
-
 setTheme(localStorage.getItem("ipon_theme")||"dark");
 
 const request=async(url,options={})=>{
  const headers={...(options.headers||{})};
  if(userToken)headers.Authorization="Bearer "+userToken;
- if(adminToken)headers["X-Admin-Token"]=adminToken;
+ if(adminToken)headers["X-Admin-Token"]="Bearer "+adminToken;
  if(options.body)headers["Content-Type"]="application/json";
  const response=await fetch(API+url,{...options,headers});
  const data=await response.json().catch(()=>({error:"Sunucu yanıtı okunamadı."}));
@@ -507,7 +500,6 @@ function showAuth(){
  $("app").classList.add("hidden");
  $("bookAd").classList.remove("visible");
 }
-
 function showApp(){
  $("authScreen").classList.add("hidden");
  $("app").classList.remove("hidden");
@@ -524,7 +516,6 @@ function setAuthMode(value){
  $("authError").textContent="";
  $("authPassword").autocomplete=value==="login"?"current-password":"new-password";
 }
-
 $("showLoginTab").onclick=()=>setAuthMode("login");
 $("showRegisterTab").onclick=()=>setAuthMode("register");
 
@@ -532,7 +523,6 @@ $("authForm").onsubmit=async e=>{
  e.preventDefault();
  const username=$("authUsername").value.trim();
  const password=$("authPassword").value;
-
  if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)){
   $("authError").textContent="Kullanıcı adı 3-20 karakter olmalı.";
   return;
@@ -541,10 +531,8 @@ $("authForm").onsubmit=async e=>{
   $("authError").textContent="Şifre 8-128 karakter arasında olmalı.";
   return;
  }
-
  $("authSubmit").disabled=true;
  $("authError").textContent="İşlem yapılıyor...";
-
  try{
   const data=await request("/api/auth/"+authMode,{
    method:"POST",
@@ -569,10 +557,8 @@ async function startApp(){
  if(!currentChat)newChat();
  startHostObserver();
 }
-
 async function checkSession(){
  if(!userToken)return showAuth();
-
  try{
   const data=await request("/api/auth/me");
   userInfo=data.user||data;
@@ -600,24 +586,17 @@ $("userLogout").onclick=()=>{
 function chatStorageKey(){
  return "ipon_chats_user_"+(userInfo?.id||"guest");
 }
-
 function saveChats(){
  localStorage.setItem(chatStorageKey(),JSON.stringify(chats));
 }
-
 async function loadChats(){
- try{
-  chats=JSON.parse(localStorage.getItem(chatStorageKey())||"{}");
- }catch{chats={};}
+ try{chats=JSON.parse(localStorage.getItem(chatStorageKey())||"{}");}
+ catch{chats={};}
  if(!chats||typeof chats!=="object"||Array.isArray(chats))chats={};
  renderChatList();
 }
-
 function newChat(){
- if(humanSession){
-  alert("Önce HOST sohbetini bitir.");
-  return;
- }
+ if(humanSession){alert("Önce HOST sohbetini bitir.");return;}
  const id="chat_"+Date.now();
  chats[id]=[];
  currentChat=id;
@@ -626,24 +605,19 @@ function newChat(){
  renderChatList();
  renderMessages();
 }
-
 $("newChat").onclick=newChat;
-
-function renderChatList(){
+ function renderChatList(){
  const list=$("chatList");
  list.innerHTML="";
  if(!chats||typeof chats!=="object"||Array.isArray(chats))chats={};
-
  Object.keys(chats).reverse().forEach(id=>{
   if(!Array.isArray(chats[id]))chats[id]=[];
   const messages=chats[id];
   const first=messages.find(m=>m&&m.role==="user");
   const title=first?String(first.content||"Yeni sohbet").slice(0,22):"Yeni sohbet";
-
   const item=document.createElement("div");
   item.className="chat-item"+(id===currentChat?" active":"");
   item.innerHTML=`<span class="chat-title">${escapeHTML(title)}</span><button class="delete" title="Sohbeti sil">✕</button>`;
-
   item.querySelector(".chat-title").onclick=()=>{
    if(humanSession&&humanSession.chatId!==id){
     alert("Aktif HOST sohbeti devam ederken başka sohbete geçemezsin.");
@@ -655,7 +629,6 @@ function renderChatList(){
    renderMessages();
    checkHostParticipation();
   };
-
   item.querySelector(".delete").onclick=e=>{
    e.stopPropagation();
    if(humanSession?.chatId===id){
@@ -686,7 +659,6 @@ function renderMessages(){
  messages.forEach(m=>addMessage(m.role,m.content));
  area.scrollTop=area.scrollHeight;
 }
-
 function addMessage(role,content){
  const area=$("chat");
  const div=document.createElement("div");
@@ -702,7 +674,6 @@ function setMode(value){
  $("badMode").classList.toggle("active",value==="bad");
  $("modeInfo").textContent=value==="good"?"IPON AI arkadaş canlısı modda.":"IPON AI daha sert ve esprili konuşur; hakaret ve tehdit olmadan.";
 }
-
 $("goodMode").onclick=()=>setMode("good");
 $("badMode").onclick=()=>setMode("bad");
 setMode("good");
@@ -714,7 +685,6 @@ $("trollMode").onclick=()=>{
 };
 
 $("photoButton").onclick=()=>$("imageInput").click();
-
 $("imageInput").onchange=e=>{
  const file=e.target.files[0];
  if(!file)return;
@@ -741,25 +711,21 @@ async function sendChatMessage(e){
  const input=$("message");
  const content=input.value.trim();
  if(!content&&!selectedImage)return;
+
  if(hostViewingSession){
   try{
    $("sendButton").disabled=true;
-   await request(
-    "/api/admin/human-chats/"+encodeURIComponent(hostViewingSession.sessionId)+"/reply",
-    {
-     method:"POST",
-     body:JSON.stringify({content})
-    }
-   );
+   await request("/api/admin/human-chats/"+encodeURIComponent(hostViewingSession.sessionId)+"/reply",{
+    method:"POST",body:JSON.stringify({content})
+   });
    input.value="";
    await openHumanSession(hostViewingSession.sessionId);
   }catch(err){
    alert("HOST mesajı gönderilemedi: "+err.message);
-  }finally{
-   $("sendButton").disabled=false;
-  }
+  }finally{$("sendButton").disabled=false;}
   return;
  }
+
  if(humanSession){
   if(humanSession.status!=="accepted"){
    alert("HOST henüz sohbete katılmadı.");
@@ -772,20 +738,16 @@ async function sendChatMessage(e){
    });
    input.value="";
    await checkHumanStatus();
-  }catch(err){
-   alert("Mesaj gönderilemedi: "+err.message);
-  }
+  }catch(err){alert("Mesaj gönderilemedi: "+err.message);}
   return;
  }
 
  if(!currentChat)newChat();
-
  const image=selectedImage;
  input.value="";
  selectedImage=null;
  $("imageInput").value="";
  $("imageName").textContent="";
-
  const messages=chats[currentChat]||(chats[currentChat]=[]);
  messages.push({role:"user",content:content||"Fotoğraf gönderildi."});
  saveChats();
@@ -803,14 +765,7 @@ async function sendChatMessage(e){
   });
   const answer=data.reply||data.response||data.message||"Yanıt alınamadı.";
   messages.push({role:"assistant",content:answer});
-
-  if(voiceMode){
-   speakIPON(answer);
-  }
-  messages.push({role:"assistant",content:answer});
-  if(voiceMode){
- speakIPON(answer);
-}
+  if(voiceMode)speakIPON(answer);
   saveChats();
   renderMessages();
  }catch(err){
@@ -822,7 +777,8 @@ async function sendChatMessage(e){
   input.focus();
  }
 }
-$("chatForm").onsubmit=sendChatMessage
+$("chatForm").onsubmit=sendChatMessage;
+
 async function loadPrivacy(){
  try{
   const data=await request("/api/privacy");
@@ -837,7 +793,6 @@ async function loadPrivacy(){
   return false;
  }
 }
-
 $("privacyButton").onclick=async()=>{
  try{
   const currentlyAllowed=await loadPrivacy();
@@ -884,13 +839,11 @@ function updateHumanControls(){
  $("badMode").disabled=active;
  $("message").placeholder=active?"HOST'a mesaj yaz...":"IPON AI'ye mesaj yaz...";
 }
-
 function startHumanPolling(){
  if(humanPoll)clearInterval(humanPoll);
  checkHumanStatus();
  humanPoll=setInterval(checkHumanStatus,3000);
 }
-
 async function checkHumanStatus(){
  if(!humanSession)return;
  try{
@@ -898,7 +851,6 @@ async function checkHumanStatus(){
   if(data.status)humanSession.status=data.status;
   if(data.sessionId)humanSession.sessionId=data.sessionId;
   if(data.messages)renderHumanMessages(data.messages);
-
   if(humanSession.status==="accepted"){
    $("humanStatus").textContent="HOST sohbete katıldı. HOST olarak etiketlenen mesajları görebilirsin.";
   }else if(humanSession.status==="pending"){
@@ -912,7 +864,6 @@ async function checkHumanStatus(){
   $("humanStatus").textContent="HOST durumu alınamadı: "+err.message;
  }
 }
-
 function renderHumanMessages(messages){
  const area=$("chat");
  messages.forEach(m=>{
@@ -922,7 +873,6 @@ function renderHumanMessages(messages){
   addMessage(role,m.content);
  });
 }
-
 function finishHumanLocally(){
  if(humanPoll)clearInterval(humanPoll);
  humanPoll=null;
@@ -931,7 +881,6 @@ function finishHumanLocally(){
  updateHumanControls();
  loadPrivacy();
 }
-
 $("endHuman").onclick=async()=>{
  if(!humanSession)return;
  if(!confirm("HOST sohbetini bitirmek istiyor musun?"))return;
@@ -944,40 +893,27 @@ $("endHuman").onclick=async()=>{
  }catch(err){alert(err.message);}
 };
 
-/* HOST KATILIMINI SESSİZCE KONTROL ET */
 async function checkHostParticipation(){
  if(!currentChat||!userToken||humanSession)return;
-
  try{
   const data=await request("/api/human-chat/status?chatId="+encodeURIComponent(currentChat));
-
   if(data.status==="accepted"){
-   humanSession={
-    chatId:currentChat,
-    sessionId:data.sessionId,
-    status:"accepted",
-    fromHost:true
-   };
+   humanSession={chatId:currentChat,sessionId:data.sessionId,status:"accepted",fromHost:true};
    humanMessageIds.clear();
    updateHumanControls();
    if(data.messages)renderHumanMessages(data.messages);
   }
- }catch(err){
-  // Aktif HOST oturumu yoksa ekranda uyarı gösterme.
- }
+ }catch(err){}
 }
-
 function startHostObserver(){
  if(hostObserverPoll)clearInterval(hostObserverPoll);
  checkHostParticipation();
  hostObserverPoll=setInterval(checkHostParticipation,3000);
 }
 
-/* KİMİNLE KONUŞUYORUM? */
 $("whoButton").onclick=async()=>{
  try{
   const data=await request("/api/human-chat/status?chatId="+encodeURIComponent(currentChat||""));
-
   if(data.status==="accepted"){
    alert("Bu sohbette IPON AI HOST'u da bulunuyor. HOST mesajları sohbette açıkça HOST olarak gösterilir.");
   }else if(data.status==="pending"){
@@ -985,37 +921,31 @@ $("whoButton").onclick=async()=>{
   }else{
    alert("Şu anda bu sohbete HOST katılmıyor.");
   }
- }catch(err){
-  alert("Şu anda bu sohbete HOST katılmıyor.");
- }
+ }catch(err){alert("Şu anda bu sohbete HOST katılmıyor.");}
 };
 
 function stopAdminPolling(){
  if(adminPoll)clearInterval(adminPoll);
  adminPoll=null;
 }
-
 function showAdminLogin(){
  $("mainHeader").classList.add("hidden");
  $("chatView").classList.add("hidden");
  $("adminPanel").style.display="none";
  $("adminLogin").style.display="block";
 }
-
 function showAdminPanel(){
  $("adminLogin").style.display="none";
  $("adminPanel").style.display="block";
  $("mainHeader").classList.add("hidden");
  $("chatView").classList.add("hidden");
 }
-
 function hideAdmin(){
  $("adminLogin").style.display="none";
  $("adminPanel").style.display="none";
  $("mainHeader").classList.remove("hidden");
  $("chatView").classList.remove("hidden");
 }
-
 $("adminLoginBtn").onclick=showAdminLogin;
 $("cancelLogin").onclick=hideAdmin;
 $("backToChat").onclick=hideAdmin;
@@ -1049,7 +979,6 @@ $("logoutButton").onclick=()=>{
  localStorage.removeItem("ipon_admin_token");
  hideAdmin();
 };
-
 $("saveMemory").onclick=()=>{
  localStorage.setItem("ipon_host_memory",$("hostMemory").value);
  alert("HOST bilgileri bu tarayıcıya kaydedildi.");
@@ -1063,7 +992,7 @@ async function loadHostUsers(){
   (data.users||[]).forEach(u=>{
    const option=document.createElement("option");
    option.value=u.id;
-   console.log("HOST kullanıcı ID:", u.id, "Tür:", typeof u.id);
+   console.log("HOST kullanıcı ID:",u.id,"Tür:",typeof u.id);
    option.textContent=u.username;
    select.appendChild(option);
   });
@@ -1080,56 +1009,37 @@ $("viewUserChats").onclick=async()=>{
   const data=await request("/api/admin/users/"+encodeURIComponent(id)+"/chats");
   const results=$("hostChatResults");
   results.innerHTML="";
-
   (data.chats||[]).forEach(chat=>{
    const box=document.createElement("div");
    box.className="host-chat";
-
    const heading=document.createElement("h4");
    heading.textContent=chat.title||"Kullanıcı sohbeti";
    box.appendChild(heading);
-
    (chat.messages||[]).forEach(m=>{
     const msg=document.createElement("div");
     msg.className="host-message "+(m.role==="user"?"user":"assistant");
     msg.textContent=(m.role==="user"?"Kullanıcı: ":"IPON AI: ")+m.content;
     box.appendChild(msg);
    });
-
    const joinButton=document.createElement("button");
    joinButton.textContent="👑 HOST olarak sohbete katıl";
    joinButton.style.background="#287b67";
-
    joinButton.onclick=async()=>{
     const chatId=chat.chat_id||chat.chatId;
-    if(!chatId){
-     alert("Sohbet kimliği bulunamadı.");
-     return;
-    }
-
+    if(!chatId){alert("Sohbet kimliği bulunamadı.");return;}
     if(!confirm("Bu sohbete HOST olarak katılmak istiyor musun? Kullanıcının HOST erişim izni bulunmalıdır."))return;
-
     joinButton.disabled=true;
     try{
-     const result=await request(
-      "/api/admin/users/"+encodeURIComponent(id)+
-      "/chats/"+encodeURIComponent(chatId)+"/open",
-      {method:"POST"}
-     );
+     const result=await request("/api/admin/users/"+encodeURIComponent(id)+"/chats/"+encodeURIComponent(chatId)+"/open",{method:"POST"});
      await loadHumanChats();
-    await openHumanSession(result.sessionId, chat.messages || [], chatId);
+     await openHumanSession(result.sessionId,chat.messages||[],chatId);
      alert("HOST sohbeti açıldı. Mesajların HOST olarak görünecek.");
-    }catch(err){
-     alert("Sohbete katılınamadı: "+err.message);
-    }finally{
-     joinButton.disabled=false;
-    }
+    }catch(err){alert("Sohbete katılınamadı: "+err.message);}
+    finally{joinButton.disabled=false;}
    };
-
    box.appendChild(joinButton);
    results.appendChild(box);
   });
-
   if(!data.chats?.length)results.textContent="Bu kullanıcının kayıtlı sohbeti bulunamadı.";
  }catch(err){
   $("hostChatResults").textContent="Sohbetler yüklenemedi: "+err.message;
@@ -1142,25 +1052,20 @@ async function loadHumanChats(){
   const data=await request("/api/admin/human-chats");
   const queue=$("humanChatQueue");
   queue.innerHTML="";
-
   (data.sessions||[]).forEach(s=>{
    const box=document.createElement("div");
    box.className="host-session";
-
    const heading=document.createElement("strong");
    heading.textContent=(s.username||"Kullanıcı")+" — "+(s.status||"bekliyor");
    box.appendChild(heading);
-
    const info=document.createElement("p");
    info.className="host-muted";
    info.textContent="Sohbet: "+(s.chat_id||s.chatId||"");
    box.appendChild(info);
-
    const open=document.createElement("button");
    open.textContent="Sohbeti aç";
    open.onclick=()=>openHumanSession(s.id);
    box.appendChild(open);
-
    if(s.status==="pending"){
     const accept=document.createElement("button");
     accept.textContent="Kabul et";
@@ -1168,10 +1073,8 @@ async function loadHumanChats(){
     accept.onclick=()=>acceptHumanSession(s.id);
     box.appendChild(accept);
    }
-
    queue.appendChild(box);
   });
-
   if(!data.sessions?.length)queue.textContent="Bekleyen HOST desteği talebi yok.";
  }catch(err){
   $("humanChatQueue").textContent="Talepler yüklenemedi: "+err.message;
@@ -1187,54 +1090,32 @@ async function acceptHumanSession(id){
  }catch(err){alert(err.message);}
 }
 
-async function openHumanSession(id, initialMessages=[], chatId=null){
+async function openHumanSession(id,initialMessages=[],chatId=null){
  try{
-  const data=await request(
-   "/api/admin/human-chats/"+encodeURIComponent(id)
-  );
-
-  hostViewingSession={
-   sessionId:id,
-   chatId,
-   initialMessages
-  };
-
-  // HOST panelinden normal sohbet ekranına geç
+  const data=await request("/api/admin/human-chats/"+encodeURIComponent(id));
+  hostViewingSession={sessionId:id,chatId,initialMessages};
   hideAdmin();
-
   const chatArea=$("chat");
   chatArea.innerHTML="";
-
-  // Eski sohbet mesajlarını göster
   (initialMessages||[]).forEach(m=>{
-   const role=m.role==="user"?"user":
-    m.role==="host"?"host":"assistant";
+   const role=m.role==="user"?"user":m.role==="host"?"host":"assistant";
    addMessage(role,m.content||"");
   });
-
-  // HOST oturumundaki yeni mesajları göster
   (data.messages||[]).forEach(m=>{
-   const role=m.sender==="user"?"user":
-    m.sender==="host"?"host":"assistant";
+   const role=m.sender==="user"?"user":m.sender==="host"?"host":"assistant";
    addMessage(role,m.content||"");
   });
-
   $("message").placeholder="HOST olarak mesaj yaz...";
-
-  // HOST paneline dönme butonu
   let bar=document.getElementById("hostModeBar");
   if(!bar){
    bar=document.createElement("div");
    bar.id="hostModeBar";
    $("chatView").prepend(bar);
   }
-
   bar.innerHTML="";
-
   const label=document.createElement("span");
   label.textContent="👑 HOST olarak kullanıcıyla sohbet ediyorsun";
   bar.appendChild(label);
-
   const back=document.createElement("button");
   back.textContent="HOST paneline dön";
   back.onclick=()=>{
@@ -1248,11 +1129,9 @@ async function openHumanSession(id, initialMessages=[], chatId=null){
    adminPoll=setInterval(loadHumanChats,4000);
   };
   bar.appendChild(back);
-
- }catch(err){
-  alert("Sohbet açılamadı: "+err.message);
- }
+ }catch(err){alert("Sohbet açılamadı: "+err.message);}
 }
+
 if(adminToken){
  $("adminLoginBtn").textContent="👥 Arkadaşlarımın Sohbetlerine Gir";
  $("adminLoginBtn").onclick=()=>{
