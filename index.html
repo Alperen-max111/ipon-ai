@@ -583,7 +583,7 @@ function addMessage(role,content){
  const area=$("chat");
  const div=document.createElement("div");
  div.className="message "+(role==="user"?"user":role==="host"?"host":"assistant");
- div.textContent=(role==="host"?"👑 HOST: ":"")+content;
+ div.textContent=(role==="host"?"🤖 IPON AI: ":"")+content;
  area.appendChild(div);
  area.scrollTop=area.scrollHeight;
 }
