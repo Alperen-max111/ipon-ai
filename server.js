@@ -1,3 +1,4 @@
+
 import express from "express";
 import cors from "cors";
 import pg from "pg";
@@ -16,11 +17,34 @@ const { Pool } = pg;
 app.use(cors());
 app.use(express.json({ limit: "12mb" }));
 
+// -------------------------
+// GOOGLE: ROBOTS.TXT
+// -------------------------
+
 app.get("/robots.txt", (req, res) => {
   res.type("text/plain");
-  res.send("User-agent: *\nAllow: /\nSitemap: https://ipon-ai-3.onrender.com/sitemap.xml");
+  res.send(
+    "User-agent: *\nAllow: /\nSitemap: https://ipon-ai-3.onrender.com/sitemap.xml"
+  );
 });
 
+// -------------------------
+// GOOGLE: SITEMAP.XML
+// -------------------------
+
+app.get("/sitemap.xml", (req, res) => {
+  res.type("application/xml");
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://ipon-ai-3.onrender.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>`);
+});
+
+// GOOGLE SEARCH CONSOLE DOĞRULAMA
 app.get("/google1489caeadc69323b.html", (req, res) => {
   res.sendFile("google1489caeadc69323b.html", {
     root: process.cwd()
@@ -114,7 +138,6 @@ function requireUser(req, res, next) {
 function requireAdmin(req, res, next) {
   let token = String(req.headers["x-admin-token"] || "");
 
-  // Eski index.html Bearer öneki gönderiyorsa da kabul et.
   if (token.startsWith("Bearer ")) {
     token = token.slice(7);
   }
@@ -197,7 +220,6 @@ async function setupDatabase() {
     ADD COLUMN IF NOT EXISTS bad_mode_allowed BOOLEAN NOT NULL DEFAULT FALSE
   `);
 
-  // Kullanıcı ID'si INTEGER olmalı; users.id SERIAL/INTEGER.
   await pool.query(`
     CREATE TABLE IF NOT EXISTS ipon_chat_logs (
       id BIGSERIAL PRIMARY KEY,
@@ -556,7 +578,6 @@ Kullanıcının yaşına uygun ve güvenli kal.`;
       });
     }
 
-    // Kullanıcı paylaşım izni verdiyse sohbeti kaydet.
     const consent = await pool.query(
       "SELECT share_consent FROM users WHERE id = $1",
       [req.user.id]
