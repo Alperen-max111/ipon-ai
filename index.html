@@ -397,8 +397,9 @@ body[data-theme="purple"] #message {
  <div id="chat"></div>
  <form id="chatForm">
   <input id="message" placeholder="IPON AI'ye mesaj yaz..." autocomplete="off" required>
+  <button type="button" id="voiceButton">🎙️</button>
   <button id="sendButton" type="submit">Gönder</button>
- </form>
+</form>
 </section>
 </main>
 </div>
@@ -768,6 +769,12 @@ async function sendChatMessage(e){
    })
   });
   const answer=data.reply||data.response||data.message||"Yanıt alınamadı.";
+  if("speechSynthesis" in window){
+ const speech=new SpeechSynthesisUtterance(answer);
+ speech.lang="tr-TR";
+ speech.rate=1;
+ window.speechSynthesis.speak(speech);
+}
   messages.push({role:"assistant",content:answer});
   saveChats();
   renderMessages();
