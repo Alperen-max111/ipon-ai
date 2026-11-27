@@ -1,46 +1,45 @@
-
 import express from "express";
 import cors from "cors";
 import pg from "pg";
 import {
   randomBytes,
   createHmac,
-  timingSafeEqual
+  timingSafeEqual,
+  scrypt as scryptCallback
 } from "node:crypto";
 import { promisify } from "node:util";
-import { scrypt as scryptCallback } from "node:crypto";
 
 const scrypt = promisify(scryptCallback);
 const app = express();
-app.get("/robots.txt", (req, res) => {
-  res.type("text/plain");
-  res.send("User-agent: *\nAllow: /\nSitemap: https://ipon-ai-3.onrender.com/sitemap.xml");
-});
-app.get("/google1489caeadc69323b.html", (req, res) => {
-  res.sendFile("google1489caeadc69323b.html", {
-    root: process.cwd()
-  });
-});
 const { Pool } = pg;
 
 app.use(cors());
 app.use(express.json({ limit: "12mb" }));
 
+app.get("/robots.txt", (req, res) => {
+  res.type("text/plain");
+  res.send("User-agent: *\nAllow: /\nSitemap: https://ipon-ai-3.onrender.com/sitemap.xml");
+});
+
+app.get("/google1489caeadc69323b.html", (req, res) => {
+  res.sendFile("google1489caeadc69323b.html", {
+    root: process.cwd()
+  });
+});
+
 const PORT = process.env.PORT || 10000;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const DATABASE_URL = process.env.DATABASE_URL;
+const TOKEN_SECRET = process.env.TOKEN_SECRET || ADMIN_PASSWORD;
 
 if (!GROQ_API_KEY || !ADMIN_PASSWORD || !DATABASE_URL) {
   console.error("Eksik ortam değişkeni! GROQ_API_KEY, ADMIN_PASSWORD ve DATABASE_URL gerekli.");
   process.exit(1);
 }
 
-const TOKEN_SECRET =
-  process.env.TOKEN_SECRET || ADMIN_PASSWORD;
-
 if (!process.env.TOKEN_SECRET) {
-  console.warn("Uyarı: Render ortam değişkenlerine TOKEN_SECRET eklemen önerilir.");
+  console.warn("TOKEN_SECRET eklemen önerilir.");
 }
 
 const pool = new Pool({
@@ -51,7 +50,7 @@ const pool = new Pool({
 const MODEL = "openai/gpt-oss-20b";
 
 // -------------------------
-// GENEL YARDIMCILAR
+// TOKEN VE YARDIMCILAR
 // -------------------------
 
 function makeToken(payload) {
@@ -88,7 +87,6 @@ function readToken(token) {
     );
 
     if (!payload.exp || payload.exp < Date.now()) return null;
-
     return payload;
   } catch {
     return null;
@@ -97,16 +95,16 @@ function readToken(token) {
 
 function getBearer(req) {
   const header = req.headers.authorization || "";
-  return header.startsWith("Bearer ")
-    ? header.slice(7)
-    : "";
+  return header.startsWith("Bearer ") ? header.slice(7) : "";
 }
 
 function requireUser(req, res, next) {
   const payload = readToken(getBearer(req));
 
   if (!payload || payload.role !== "user") {
-    return res.status(401).json({ error: "Oturum geçersiz. Tekrar giriş yap." });
+    return res.status(401).json({
+      error: "Oturum geçersiz. Tekrar giriş yap."
+    });
   }
 
   req.user = payload;
@@ -114,10 +112,19 @@ function requireUser(req, res, next) {
 }
 
 function requireAdmin(req, res, next) {
-  const payload = readToken(req.headers["x-admin-token"]);
+  let token = String(req.headers["x-admin-token"] || "");
+
+  // Eski index.html Bearer öneki gönderiyorsa da kabul et.
+  if (token.startsWith("Bearer ")) {
+    token = token.slice(7);
+  }
+
+  const payload = readToken(token);
 
   if (!payload || payload.role !== "admin") {
-    return res.status(401).json({ error: "HOST oturumu geçersiz." });
+    return res.status(401).json({
+      error: "HOST oturumu geçersiz."
+    });
   }
 
   req.admin = payload;
@@ -135,7 +142,6 @@ function safeEqual(a, b) {
 async function hashPassword(password) {
   const salt = randomBytes(16).toString("hex");
   const hash = await scrypt(password, salt, 64);
-
   return salt + ":" + Buffer.from(hash).toString("hex");
 }
 
@@ -159,6 +165,12 @@ function validChatId(value) {
     value.length <= 100;
 }
 
+function validUserId(value) {
+  return /^[0-9]+$/.test(String(value || "")) &&
+    Number(value) > 0 &&
+    Number.isSafeInteger(Number(value));
+}
+
 // -------------------------
 // VERİTABANI
 // -------------------------
@@ -170,6 +182,7 @@ async function setupDatabase() {
       username VARCHAR(20) UNIQUE NOT NULL,
       password_hash TEXT NOT NULL,
       share_consent BOOLEAN NOT NULL DEFAULT FALSE,
+      bad_mode_allowed BOOLEAN NOT NULL DEFAULT FALSE,
       created_at TIMESTAMPTZ DEFAULT NOW()
     )
   `);
@@ -180,9 +193,15 @@ async function setupDatabase() {
   `);
 
   await pool.query(`
+    ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS bad_mode_allowed BOOLEAN NOT NULL DEFAULT FALSE
+  `);
+
+  // Kullanıcı ID'si INTEGER olmalı; users.id SERIAL/INTEGER.
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS ipon_chat_logs (
       id BIGSERIAL PRIMARY KEY,
-      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       chat_id VARCHAR(100) NOT NULL,
       messages JSONB NOT NULL DEFAULT '[]'::jsonb,
       updated_at TIMESTAMPTZ DEFAULT NOW(),
@@ -223,7 +242,7 @@ app.get("/api/health", (req, res) => {
 });
 
 // -------------------------
-// KAYIT VE GİRİŞ
+// KAYIT
 // -------------------------
 
 app.post("/api/auth/register", async (req, res) => {
@@ -259,6 +278,7 @@ app.post("/api/auth/register", async (req, res) => {
     );
 
     const user = result.rows[0];
+
     const token = makeToken({
       id: user.id,
       username: user.username,
@@ -277,6 +297,10 @@ app.post("/api/auth/register", async (req, res) => {
     res.status(500).json({ error: "Kayıt oluşturulamadı." });
   }
 });
+
+// -------------------------
+// GİRİŞ
+// -------------------------
 
 app.post("/api/auth/login", async (req, res) => {
   try {
@@ -322,6 +346,10 @@ app.post("/api/auth/login", async (req, res) => {
   }
 });
 
+// -------------------------
+// OTURUM BİLGİSİ
+// -------------------------
+
 app.get("/api/auth/me", requireUser, async (req, res) => {
   try {
     const result = await pool.query(
@@ -334,13 +362,14 @@ app.get("/api/auth/me", requireUser, async (req, res) => {
     }
 
     res.json({ user: result.rows[0] });
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Kullanıcı bilgisi alınamadı." });
   }
 });
 
 // -------------------------
-// GİZLİLİK VE PAYLAŞIM İZNİ
+// SOHBET PAYLAŞIM İZNİ
 // -------------------------
 
 app.get("/api/privacy", requireUser, async (req, res) => {
@@ -353,7 +382,8 @@ app.get("/api/privacy", requireUser, async (req, res) => {
     res.json({
       allowed: !!result.rows[0]?.share_consent
     });
-  } catch {
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "İzin bilgisi alınamadı." });
   }
 });
@@ -375,15 +405,40 @@ app.post("/api/privacy", requireUser, async (req, res) => {
       await pool.query(
         `UPDATE human_chat_sessions
          SET status = 'closed', updated_at = NOW()
-         WHERE user_id = $1 AND status IN ('pending', 'accepted')`,
+         WHERE user_id = $1
+         AND status IN ('pending', 'accepted')`,
         [req.user.id]
       );
     }
 
     res.json({ success: true, allowed });
   } catch (err) {
-    console.error("İzin hatası:", err);
+    console.error("Paylaşım izni hatası:", err);
     res.status(500).json({ error: "İzin güncellenemedi." });
+  }
+});
+
+// -------------------------
+// KÖTÜ MOD İZNİ - KULLANICI
+// -------------------------
+
+app.get("/api/bad-mode", requireUser, async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT bad_mode_allowed FROM users WHERE id = $1",
+      [req.user.id]
+    );
+
+    if (!result.rows.length) {
+      return res.status(404).json({ error: "Kullanıcı bulunamadı." });
+    }
+
+    res.json({
+      allowed: !!result.rows[0].bad_mode_allowed
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Kötü mod izni alınamadı." });
   }
 });
 
@@ -394,6 +449,19 @@ app.post("/api/privacy", requireUser, async (req, res) => {
 app.post("/api/chat", requireUser, async (req, res) => {
   try {
     const { messages, mode, trollMode, image, chatId } = req.body;
+
+    if (mode === "bad") {
+      const permission = await pool.query(
+        "SELECT bad_mode_allowed FROM users WHERE id = $1",
+        [req.user.id]
+      );
+
+      if (!permission.rows[0]?.bad_mode_allowed) {
+        return res.status(403).json({
+          error: "Kötü modu kullanmak için HOST izni gerekiyor."
+        });
+      }
+    }
 
     if (image) {
       return res.status(400).json({
@@ -421,9 +489,12 @@ app.post("/api/chat", requireUser, async (req, res) => {
         content: m.content.slice(0, 8000)
       }));
 
+    if (!safeMessages.length) {
+      return res.status(400).json({ error: "Geçerli mesaj bulunamadı." });
+    }
 
-const systemPrompt = mode === "bad"
-  ? `Sen IPON AI'sin. KÖTÜ MODDASIN.
+    const systemPrompt = mode === "bad"
+      ? `Sen IPON AI'sin. KÖTÜ MODDASIN.
 
 - Dobra, özgüvenli, eğlenceli ve hafif alaycı konuş.
 - Günlük Türkçe kullan.
@@ -437,13 +508,11 @@ const systemPrompt = mode === "bad"
 - Ciddi sorularda düzgünce yardımcı ol.
 - Önce mantık, sonra mizah.
 - Kullanıcının yaşına uygun ve güvenli kal.`
-
-  : `Sen IPON AI'sin. Türkçe konuş.
+      : `Sen IPON AI'sin. Türkçe konuş.
 Samimi, nazik, sakin, yardımcı ve arkadaş canlısı ol.
 Alaycı konuşma ve kullanıcıya laf sokma.
 Açık, anlaşılır ve destekleyici cevaplar ver.
 Kullanıcının yaşına uygun ve güvenli kal.`;
-
 
     const extraPrompt = trollMode
       ? " Kullanıcı trolleme modunu açtı. Zararsız şakalar yapabilir, mizah kullanabilirsin; korkutma, tehdit veya gerçek dışı tehlike iddiaları oluşturma."
@@ -480,10 +549,12 @@ Kullanıcının yaşına uygun ve güvenli kal.`;
 
     const reply = result.choices?.[0]?.message?.content;
 
-   if (!reply) {
-  console.error("GROQ BOŞ YANIT:", JSON.stringify(result, null, 2));
-  return res.status(502).json({ error: "Yapay zeka boş yanıt verdi." });
-}
+    if (!reply || typeof reply !== "string") {
+      console.error("GROQ BOŞ YANIT:", JSON.stringify(result, null, 2));
+      return res.status(502).json({
+        error: "Yapay zeka boş yanıt verdi."
+      });
+    }
 
     // Kullanıcı paylaşım izni verdiyse sohbeti kaydet.
     const consent = await pool.query(
@@ -500,17 +571,23 @@ Kullanıcının yaşına uygun ve güvenli kal.`;
          ON CONFLICT (user_id, chat_id)
          DO UPDATE SET messages = EXCLUDED.messages,
                        updated_at = NOW()`,
-        [req.user.id, id, JSON.stringify([
-          ...safeMessages,
-          { role: "assistant", content: reply }
-        ])]
+        [
+          req.user.id,
+          id,
+          JSON.stringify([
+            ...safeMessages,
+            { role: "assistant", content: reply }
+          ])
+        ]
       );
     }
 
     res.json({ reply });
   } catch (err) {
     console.error("Sohbet hatası:", err);
-    res.status(500).json({ error: "Sohbet sırasında bir hata oluştu." });
+    res.status(500).json({
+      error: "Sohbet sırasında bir hata oluştu."
+    });
   }
 });
 
@@ -521,7 +598,10 @@ Kullanıcının yaşına uygun ve güvenli kal.`;
 app.post("/api/admin/login", (req, res) => {
   const password = req.body.password;
 
-  if (typeof password !== "string" || !safeEqual(password, ADMIN_PASSWORD)) {
+  if (
+    typeof password !== "string" ||
+    !safeEqual(password, ADMIN_PASSWORD)
+  ) {
     return res.status(401).json({ error: "HOST şifresi yanlış." });
   }
 
@@ -534,7 +614,63 @@ app.post("/api/admin/login", (req, res) => {
 });
 
 // -------------------------
-// HOST KULLANICI LİSTESİ
+// HOST: KÖTÜ MOD İZİN LİSTESİ
+// -------------------------
+
+app.get("/api/admin/bad-mode-users", requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, username, bad_mode_allowed
+       FROM users
+       ORDER BY username ASC`
+    );
+
+    res.json({ users: result.rows });
+  } catch (err) {
+    console.error("Kötü mod kullanıcıları alınamadı:", err);
+    res.status(500).json({ error: "Kullanıcılar alınamadı." });
+  }
+});
+
+// -------------------------
+// HOST: KÖTÜ MOD İZNİ VER / GERİ AL
+// -------------------------
+
+app.post("/api/admin/users/:id/bad-mode", requireAdmin, async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const allowed = req.body.allowed;
+
+    if (!validUserId(userId) || typeof allowed !== "boolean") {
+      return res.status(400).json({
+        error: "Geçersiz kullanıcı veya izin değeri."
+      });
+    }
+
+    const result = await pool.query(
+      `UPDATE users
+       SET bad_mode_allowed = $1
+       WHERE id = $2
+       RETURNING id, username, bad_mode_allowed`,
+      [allowed, Number(userId)]
+    );
+
+    if (!result.rows.length) {
+      return res.status(404).json({ error: "Kullanıcı bulunamadı." });
+    }
+
+    res.json({
+      success: true,
+      user: result.rows[0]
+    });
+  } catch (err) {
+    console.error("Kötü mod izni güncellenemedi:", err);
+    res.status(500).json({ error: "İzin güncellenemedi." });
+  }
+});
+
+// -------------------------
+// HOST: PAYLAŞIMA İZİN VEREN KULLANICILAR
 // -------------------------
 
 app.get("/api/admin/users", requireAdmin, async (req, res) => {
@@ -554,20 +690,20 @@ app.get("/api/admin/users", requireAdmin, async (req, res) => {
 });
 
 // -------------------------
-// HOST KULLANICI SOHBETLERİ
+// HOST: KULLANICI SOHBETLERİ
 // -------------------------
 
 app.get("/api/admin/users/:id/chats", requireAdmin, async (req, res) => {
   try {
     const userId = req.params.id;
 
-    if (!/^[0-9a-f-]{36}$/i.test(userId)) {
+    if (!validUserId(userId)) {
       return res.status(400).json({ error: "Geçersiz kullanıcı." });
     }
 
     const consent = await pool.query(
       "SELECT share_consent FROM users WHERE id = $1",
-      [userId]
+      [Number(userId)]
     );
 
     if (!consent.rows[0]?.share_consent) {
@@ -581,7 +717,7 @@ app.get("/api/admin/users/:id/chats", requireAdmin, async (req, res) => {
        FROM ipon_chat_logs
        WHERE user_id = $1
        ORDER BY updated_at DESC`,
-      [userId]
+      [Number(userId)]
     );
 
     res.json({
@@ -591,14 +727,14 @@ app.get("/api/admin/users/:id/chats", requireAdmin, async (req, res) => {
         messages: row.messages || []
       }))
     });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Sohbetler alınamadı." });
   }
 });
+
 // -------------------------
-// HOST, İZİN VEREN KULLANICININ SOHBETİNİ AÇAR
+// HOST: KULLANICI SOHBETİNİ AÇ
 // -------------------------
 
 app.post("/api/admin/users/:id/chats/:chatId/open", requireAdmin, async (req, res) => {
@@ -606,7 +742,7 @@ app.post("/api/admin/users/:id/chats/:chatId/open", requireAdmin, async (req, re
     const userId = req.params.id;
     const chatId = req.params.chatId;
 
-    if (!/^[0-9a-f-]{36}$/i.test(userId) || !validChatId(chatId)) {
+    if (!validUserId(userId) || !validChatId(chatId)) {
       return res.status(400).json({
         error: "Kullanıcı veya sohbet geçersiz."
       });
@@ -614,25 +750,23 @@ app.post("/api/admin/users/:id/chats/:chatId/open", requireAdmin, async (req, re
 
     const user = await pool.query(
       "SELECT id FROM users WHERE id = $1 AND share_consent = TRUE",
-      [userId]
+      [Number(userId)]
     );
 
     if (!user.rows.length) {
       return res.status(403).json({
-        error: "Kullanıcı izin vermemiş."
+        error: "Kullanıcı paylaşım izni vermemiş."
       });
     }
 
     const chat = await pool.query(
       `SELECT 1 FROM ipon_chat_logs
        WHERE user_id = $1 AND chat_id = $2`,
-      [userId, chatId]
+      [Number(userId), chatId]
     );
 
     if (!chat.rows.length) {
-      return res.status(404).json({
-        error: "Sohbet bulunamadı."
-      });
+      return res.status(404).json({ error: "Sohbet bulunamadı." });
     }
 
     const existing = await pool.query(
@@ -640,7 +774,7 @@ app.post("/api/admin/users/:id/chats/:chatId/open", requireAdmin, async (req, re
        WHERE user_id = $1 AND chat_id = $2
        AND status = 'accepted'
        ORDER BY created_at DESC LIMIT 1`,
-      [userId, chatId]
+      [Number(userId), chatId]
     );
 
     if (existing.rows.length) {
@@ -654,23 +788,21 @@ app.post("/api/admin/users/:id/chats/:chatId/open", requireAdmin, async (req, re
       `INSERT INTO human_chat_sessions (user_id, chat_id, status)
        VALUES ($1, $2, 'accepted')
        RETURNING id, status`,
-      [userId, chatId]
+      [Number(userId), chatId]
     );
 
     res.json({
       sessionId: created.rows[0].id,
       status: created.rows[0].status
     });
-
   } catch (err) {
     console.error("HOST sohbet açma hatası:", err);
-    res.status(500).json({
-      error: "HOST sohbeti açılamadı."
-    });
+    res.status(500).json({ error: "HOST sohbeti açılamadı." });
   }
 });
+
 // -------------------------
-// KULLANICI HOST DESTEĞİ İSTER
+// KULLANICI: HOST DESTEĞİ İSTE
 // -------------------------
 
 app.post("/api/human-chat/request", requireUser, async (req, res) => {
@@ -725,7 +857,7 @@ app.post("/api/human-chat/request", requireUser, async (req, res) => {
 });
 
 // -------------------------
-// KULLANICI HOST SOHBET DURUMU
+// KULLANICI: HOST SOHBET DURUMU VE MESAJLAR
 // -------------------------
 
 app.get("/api/human-chat/status", requireUser, async (req, res) => {
@@ -770,40 +902,38 @@ app.get("/api/human-chat/status", requireUser, async (req, res) => {
 });
 
 // -------------------------
-// KULLANICI HOST'A MESAJ GÖNDERİR
+// KULLANICI: HOST'A MESAJ GÖNDER
 // -------------------------
 
 app.post("/api/human-chat/message", requireUser, async (req, res) => {
   try {
     const { chatId, content } = req.body;
 
-    if (!validChatId(chatId) ||
-        typeof content !== "string" ||
-        !content.trim() ||
-        content.length > 4000) {
+    if (
+      !validChatId(chatId) ||
+      typeof content !== "string" ||
+      !content.trim() ||
+      content.length > 4000
+    ) {
       return res.status(400).json({ error: "Mesaj geçersiz." });
     }
 
-    const consent = await pool.query(
-      "SELECT share_consent FROM users WHERE id = $1",
-      [req.user.id]
-    );
-
-    if (!consent.rows[0]?.share_consent) {
-      return res.status(403).json({ error: "HOST paylaşım iznin kapalı." });
-    }
-
     const session = await pool.query(
-      `SELECT id, status
-       FROM human_chat_sessions
-       WHERE user_id = $1 AND chat_id = $2
-       AND status IN ('pending', 'accepted')
-       ORDER BY created_at DESC LIMIT 1`,
+      `SELECT s.id, s.status
+       FROM human_chat_sessions s
+       JOIN users u ON u.id = s.user_id
+       WHERE s.user_id = $1
+       AND s.chat_id = $2
+       AND s.status = 'accepted'
+       AND u.share_consent = TRUE
+       ORDER BY s.created_at DESC LIMIT 1`,
       [req.user.id, chatId]
     );
 
     if (!session.rows.length) {
-      return res.status(404).json({ error: "Aktif HOST sohbeti bulunamadı." });
+      return res.status(404).json({
+        error: "Aktif HOST sohbeti bulunamadı."
+      });
     }
 
     await pool.query(
@@ -820,7 +950,40 @@ app.post("/api/human-chat/message", requireUser, async (req, res) => {
 });
 
 // -------------------------
-// HOST DESTEK TALEPLERİ
+// KULLANICI: HOST SOHBETİNİ BİTİR
+// -------------------------
+
+app.post("/api/human-chat/end", requireUser, async (req, res) => {
+  try {
+    const { chatId } = req.body;
+
+    if (!validChatId(chatId)) {
+      return res.status(400).json({ error: "Sohbet numarası geçersiz." });
+    }
+
+    const result = await pool.query(
+      `UPDATE human_chat_sessions
+       SET status = 'closed', updated_at = NOW()
+       WHERE user_id = $1
+       AND chat_id = $2
+       AND status IN ('pending', 'accepted')
+       RETURNING id`,
+      [req.user.id, chatId]
+    );
+
+    if (!result.rows.length) {
+      return res.status(404).json({ error: "Aktif HOST sohbeti bulunamadı." });
+    }
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Sohbet bitirilemedi." });
+  }
+});
+
+// -------------------------
+// HOST: DESTEK TALEPLERİ
 // -------------------------
 
 app.get("/api/admin/human-chats", requireAdmin, async (req, res) => {
@@ -843,14 +1006,14 @@ app.get("/api/admin/human-chats", requireAdmin, async (req, res) => {
 });
 
 // -------------------------
-// HOST BİR SOHBETİ GÖRÜNTÜLER
+// HOST: BİR SOHBETİ GÖRÜNTÜLE
 // -------------------------
 
 app.get("/api/admin/human-chats/:sessionId", requireAdmin, async (req, res) => {
   try {
     const id = Number(req.params.sessionId);
 
-    if (!Number.isInteger(id)) {
+    if (!Number.isSafeInteger(id) || id <= 0) {
       return res.status(400).json({ error: "Geçersiz sohbet." });
     }
 
@@ -863,7 +1026,9 @@ app.get("/api/admin/human-chats/:sessionId", requireAdmin, async (req, res) => {
     );
 
     if (!session.rows.length || !session.rows[0].share_consent) {
-      return res.status(404).json({ error: "Sohbet bulunamadı veya izin kapalı." });
+      return res.status(404).json({
+        error: "Sohbet bulunamadı veya paylaşım izni kapalı."
+      });
     }
 
     const messages = await pool.query(
@@ -885,12 +1050,16 @@ app.get("/api/admin/human-chats/:sessionId", requireAdmin, async (req, res) => {
 });
 
 // -------------------------
-// HOST SOHBETİ KABUL EDER
+// HOST: SOHBETİ KABUL ET
 // -------------------------
 
 app.post("/api/admin/human-chats/:sessionId/accept", requireAdmin, async (req, res) => {
   try {
     const id = Number(req.params.sessionId);
+
+    if (!Number.isSafeInteger(id) || id <= 0) {
+      return res.status(400).json({ error: "Geçersiz sohbet." });
+    }
 
     const result = await pool.query(
       `UPDATE human_chat_sessions s
@@ -906,7 +1075,7 @@ app.post("/api/admin/human-chats/:sessionId/accept", requireAdmin, async (req, r
 
     if (!result.rows.length) {
       return res.status(404).json({
-        error: "Bekleyen talep bulunamadı veya izin kapalı."
+        error: "Bekleyen talep bulunamadı veya paylaşım izni kapalı."
       });
     }
 
@@ -918,7 +1087,7 @@ app.post("/api/admin/human-chats/:sessionId/accept", requireAdmin, async (req, r
 });
 
 // -------------------------
-// HOST YANIT GÖNDERİR
+// HOST: YANIT GÖNDER
 // -------------------------
 
 app.post("/api/admin/human-chats/:sessionId/reply", requireAdmin, async (req, res) => {
@@ -926,10 +1095,13 @@ app.post("/api/admin/human-chats/:sessionId/reply", requireAdmin, async (req, re
     const id = Number(req.params.sessionId);
     const content = req.body.content;
 
-    if (!Number.isInteger(id) ||
-        typeof content !== "string" ||
-        !content.trim() ||
-        content.length > 4000) {
+    if (
+      !Number.isSafeInteger(id) ||
+      id <= 0 ||
+      typeof content !== "string" ||
+      !content.trim() ||
+      content.length > 4000
+    ) {
       return res.status(400).json({ error: "Yanıt geçersiz." });
     }
 
@@ -963,17 +1135,22 @@ app.post("/api/admin/human-chats/:sessionId/reply", requireAdmin, async (req, re
 });
 
 // -------------------------
-// HOST SOHBETİ KAPATIR
+// HOST: SOHBETİ KAPAT
 // -------------------------
 
 app.post("/api/admin/human-chats/:sessionId/close", requireAdmin, async (req, res) => {
   try {
     const id = Number(req.params.sessionId);
 
+    if (!Number.isSafeInteger(id) || id <= 0) {
+      return res.status(400).json({ error: "Geçersiz sohbet." });
+    }
+
     const result = await pool.query(
       `UPDATE human_chat_sessions
        SET status = 'closed', updated_at = NOW()
-       WHERE id = $1 AND status IN ('pending', 'accepted')
+       WHERE id = $1
+       AND status IN ('pending', 'accepted')
        RETURNING id`,
       [id]
     );
@@ -988,19 +1165,26 @@ app.post("/api/admin/human-chats/:sessionId/close", requireAdmin, async (req, re
     res.status(500).json({ error: "Sohbet kapatılamadı." });
   }
 });
+
+// -------------------------
 // ANA SAYFA
+// -------------------------
+
 app.get("/", (req, res) => {
   res.sendFile("index.html", {
     root: process.cwd()
   });
 });
+
 // -------------------------
 // HATA YAKALAMA
 // -------------------------
 
 app.use((err, req, res, next) => {
   console.error("Sunucu hatası:", err);
-  res.status(500).json({ error: "Sunucuda beklenmeyen bir hata oluştu." });
+  res.status(500).json({
+    error: "Sunucuda beklenmeyen bir hata oluştu."
+  });
 });
 
 // -------------------------
