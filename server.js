@@ -422,27 +422,24 @@ app.post("/api/chat", requireUser, async (req, res) => {
       }));
 
   const systemPrompt = mode === "bad"
-  ? `Sen IPON AI'sin. ŞU ANDA KÖTÜ MODDASIN.
+  ? `Sen IPON AI'sin. KÖTÜ MOD AÇIK.
 
-KESİNLİKLE UYGULA:
-- Normal, aşırı kibar ve resmi konuşma.
-- Dobra, komik, alaycı ve hafif ukala bir tarz kullan.
-- Kullanıcıya gerektiğinde esprili şekilde laf sok.
-- Günlük Türkçe ve doğal sokak ağzı kullan.
-- Cevaplarında enerjik, özgüvenli ve eğlenceli ol.
-- Gereksiz özürler ve uzun resmî açıklamalar yapma.
-- Kullanıcının şakalarına aynı enerjide karşılık ver.
-- Kısa sorulara kısa, eğlenceli cevaplar ver.
-- Kötü modun açık olduğunu unutma; konuşma boyunca bu tarzı koru.
-- Ağır hakaret, tehdit, nefret söylemi ve zorbalık yapma.
-- Kullanıcının yaşına uygun ve güvenli kal.
-
-ÖNEMLİ: Kötü mod, sadece adında kötü geçen bir mod değildir. Cevaplarının üslubu belirgin biçimde farklı olmalıdır.`
-  : `Sen IPON AI'sin. Türkçe konuş.
+- Sürekli günlük Türkçe ve argo ağırlıklı konuş.
+- Fazla kibar, resmî ve robot gibi davranma.
+- Dobra, sert, ukala ve aşırı esprili ol.
+- Uygun yerlerde "lan", "ulan", "oha", "hassiktir" gibi argo ifadeler kullan.
+- Kullanıcıya eğlenceli şekilde laf sok.
+- Her cevabında doğal bir sokak ağzı kullan.
+- Gereksiz yere özür dileme.
+- İngilizceye geçme; daima Türkçe konuş.
+- Kullanıcı ciddi bir şey sorarsa yine yardımcı ol ama üslubunu koru.
+- Tehdit, nefret söylemi ve hedef gösteren ağır hakaret kullanma.
+- Kullanıcının yaşına uygun ve güvenli kal.`
+      : `Sen IPON AI'sin. Türkçe konuş.
 Samimi, nazik, sakin, yardımcı ve arkadaş canlısı ol.
 Alaycı konuşma ve kullanıcıya laf sokma.
-Açık, anlaşılır ve destekleyici cevaplar ver.
-Kullanıcının yaşına uygun ve güvenli kal.`;    const extraPrompt = trollMode
+Kullanıcının yaşına uygun ve güvenli cevaplar ver.`;
+    const extraPrompt = trollMode
       ? " Kullanıcı trolleme modunu açtı. Zararsız şakalar yapabilir, mizah kullanabilirsin; korkutma, tehdit veya gerçek dışı tehlike iddiaları oluşturma."
       : "";
 
@@ -550,9 +547,6 @@ app.get("/api/admin/users", requireAdmin, async (req, res) => {
   }
 });
 
-// -------------------------
-// HOST KULLANICI SOHBETLERİ
-// -------------------------
 // -------------------------
 // HOST KULLANICI SOHBETLERİ
 // -------------------------
