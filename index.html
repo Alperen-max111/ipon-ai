@@ -828,16 +828,16 @@ $("requestHuman").onclick=requestHumanChat;
 
 function updateHumanControls(){
  const active=!!humanSession;
- const pending=active&&humanSession.status!=="accepted";
+ const accepted=active&&humanSession.status==="accepted";
  $("requestHuman").disabled=active;
  $("endHuman").disabled=!active;
- $("message").disabled=pending;
- $("sendButton").disabled=pending;
- $("photoButton").disabled=active;
- $("trollMode").disabled=active;
- $("goodMode").disabled=active;
- $("badMode").disabled=active;
- $("message").placeholder=active?"HOST'a mesaj yaz...":"IPON AI'ye mesaj yaz...";
+ $("message").disabled=false;
+ $("sendButton").disabled=false;
+ $("photoButton").disabled=accepted;
+ $("trollMode").disabled=accepted;
+ $("goodMode").disabled=accepted;
+ $("badMode").disabled=accepted;
+ $("message").placeholder=accepted?"HOST'a mesaj yaz...":"IPON AI'ye mesaj yaz...";
 }
 function startHumanPolling(){
  if(humanPoll)clearInterval(humanPoll);
