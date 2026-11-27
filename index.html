@@ -802,24 +802,11 @@ async function sendChatMessage(e){
    })
   });
   const answer=data.reply||data.response||data.message||"Yanıt alınamadı.";
-  if("speechSynthesis" in window){
- const speech=new SpeechSynthesisUtterance(answer);
- speech.lang="tr-TR";
- speech.rate=1;
- window.speechSynthesis.speak(speech);
-}
-  function startVoiceMode(){
- voiceMode = !voiceMode;
+  messages.push({role:"assistant",content:answer});
 
- $("voiceButton").textContent =
-  voiceMode ? "🔴" : "🎙️";
-
- if(!voiceMode){
-  speechSynthesis.cancel();
- }
-}
-
-$("voiceButton").onclick = startVoiceMode;
+  if(voiceMode){
+   speakIPON(answer);
+  }
   messages.push({role:"assistant",content:answer});
   if(voiceMode){
  speakIPON(answer);
