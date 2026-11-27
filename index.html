@@ -424,6 +424,20 @@ let hostObserverIds=new Set();
 let hostIdentityKnown=false;
 let hostViewingSession = null;
 const $=id=>document.getElementById(id);
+ // IPON AI SESLİ SOHBET
+let voiceMode = false;
+let voiceSpeaking = false;
+
+function speakIPON(text){
+ if(!("speechSynthesis" in window))return;
+
+ speechSynthesis.cancel();
+
+ const speech = new SpeechSynthesisUtterance(text);
+ speech.lang = "tr-TR";
+ speech.rate = 1;
+ speechSynthesis.speak(speech);
+}
  // TEMA SİSTEMİ
 function setTheme(theme){
  document.body.dataset.theme=theme;
@@ -775,7 +789,21 @@ async function sendChatMessage(e){
  speech.rate=1;
  window.speechSynthesis.speak(speech);
 }
+  function startVoiceMode(){
+ voiceMode = !voiceMode;
+
+ $("voiceButton").textContent = voiceMode ? "🔴 SESLİ MOD AÇIK" : "🎙️";
+
+ if(!voiceMode){
+  speechSynthesis.cancel();
+ }
+}
+
+$("voiceButton").onclick = startVoiceMode;
   messages.push({role:"assistant",content:answer});
+  if(voiceMode){
+ speakIPON(answer);
+}
   saveChats();
   renderMessages();
  }catch(err){
@@ -787,52 +815,7 @@ async function sendChatMessage(e){
   input.focus();
  }
 }
-$("chatForm").onsubmit=sendChatMessage;
-// IPON AI SESLİ SOHBET
-let voiceRecognition;
-let voiceActive=false;
-
-$("voiceButton").onclick=()=>{
- const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
-
- if(!SpeechRecognition){
-  alert("Tarayıcın sesli sohbeti desteklemiyor. Chrome kullanmayı dene.");
-  return;
- }
-
- if(voiceActive){
-  voiceRecognition.stop();
-  voiceActive=false;
-  $("voiceButton").textContent="🎙️";
-  return;
- }
-
- voiceRecognition=new SpeechRecognition();
- voiceRecognition.lang="tr-TR";
- voiceRecognition.continuous=false;
- voiceRecognition.interimResults=false;
-
- voiceRecognition.onstart=()=>{
-  voiceActive=true;
-  $("voiceButton").textContent="🔴";
- };
-
- voiceRecognition.onresult=(event)=>{
-  $("message").value=event.results[0][0].transcript;
-  $("chatForm").requestSubmit();
- };
-
- voiceRecognition.onerror=(event)=>{
-  alert("Mikrofon hatası: "+event.error);
- };
-
- voiceRecognition.onend=()=>{
-  voiceActive=false;
-  $("voiceButton").textContent="🎙️";
- };
-
- voiceRecognition.start();
-};
+$("chatForm").onsubmit=sendChatMessage
 async function loadPrivacy(){
  try{
   const data=await request("/api/privacy");
