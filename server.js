@@ -477,9 +477,10 @@ Kullanıcının yaşına uygun ve güvenli kal.`;    const extraPrompt = trollMo
 
     const reply = result.choices?.[0]?.message?.content;
 
-    if (!reply) {
-      return res.status(502).json({ error: "Yapay zeka boş yanıt verdi." });
-    }
+   if (!reply) {
+  console.error("GROQ BOŞ YANIT:", JSON.stringify(result, null, 2));
+  return res.status(502).json({ error: "Yapay zeka boş yanıt verdi." });
+}
 
     // Kullanıcı paylaşım izni verdiyse sohbeti kaydet.
     const consent = await pool.query(
