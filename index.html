@@ -726,7 +726,7 @@ async function sendChatMessage(e){
   return;
  }
 
- if(humanSession){
+ if(humanSession && humanSession.status==="accepted"){
   if(humanSession.status!=="accepted"){
    alert("HOST henüz sohbete katılmadı.");
    return;
