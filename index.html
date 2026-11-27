@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>IPON AI – Yapay Zeka Destekli Akıllı Sohbet</title>
-<meta name="description" content="IPON AI, yapay zeka destekli akıllı sohbet platformudur. Sorularını sor, fikirlerini keşfet, fotoğraflarını paylaş ve yapay zekayla sohbet et.">
-<meta name="keywords" content="IPON AI, IPON, yapay zeka, yapay zeka sohbet, AI sohbet, Türkçe yapay zeka, akıllı sohbet, ücretsiz yapay zeka">
+<title>IPON AI – Türkçe Yapay Zeka Sohbet Platformu</title>
+<meta name="description" content="IPON AI, Türkçe yapay zeka sohbet platformudur. Yapay zekayla sohbet et, sorularına yanıt bul, fikirlerini keşfet ve fotoğrafların hakkında konuş.">
+<meta name="keywords" content="IPON AI, IPON, yapay zeka sohbet, Türkçe yapay zeka, AI sohbet, akıllı sohbet">
 <meta name="author" content="IPON AI">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="googlebot" content="index, follow">
@@ -18,13 +18,13 @@
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="IPON AI">
-<meta property="og:title" content="IPON AI – Yapay Zeka Destekli Akıllı Sohbet">
+<meta property="og:title" content="IPON AI – Türkçe Yapay Zeka Sohbet Platformu">
 <meta property="og:description" content="IPON AI ile yapay zeka destekli sohbet et, sorularına yanıt bul ve fikirlerini keşfet.">
 <meta property="og:url" content="https://ipon-ai-3.onrender.com/">
 <meta property="og:locale" content="tr_TR">
 
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="IPON AI – Yapay Zeka Destekli Akıllı Sohbet">
+<meta name="twitter:title" content="IPON AI – Türkçe Yapay Zeka Sohbet Platformu">
 <meta name="twitter:description" content="IPON AI ile yapay zeka destekli akıllı sohbet deneyimini keşfet.">
 
 <script type="application/ld+json">
@@ -35,7 +35,7 @@
   "alternateName": ["IPON", "IPON Yapay Zeka"],
   "url": "https://ipon-ai-3.onrender.com/",
   "inLanguage": "tr-TR",
-  "description": "IPON AI, yapay zeka destekli akıllı sohbet platformudur."
+  "description": "IPON AI, Türkçe yapay zeka sohbet platformudur."
 }
 </script>
 
@@ -65,6 +65,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 input,textarea,select{font-family:Arial,sans-serif}
 .hidden{display:none!important}
 
+/* REKLAM */
 #bookAd{position:fixed;right:18px;top:50%;transform:translateY(-50%);width:190px;padding:12px;background:#20283a;border:1px solid #6475ed;border-radius:15px;z-index:1000;text-align:center;box-shadow:0 8px 30px #0008}
 #bookAd img{width:100%;height:220px;object-fit:cover;border-radius:9px}
 #bookAd h3{font-size:16px;margin:10px 0 4px}
@@ -72,6 +73,7 @@ input,textarea,select{font-family:Arial,sans-serif}
 #bookAd a{display:block;padding:10px 5px;margin-top:7px;border-radius:8px;background:#6475ed;color:white;text-decoration:none;font-size:12px;font-weight:bold}
 #bookAd a:last-child{background:#30394d}
 
+/* GİRİŞ */
 #authScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
 .auth-box{width:100%;max-width:390px;background:#171f30;border:1px solid #30394d;border-radius:18px;padding:28px;box-shadow:0 15px 50px #0005}
 .auth-logo{text-align:center;font-size:32px;font-weight:bold;color:#a5b4fc;margin-bottom:5px}
@@ -84,6 +86,53 @@ input,textarea,select{font-family:Arial,sans-serif}
 .auth-info{font-size:12px;color:#9aa6c4;line-height:1.5}
 .auth-error{color:#ff7785;font-size:13px;min-height:18px}
 
+/* SEO TANITIM ALANI */
+.seo-content{
+ width:calc(100% - 32px);
+ max-width:900px;
+ margin:35px auto;
+ padding:28px;
+ color:#c5cee3;
+ background:#171f30;
+ border:1px solid #30394d;
+ border-radius:16px;
+ line-height:1.8;
+ box-shadow:0 10px 35px #0003;
+}
+.seo-content h1{
+ color:#a5b4fc;
+ font-size:27px;
+ margin:0 0 15px;
+}
+.seo-content h2{
+ color:#a5b4fc;
+ font-size:20px;
+ margin:25px 0 9px;
+}
+.seo-content p{
+ font-size:14px;
+ margin:10px 0;
+}
+.seo-content ul{
+ padding-left:22px;
+}
+.seo-content li{
+ font-size:14px;
+ margin:7px 0;
+}
+.seo-brand{
+ color:#db9cff;
+ font-weight:bold;
+}
+.seo-bottom{
+ border-top:1px solid #30394d;
+ margin-top:22px!important;
+ padding-top:15px;
+ color:#9aa6c4;
+ font-size:12px!important;
+}
+
+/* UYGULAMA */
 .app{display:flex;min-height:100vh}
 .sidebar{width:250px;flex-shrink:0;background:#171c29;padding:16px;display:flex;flex-direction:column;border-right:1px solid #30394d}
 .logo{text-align:center;font-size:25px;font-weight:bold;margin:12px 0 25px;color:#a5b4fc}
@@ -171,9 +220,12 @@ body[data-theme="light"] .sidebar,body[data-theme="light"] .auth-box{background:
 body[data-theme="light"] .main,body[data-theme="light"] #chat{color:#202638}
 body[data-theme="light"] .message.assistant,body[data-theme="light"] .chat-item,body[data-theme="light"] #message{background:#e1e6f2;color:#202638}
 body[data-theme="light"] .privacy-box,body[data-theme="light"] .human-box{background:#e1e6f2;color:#202638}
+body[data-theme="light"] .seo-content{background:#fff;color:#34405a;border-color:#d5dbea}
+body[data-theme="light"] .seo-content h1,body[data-theme="light"] .seo-content h2{color:#5365c5}
 body[data-theme="purple"]{background:#190f2d}
 body[data-theme="purple"] .sidebar,body[data-theme="purple"] .auth-box{background:#28183f}
 body[data-theme="purple"] .message.assistant,body[data-theme="purple"] .chat-item,body[data-theme="purple"] #message{background:#392454;color:white}
+body[data-theme="purple"] .seo-content{background:#28183f;border-color:#563b79}
 
 #themeButton{width:100%;margin-top:8px;background:#46516a}
 #voiceButton{width:46px;height:46px;min-width:46px;padding:0;border-radius:50%;background:#6475ed;display:flex;align-items:center;justify-content:center;font-size:20px}
@@ -221,6 +273,10 @@ body[data-theme="purple"] .message.assistant,body[data-theme="purple"] .chat-ite
  .panel button{font-size:11px}
  .admin-actions{gap:5px}
  #hostModeBar{font-size:10px}
+ .seo-content{width:calc(100% - 20px);margin:18px auto;padding:17px}
+ .seo-content h1{font-size:22px}
+ .seo-content h2{font-size:17px;margin-top:20px}
+ .seo-content p,.seo-content li{font-size:13px}
 }
 </style>
 </head>
@@ -261,6 +317,59 @@ body[data-theme="purple"] .message.assistant,body[data-theme="purple"] .chat-ite
    </div>
   </section>
  </div>
+</section>
+
+<!-- GOOGLE VE ZİYARETÇİLER İÇİN IPON AI TANITIMI -->
+<section class="seo-content">
+ <h1>IPON AI – Türkçe Yapay Zeka Sohbet Platformu</h1>
+
+ <p>
+  <span class="seo-brand">IPON AI</span>, kullanıcıların yapay zeka ile sohbet edebilmesi,
+  merak ettikleri sorulara yanıt arayabilmesi ve yeni fikirler keşfedebilmesi
+  için geliştirilmiş web tabanlı bir Türkçe yapay zeka sohbet platformudur.
+ </p>
+
+ <p>
+  IPON AI'nin amacı, yapay zeka sohbet deneyimini kolay ve anlaşılır
+  bir arayüzle kullanıcılarla buluşturmaktır. Platform üzerinden hesabına
+  giriş yapabilir veya yeni bir hesap oluşturabilirsin.
+ </p>
+
+ <h2>IPON AI ile neler yapabilirsin?</h2>
+ <ul>
+  <li>Yapay zeka ile Türkçe sohbet edebilirsin.</li>
+  <li>Merak ettiğin konular hakkında sorular sorabilirsin.</li>
+  <li>Yeni fikirler keşfedebilir ve fikirlerini geliştirebilirsin.</li>
+  <li>Desteklenen özelliklerle fotoğraf göndererek sohbet edebilirsin.</li>
+  <li>Sohbet geçmişini görüntüleyebilir ve sohbetlerini yönetebilirsin.</li>
+  <li>Desteklenen sesli yanıt özelliğini kullanabilirsin.</li>
+ </ul>
+
+ <h2>IPON AI nedir?</h2>
+ <p>
+  IPON AI, bağımsız olarak geliştirilen bir yapay zeka sohbet projesidir.
+  Herhangi bir telefon markasının veya sesli asistanının ürünü değildir.
+  Web tarayıcısı üzerinden erişilebilen kendi sohbet platformudur.
+ </p>
+
+ <h2>Türkçe yapay zeka sohbet deneyimi</h2>
+ <p>
+  IPON AI, Türkçe iletişim kurmaya odaklanan bir sohbet deneyimi sunar.
+  Kullanıcılar farklı konularda sorular sorabilir, açıklamalar isteyebilir
+  ve yapay zeka ile fikir alışverişinde bulunabilir.
+ </p>
+
+ <h2>IPON AI'ye nasıl giriş yapılır?</h2>
+ <p>
+  IPON AI'yi kullanmak için giriş ekranından hesabına giriş yapabilir
+  veya kayıt ol bölümünden yeni bir hesap oluşturabilirsin.
+  Giriş yaptıktan sonra sohbet özelliklerine erişebilirsin.
+ </p>
+
+ <p class="seo-bottom">
+  IPON AI – Bağımsız Türkçe yapay zeka sohbet platformu.
+  Resmî web sitesi: https://ipon-ai-3.onrender.com/
+ </p>
 </section>
 
 <div class="app hidden" id="app">
