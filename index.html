@@ -788,7 +788,51 @@ async function sendChatMessage(e){
  }
 }
 $("chatForm").onsubmit=sendChatMessage;
+// IPON AI SESLİ SOHBET
+let voiceRecognition;
+let voiceActive=false;
 
+$("voiceButton").onclick=()=>{
+ const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+ if(!SpeechRecognition){
+  alert("Tarayıcın sesli sohbeti desteklemiyor. Chrome kullanmayı dene.");
+  return;
+ }
+
+ if(voiceActive){
+  voiceRecognition.stop();
+  voiceActive=false;
+  $("voiceButton").textContent="🎙️";
+  return;
+ }
+
+ voiceRecognition=new SpeechRecognition();
+ voiceRecognition.lang="tr-TR";
+ voiceRecognition.continuous=false;
+ voiceRecognition.interimResults=false;
+
+ voiceRecognition.onstart=()=>{
+  voiceActive=true;
+  $("voiceButton").textContent="🔴";
+ };
+
+ voiceRecognition.onresult=(event)=>{
+  $("message").value=event.results[0][0].transcript;
+  $("chatForm").requestSubmit();
+ };
+
+ voiceRecognition.onerror=(event)=>{
+  alert("Mikrofon hatası: "+event.error);
+ };
+
+ voiceRecognition.onend=()=>{
+  voiceActive=false;
+  $("voiceButton").textContent="🎙️";
+ };
+
+ voiceRecognition.start();
+};
 async function loadPrivacy(){
  try{
   const data=await request("/api/privacy");
